@@ -3,6 +3,7 @@ import Header from "@/components/shared/layout/header"
 import Providers from "@/components/shared/providers";
 import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils"
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next'
 import { Inter as FontSans } from "next/font/google";
 import '../style/globals.css'
@@ -39,6 +40,7 @@ export default function RootLayout({
           <Toaster />
           <Footer />
         </Providers>
+        <Analytics />
       </body>
     </html>
   )
