@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 export const apolloClient = new ApolloClient({
-    uri: "https://dbots.tanuki.cf/",
+    uri: process.env.GRAPHQL_URL,
     cache: new InMemoryCache(),
 });
