@@ -29,7 +29,7 @@ export default function Listing({ title, subtext, Icon, more, loading, list }: L
                 {more && <Link href={more} className="text-muted-foreground text-xs lg:text-sm hover:opacity-85 underline flex items-center">See more <ChevronRightIcon className="ml-1 w-4" /></Link>}
             </div>
             {loading ? <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 base:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-4 gap-4">
-                {[...Array(3)].map(() => <SkeletonCard />)}
+                {[...Array(3)].map((_, key) => <SkeletonCard key={key} />)}
             </div> : list ? list : (
                 <div className="flex items-center justify-center h-32 text-red-500">
                     <FrownIcon className="w-5 mr-2" /> No entries found

@@ -1,122 +1,49 @@
 "use client";
 
-import LoadingScreen from "@/components/shared/common/loading-screen";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { APPROVE_BOT, DELETE_BOT, REJECT_BOT } from "@/lib/apollo/mutations/bots";
-import { GET_PANEL_BOTS } from "@/lib/apollo/queries/bots";
-import { Mutation, Query } from "@/lib/apollo/types/graphql";
-import { withAuth } from "@/lib/hooks/useSession";
-import { avatar } from "@/lib/utils";
-import { useMutation, useQuery } from "@apollo/client";
-import { Label } from "@radix-ui/react-label";
-import { CheckIcon, Trash2Icon, XIcon } from "lucide-react";
-import { parseCookies } from "nookies";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { CheckIcon, Clock10Icon, HashIcon, XIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
-    const { data: pending, loading, refetch } = useQuery<Query>(GET_PANEL_BOTS, {
-        ...withAuth(parseCookies().session)
-    })
-
-    const [approve, approveResult] = useMutation<Mutation>(APPROVE_BOT, {
-        ...withAuth(parseCookies().session)
-    })
-    const [reject, rejectResult] = useMutation<Mutation>(REJECT_BOT, {
-        ...withAuth(parseCookies().session),
-    })
-    const [remove, removeResult] = useMutation<Mutation>(DELETE_BOT, {
-        ...withAuth(parseCookies().session),
-    })
-
-    const [rejectReason, setRejectReason] = useState<string | null>()
-
-    useEffect(() => {
-        if (approveResult.called && !approveResult.loading) {
-            toast(`Approved ${approveResult.data?.approveBot.name} successfully.`)
-            refetch()
-            approveResult.reset()
-        }
-    }, [approveResult.called, approveResult.loading])
-
-    useEffect(() => {
-        if (rejectResult.called && !rejectResult.loading) {
-            toast(`Rejected ${rejectResult.data?.rejectBot.name} successfully.`)
-            refetch()
-            rejectResult.reset()
-        }
-    }, [rejectResult.called, rejectResult.loading])
-
-    useEffect(() => {
-        if (removeResult.called && !removeResult.loading) {
-            toast(`Deleted ${removeResult.data?.deleteBot.name} successfully.`)
-            refetch()
-            removeResult.reset()
-        }
-    }, [removeResult.called, removeResult.loading])
+    const router = useRouter()
     return (
-        <div className="flex flex-col gap-3">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Pending bots</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {loading ? <LoadingScreen /> : (
-                        <div className="flex flex-col gap-3">
-                            {pending?.bots.nodes?.length ? pending.bots.nodes.map(bot => <div className="flex w-full justify-between items-center">
-                                <div className="flex gap-2 items-center">
-                                    <img src={avatar(bot.avatar, bot.id)} alt="bot" className="rounded-full ring ring-accent w-9 h-9" />
-                                    <p>{bot.name}</p>
-                                </div>
-                                <div className="flex gap-1 items-center">
-                                    <Button size={"icon"} onClick={() => approve({ variables: { id: bot.id } })}>
-                                        <CheckIcon className="w-5 h-5" />
-                                    </Button>
-                                    <Dialog>
-                                        <DialogTrigger asChild>
-                                            <Button variant={"secondary"} size={"icon"}>
-                                                <XIcon className="w-5 h-5" />
-                                            </Button>
-                                        </DialogTrigger>
-                                        <DialogContent className="sm:max-w-[425px]">
-                                            <DialogHeader>
-                                                <DialogTitle>Reject {bot.name}</DialogTitle>
-                                                <DialogDescription>
-                                                    Enter the reason below
-                                                </DialogDescription>
-                                            </DialogHeader>
-                                            <div className="grid gap-4 py-4">
-                                                <div className="grid grid-cols-4 items-center gap-4">
-                                                    <Label htmlFor="reason" className="text-right">
-                                                        Reason
-                                                    </Label>
-                                                    <Input
-                                                        onChange={(e) => setRejectReason(e.currentTarget.value)}
-                                                        id="reason"
-                                                        placeholder="E.g: Bot has no commands lol"
-                                                        className="col-span-3"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <DialogFooter>
-                                                <DialogClose asChild>
-                                                    <Button onClick={() => reject({ variables: { id: bot.id, reason: rejectReason } })} type="submit">Reject</Button>
-                                                </DialogClose>
-                                            </DialogFooter>
-                                        </DialogContent>
-                                    </Dialog>
-                                    <Button variant={"destructive"} size={"icon"} onClick={() => remove({ variables: { id: bot.id } })}>
-                                        <Trash2Icon className="w-5 h-5" />
-                                    </Button>
-                                </div>
-                            </div>) : <p>No pending bots</p>}
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
-        </div>
+        <Card>
+            <CardHeader>
+                <span className="text-xs uppercase font-bold text-muted-foreground">Welcome, simxnet</span>
+                <CardTitle>
+                    Where do you want to go?
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-3 gap-4">
+                <div onClick={() => router.push("/secret/approved")} className="flex justify-center cursor-pointer hover:ring-4 duration-150 ring-accent flex-col hover:scale-105 active:scale-95 items-center gap-2 p-5 rounded-lg border border-accent bg-card">
+                    <div className="bg-accent p-4 rounded-full">
+                        <CheckIcon className="w-5 h-5 text-accent-foreground" />
+                    </div>
+                    <h1 className="text-2xl font-bold">Approved</h1>
+                    <p>Approved bots</p>
+                </div>
+                <div onClick={() => router.push("/secret/denied")} className="flex justify-center cursor-pointer hover:ring-4 duration-150 ring-accent flex-col items-center hover:scale-105 active:scale-95 gap-2 p-5 rounded-lg border border-accent bg-card">
+                    <div className="bg-accent p-4 rounded-full">
+                        <XIcon className="w-5 h-5 text-accent-foreground" />
+                    </div>
+                    <h1 className="text-2xl font-bold">Denied</h1>
+                    <p>Denied bots</p>
+                </div>
+                <div onClick={() => router.push("/secret/pending")} className="flex justify-center cursor-pointer hover:ring-4 duration-150 ring-accent flex-col items-center hover:scale-105 active:scale-95 gap-2 p-5 rounded-lg border border-accent bg-card">
+                    <div className="bg-accent p-4 rounded-full">
+                        <Clock10Icon className="w-5 h-5 text-accent-foreground" />
+                    </div>
+                    <h1 className="text-2xl font-bold">Pending</h1>
+                    <p>Pending bots</p>
+                </div>
+                <div onClick={() => router.push("/secret/tags")} className="flex justify-center cursor-pointer hover:ring-4 duration-150 ring-accent flex-col items-center hover:scale-105 active:scale-95 gap-2 p-5 rounded-lg border border-accent bg-card">
+                    <div className="bg-accent p-4 rounded-full">
+                        <HashIcon className="w-5 h-5 text-accent-foreground" />
+                    </div>
+                    <h1 className="text-2xl font-bold">Tags</h1>
+                    <p>Manage tags</p>
+                </div>
+            </CardContent>
+        </Card>
     )
 }

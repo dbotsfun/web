@@ -3,7 +3,6 @@
 import Tags from "@/components/shared/bots/list/tags"
 import Ad from "@/components/shared/common/ad";
 import LoadingScreen from "@/components/shared/common/loading-screen";
-import MD from "@/components/shared/common/md"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -71,7 +70,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     </div>
                 </div>
                 <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-min">
-                    <Link href="/" className={buttonVariants({ size: "lg", className: "w-full lg:w-min" })}><PlusIcon className="w-5 h-5 mr-2" />Invite</Link>
+                    <Link href={bot.inviteLink ?? "/"} className={buttonVariants({ size: "lg", className: "w-full lg:w-min" })}><PlusIcon className="w-5 h-5 mr-2" />Invite</Link>
                     <Link href={`/bot/${bot.id}/vote`} className={buttonVariants({ size: "lg", variant: "secondary", className: "w-full lg:w-min" })}><ChevronUpIcon className="w-5 h-5 mr-2" />Vote</Link>
                 </div>
             </div>
@@ -84,7 +83,8 @@ export default function Page({ params }: { params: { id: string } }) {
                         {userIsOwner && <TabsTrigger value="manage"><Settings2Icon className="w-4 h-4 mr-2" />Manage</TabsTrigger>}
                     </TabsList>
                     <TabsContent value="overview" className="max-w-xl">
-                        <MD content={bot.description!} />
+                        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
+                        <div dangerouslySetInnerHTML={{ __html: bot.description! }} />
                     </TabsContent>
                     <TabsContent value="commands">
                         <Alert variant={"destructive"}>

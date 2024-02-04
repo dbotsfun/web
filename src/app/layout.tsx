@@ -1,5 +1,5 @@
-import Footer from "@/components/shared/footer"
-import Header from "@/components/shared/header"
+import Footer from "@/components/shared/layout/footer"
+import Header from "@/components/shared/layout/header"
 import Providers from "@/components/shared/providers";
 import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils"

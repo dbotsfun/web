@@ -17,8 +17,8 @@ export const GET_BOTS = gql`
 `;
 
 export const GET_PANEL_BOTS = gql`
-  query getPanelBots {
-    bots(filters: { status: Pending }) {
+  query getPanelBots($status: BotStatus!) {
+    bots(filters: { status: $status }) {
       nodes {
         id
         name

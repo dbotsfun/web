@@ -56,16 +56,20 @@ const formSchema = z.object({
         }),
     inviteLink: z
         .string()
-        .url("Invite url should be an url"),
+        .url("Invite url should be an url")
+        .optional(),
     github: z
         .string()
-        .url("Github url should be an url"),
+        .url("Github url should be an url")
+        .optional(),
     website: z
         .string()
-        .url("Website url should be an url"),
+        .url("Website url should be an url")
+        .optional(),
     supportServer: z
         .string()
         .url("Support server url should be an url")
+        .optional()
 })
 
 export default function Page() {
@@ -174,7 +178,7 @@ export default function Page() {
                     </AutoForm>}
                 </CardContent>
                 <CardFooter>
-                    {result.error && <p className="text-destructive">{result.error.message}</p>}
+                    {result.error ? <p className="text-destructive">{result.error.message}</p> : <p>Labels with <span className="text-destructive">*</span> are mandatory.</p>}
                 </CardFooter>
             </Card>
         </>

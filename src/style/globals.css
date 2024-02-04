@@ -186,48 +186,48 @@
 
   /* LIMITED THEMES START */
   [data-theme="unruly"] {
-    --card: 64 61% 99%;
-    --ring: 64 83% 80%;
+    --card: 0 0% 100%;
+    --ring: 262.1 83.3% 57.8%;
     --input: 220 13% 91%;
-    --muted: 0 37% 94%;
-    --accent: 0 0% 88%;
+    --muted: 220 14.3% 95.9%;
+    --accent: 220 14.3% 95.9%;
     --border: 220 13% 91%;
-    --popover: 64 61% 99%;
-    --primary: 64 100% 65.35%;
-    --secondary: 0 0% 88%;
-    --background: 64 61% 99%;
-    --foreground: 64 73% 3%;
-    --destructive: 2 87% 26%;
-    --card-foreground: 64 73% 3%;
-    --muted-foreground: 0 0% 28%;
-    --accent-foreground: 0 0% 28%;
-    --popover-foreground: 64 73% 3%;
-    --primary-foreground: 64 83% 20%;
-    --secondary-foreground: 0 0% 28%;
-    --destructive-foreground: 2 87% 86%;
+    --popover: 0 0% 100%;
+    --primary: 262.1 83.3% 57.8%;
+    --secondary: 220 14.3% 95.9%;
+    --background: 0 0% 100%;
+    --foreground: 217.24 32.58% 17.45%;
+    --destructive: 0 84.2% 60.2%;
+    --card-foreground: 217.24 32.58% 17.45%;
+    --muted-foreground: 220 8.9% 46.1%;
+    --accent-foreground: 220.9 39.3% 11%;
+    --popover-foreground: 217.24 32.58% 17.45%;
+    --primary-foreground: 210 20% 98%;
+    --secondary-foreground: 220.9 39.3% 11%;
+    --destructive-foreground: 210 20% 98%;
     --radius: 0.5rem;
   }
 
   [data-theme="unruly"].dark {
-    --card: 64 30% 4%;
-    --ring: 64 83% 80%;
-    --input: 215 27.9% 16.9%;
-    --muted: 64 37% 6%;
-    --accent: 64 7% 14%;
-    --border: 215 27.9% 16.9%;
-    --popover: 64 30% 4%;
-    --primary: 64 83% 80%;
-    --secondary: 64 7% 14%;
-    --background: 64 30% 4%;
-    --foreground: 64 37% 98%;
-    --destructive: 2 87% 49%;
-    --card-foreground: 64 37% 98%;
-    --muted-foreground: 64 0% 72%;
-    --accent-foreground: 64 7% 74%;
-    --popover-foreground: 64 37% 98%;
-    --primary-foreground: 64 83% 20%;
-    --secondary-foreground: 64 7% 74%;
-    --destructive-foreground: 0 0% 100%;
+    --card: 217.24 45.22% 9%;
+    --ring: 192.45 100% 51.32%;
+    --input: 216.43 22.22% 24.71%;
+    --muted: 216.43 22.22% 24.71%;
+    --accent: 216.43 22.22% 24.71%;
+    --border: 215 22.25% 24.54%;
+    --popover: 217.24 32.58% 17.45%;
+    --primary: 192.58 70.15% 39.78%;
+    --secondary: 215.29 31.79% 17.51%;
+    --background: 217.24 44.76% 5.31%;
+    --foreground: 210 20% 98%;
+    --destructive: 0 100% 66.01%;
+    --card-foreground: 210 20% 98%;
+    --muted-foreground: 217.9 10.6% 64.9%;
+    --accent-foreground: 210 20% 98%;
+    --popover-foreground: 210 20% 98%;
+    --primary-foreground: 210 20% 98%;
+    --secondary-foreground: 210 20% 98%;
+    --destructive-foreground: 210 20% 98%;
   }
 
   [data-theme="valentine"] {
