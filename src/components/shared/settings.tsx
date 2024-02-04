@@ -15,7 +15,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useSession } from "@/lib/hooks/useSession";
-import { LogInIcon, MoonIcon, SettingsIcon, SunIcon, UserCog2Icon } from "lucide-react";
+import { Loader2Icon, LogInIcon, MoonIcon, SettingsIcon, SunIcon, UserCog2Icon } from "lucide-react";
 import { parseCookies } from "nookies";
 import { useLocalStorage } from "react-use";
 
@@ -36,7 +36,10 @@ export function Settings() {
         <DropdownMenuContent className="w-64" align="end">
             <DropdownMenuLabel>User</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {loading ? <></> : auth ? <DropdownMenuItem
+            {loading ? <DropdownMenuItem
+            >
+                <Loader2Icon className="w-4 mr-2 animate-spin" /> Fetching...
+            </DropdownMenuItem> : auth ? <DropdownMenuItem
             >
                 <UserCog2Icon className="w-4 mr-2" /> {auth.me.user.username}
             </DropdownMenuItem> : <DropdownMenuItem
@@ -56,8 +59,8 @@ export function Settings() {
             <DropdownMenuSeparator />
             <DropdownMenuRadioGroup value={color} onValueChange={setColor}>
                 <DropdownMenuRadioItem value="df">Default</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="discord_old">Discord (OLD)</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="clear">Clear</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="discord_old">Discord</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="pine">Pine</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="berry">Berry</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="valentine">Valentine</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="unruly">Unruly</DropdownMenuRadioItem>

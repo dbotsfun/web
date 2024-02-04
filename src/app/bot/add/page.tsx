@@ -11,7 +11,7 @@ import { Mutation } from "@/lib/apollo/types/graphql";
 import { withAuth } from "@/lib/hooks/useSession";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@apollo/client";
-import { ArrowUpRightIcon, BookTypeIcon, ImportIcon, QuoteIcon, TextIcon } from "lucide-react";
+import { ArrowUpRightIcon, CodeIcon, ImportIcon, QuoteIcon, TextIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { parseCookies } from "nookies";
@@ -27,25 +27,25 @@ const formSchema = z.object({
         .min(18, {
             message: "ID must be at least 18 characters.",
         }),
-    description: z
+    shortDescription: z
         .string({
-            required_error: "Description is required.",
+            required_error: "Short description is required.",
         })
         .describe("Short description")
         .min(20, {
-            message: "Description must be at least 18 characters long.",
+            message: "Short description must be at least 25 characters long.",
         })
         .max(200, {
-            message: "Description must be less than 200 characters long."
+            message: "Short description must be less than 250 characters long."
         }),
     tags: z
         .string({
             required_error: "Tags are required.",
         })
         .describe("Tags"),
-    longDescription: z
+    description: z
         .string({
-            required_error: "ID is required.",
+            required_error: "Long description is required.",
         })
         .describe("Long description")
         .min(100, {
@@ -53,7 +53,19 @@ const formSchema = z.object({
         })
         .max(2000, {
             message: "Description must be less than 2000 characters long."
-        })
+        }),
+    inviteLink: z
+        .string()
+        .url("Invite url should be an url"),
+    github: z
+        .string()
+        .url("Github url should be an url"),
+    website: z
+        .string()
+        .url("Website url should be an url"),
+    supportServer: z
+        .string()
+        .url("Support server url should be an url")
 })
 
 export default function Page() {
@@ -72,7 +84,7 @@ export default function Page() {
         }
     })
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
+        <>
             <AlertDialog open={result.called && !result.loading && !result.error}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -86,7 +98,7 @@ export default function Page() {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-            <Card className="w-full max-w-2xl">
+            <Card className="w-full max-w-2xl mx-auto">
                 <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>
                         Submit your bot
@@ -124,7 +136,7 @@ export default function Page() {
                                 onInput: (e) => setId(e.currentTarget.value)
                             }
                         },
-                        description: {
+                        shortDescription: {
                             description: <div className="flex items-center text-muted-foreground"><TextIcon className="mr-1 w-4 h-4" />Min. 25, Max. 250</div>,
                             inputProps: {
                                 placeholder: "E.g: An amazing bot who has this features, short",
@@ -140,10 +152,10 @@ export default function Page() {
                                 onInput: (e) => setTags(e.currentTarget.value)
                             }
                         },
-                        longDescription: {
+                        description: {
                             fieldType: "textarea",
                             description: <div className="flex items-center justify-between">
-                                <div className="flex items-center text-muted-foreground"><BookTypeIcon className="mr-1 w-4 h-4" />Uses Markdown</div>
+                                <div className="flex items-center text-xs text-muted-foreground"><CodeIcon className="mr-1 w-4 h-4" />Uses HTML. Injecting styles that change website look will result in a rejection.</div>
                                 <div className={cn("flex items-center",
                                     description?.length === 0 ? "text-muted-foreground" :
                                         description?.length! >= 2000 ? "text-red-500" :
@@ -165,6 +177,6 @@ export default function Page() {
                     {result.error && <p className="text-destructive">{result.error.message}</p>}
                 </CardFooter>
             </Card>
-        </div>
+        </>
     )
 }

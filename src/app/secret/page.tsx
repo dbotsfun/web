@@ -9,7 +9,7 @@ import { APPROVE_BOT, DELETE_BOT, REJECT_BOT } from "@/lib/apollo/mutations/bots
 import { GET_PANEL_BOTS } from "@/lib/apollo/queries/bots";
 import { Mutation, Query } from "@/lib/apollo/types/graphql";
 import { withAuth } from "@/lib/hooks/useSession";
-import avatar from "@/lib/utils";
+import { avatar } from "@/lib/utils";
 import { useMutation, useQuery } from "@apollo/client";
 import { Label } from "@radix-ui/react-label";
 import { CheckIcon, Trash2Icon, XIcon } from "lucide-react";
