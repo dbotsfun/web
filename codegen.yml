@@ -1,0 +1,11 @@
+overwrite: true
+schema: "https://dbots.rakkunvt.uk/"
+documents: "src/**/*.graphql"
+generates:
+  src/lib/apollo/types.ts:
+    plugins: ["typescript", "typescript-resolvers", "typescript-operations", "typescript-react-apollo"]
+    config: 
+      federation: true
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"

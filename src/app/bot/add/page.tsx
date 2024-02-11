@@ -1,21 +1,20 @@
 "use client";
 import Loader from "@/components/shared/common/loader";
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import LoadingScreen from "@/components/shared/common/loading-screen";
+import LoginDialog from "@/components/shared/common/login-dialog";
 import AutoForm, { AutoFormSubmit } from "@/components/ui/auto-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { CREATE_BOT } from "@/lib/apollo/mutations/bots";
-import { Mutation } from "@/lib/apollo/types/graphql";
-import { withAuth } from "@/lib/hooks/useSession";
+import { useCreateBotMutation } from "@/lib/apollo/types";
+import { useSession } from "@/lib/hooks/useSession";
 import { cn } from "@/lib/utils";
-import { useMutation } from "@apollo/client";
 import { ArrowUpRightIcon, CodeIcon, ImportIcon, QuoteIcon, TextIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { parseCookies } from "nookies";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import * as z from "zod";
 
 const formSchema = z.object({
@@ -78,109 +77,108 @@ export default function Page() {
     const [description, setDescription] = useState<string | null>()
     const [shortDescription, setShortDescription] = useState<string | null>()
     const [tags, setTags] = useState<string | null>()
-    const [submit, result] = useMutation<Mutation>(CREATE_BOT, {
-        ...withAuth(parseCookies().session),
+
+    const { data: auth, loading: gettingUser } = useSession()
+    const [submit, result] = useCreateBotMutation({
         variables: {
-            id,
-            description,
-            shortDescription,
-            tags: tags?.split(", "),
+            input: {
+                id: id!,
+                description: description!,
+                shortDescription: shortDescription!,
+                tags: tags?.split(", ")!
+            }
         }
     })
+
+    useEffect(() => {
+        if (result.called && !result.loading && !result.error) {
+            router.push("/")
+            toast.success(`You just submitted ${result.data?.createBot.name}.`)
+        }
+    }, [result])
+
+    if (gettingUser) return <LoadingScreen />
+    if (!gettingUser && !auth) return <LoginDialog />
     return (
-        <>
-            <AlertDialog open={result.called && !result.loading && !result.error}>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>You just submitted BOT! 🎉</AlertDialogTitle>
-                        <AlertDialogDescription>
-                            Please wait until our reviewers try your bot and approve it.
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogAction onClick={() => router.push("/")}>Ok</AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
-            <Card className="w-full max-w-2xl mx-auto">
-                <CardHeader className="flex flex-row items-center justify-between">
-                    <CardTitle>
-                        Submit your bot
-                    </CardTitle>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger>
-                            <TooltipProvider>
-                                <Tooltip>
-                                    <TooltipTrigger>
-                                        <Button variant={"secondary"} size={"icon"}>
-                                            <ImportIcon className="w-5 h-5" />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>Import from another botlist</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align={"end"}>
-                            <DropdownMenuLabel>Import from</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem><img alt="dlist.gg" src="/ext/dlistgg.svg" className="h-5 w-5 mr-2 dark:invert-0 invert" />dlist.gg</DropdownMenuItem>
-                            <DropdownMenuItem><img alt="top.gg" src="/ext/topgg.png" className="h-5 w-5 mr-2" />top.gg</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </CardHeader>
-                <CardContent>
-                    {result.loading ? <Loader /> : <AutoForm onSubmit={() => submit()} fieldConfig={{
-                        id: {
-                            description: <Link href="https://discord.com/developers/applications" target="_blank" className="flex items-center text-primary underline hover:text-primary/80"><ArrowUpRightIcon className="mr-1 w-4 h-4" />Get the ID</Link>,
-                            inputProps: {
-                                placeholder: "E.g: 9999999999999999",
-                                autoComplete: "off",
-                                onInput: (e) => setId(e.currentTarget.value)
-                            }
-                        },
-                        shortDescription: {
-                            description: <div className="flex items-center text-muted-foreground"><TextIcon className="mr-1 w-4 h-4" />Min. 25, Max. 250</div>,
-                            inputProps: {
-                                placeholder: "E.g: An amazing bot who has this features, short",
-                                autoComplete: "off",
-                                onInput: (e) => setShortDescription(e.currentTarget.value)
-                            }
-                        },
-                        tags: {
-                            description: <div className="flex items-center text-muted-foreground"><QuoteIcon className="mr-1 w-4 h-4" />Separated by commas</div>,
-                            inputProps: {
-                                placeholder: "E.g: Fun, Moderation",
-                                autoComplete: "off",
-                                onInput: (e) => setTags(e.currentTarget.value)
-                            }
-                        },
-                        description: {
-                            fieldType: "textarea",
-                            description: <div className="flex items-center justify-between">
-                                <div className="flex items-center text-xs text-muted-foreground"><CodeIcon className="mr-1 w-4 h-4" />Uses HTML. Injecting styles that change website look will result in a rejection.</div>
-                                <div className={cn("flex items-center",
-                                    description?.length === 0 ? "text-muted-foreground" :
-                                        description?.length! >= 2000 ? "text-red-500" :
-                                            description?.length! >= 1700 ? "text-orange-500" :
-                                                description?.length! >= 250 ? "text-green-500" :
-                                                    "text-muted-foreground"
-                                )}>{description?.length ?? 0}/2000</div>
-                            </div>,
-                            inputProps: {
-                                maxLength: 2000,
-                                onInput: (e) => setDescription(e.currentTarget.value)
-                            }
+        <Card className="w-full max-w-2xl mx-auto">
+            <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>
+                    Submit your bot
+                </CardTitle>
+                <DropdownMenu>
+                    <DropdownMenuTrigger>
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <Button variant={"secondary"} size={"icon"}>
+                                        <ImportIcon className="w-5 h-5" />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Import from another botlist</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align={"end"}>
+                        <DropdownMenuLabel>Import from</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem><img alt="dlist.gg" src="/ext/dlistgg.svg" className="h-5 w-5 mr-2 dark:invert-0 invert" />dlist.gg</DropdownMenuItem>
+                        <DropdownMenuItem><img alt="top.gg" src="/ext/topgg.png" className="h-5 w-5 mr-2" />top.gg</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </CardHeader>
+            <CardContent>
+                {result.loading ? <Loader /> : <AutoForm onSubmit={() => submit()} fieldConfig={{
+                    id: {
+                        description: <Link href="https://discord.com/developers/applications" target="_blank" className="flex items-center text-primary underline hover:text-primary/80"><ArrowUpRightIcon className="mr-1 w-4 h-4" />Get the ID</Link>,
+                        inputProps: {
+                            placeholder: "E.g: 9999999999999999",
+                            autoComplete: "off",
+                            onInput: (e) => setId(e.currentTarget.value)
                         }
-                    }} formSchema={formSchema}>
-                        <AutoFormSubmit className="w-full">Submit</AutoFormSubmit>
-                    </AutoForm>}
-                </CardContent>
-                <CardFooter>
-                    {result.error ? <p className="text-destructive">{result.error.message}</p> : <p>Labels with <span className="text-destructive">*</span> are mandatory.</p>}
-                </CardFooter>
-            </Card>
-        </>
+                    },
+                    shortDescription: {
+                        description: <div className="flex items-center text-muted-foreground"><TextIcon className="mr-1 w-4 h-4" />Min. 25, Max. 250</div>,
+                        inputProps: {
+                            placeholder: "E.g: An amazing bot who has this features, short",
+                            autoComplete: "off",
+                            onInput: (e) => setShortDescription(e.currentTarget.value)
+                        }
+                    },
+                    tags: {
+                        description: <div className="flex items-center text-muted-foreground"><QuoteIcon className="mr-1 w-4 h-4" />Separated by commas</div>,
+                        inputProps: {
+                            placeholder: "E.g: Fun, Moderation",
+                            autoComplete: "off",
+                            onInput: (e) => setTags(e.currentTarget.value)
+                        }
+                    },
+                    description: {
+                        fieldType: "textarea",
+                        description: <div className="flex items-center justify-between">
+                            <div className="flex items-center text-xs text-muted-foreground"><CodeIcon className="mr-1 w-4 h-4" />Uses HTML. Injecting styles that change website look will result in a rejection.</div>
+                            <div className={cn("flex items-center",
+                                description?.length === 0 ? "text-muted-foreground" :
+                                    description?.length! >= 2000 ? "text-red-500" :
+                                        description?.length! >= 1700 ? "text-orange-500" :
+                                            description?.length! >= 250 ? "text-green-500" :
+                                                "text-muted-foreground"
+                            )}>{description?.length ?? 0}/2000</div>
+                        </div>,
+                        inputProps: {
+                            maxLength: 2000,
+                            onInput: (e) => setDescription(e.currentTarget.value),
+                            className: "font-mono"
+                        }
+                    }
+                }} formSchema={formSchema}>
+                    <AutoFormSubmit className="w-full">Submit</AutoFormSubmit>
+                </AutoForm>}
+            </CardContent>
+            <CardFooter>
+                {result.error ? <p className="text-destructive">{result.error.message}</p> : <p>Labels with <span className="text-destructive">*</span> are mandatory.</p>}
+            </CardFooter>
+        </Card>
     )
 }

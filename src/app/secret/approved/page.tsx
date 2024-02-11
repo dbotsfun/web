@@ -5,47 +5,36 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { DELETE_BOT, REJECT_BOT } from "@/lib/apollo/mutations/bots";
-import { GET_PANEL_BOTS } from "@/lib/apollo/queries/bots";
-import { Mutation, Query } from "@/lib/apollo/types/graphql";
-import { withAuth } from "@/lib/hooks/useSession";
+import { BotStatus, useDeleteBotMutation, useDenyBotMutation, usePanelBotsQuery } from "@/lib/apollo/types";
 import { avatar } from "@/lib/utils";
-import { useMutation, useQuery } from "@apollo/client";
 import { Label } from "@radix-ui/react-label";
 import { ArrowLeftIcon, Trash2Icon, XIcon } from "lucide-react";
 import Link from "next/link";
-import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function Page() {
-    const { data: pending, loading, refetch } = useQuery<Query>(GET_PANEL_BOTS, {
-        ...withAuth(parseCookies().session),
+    const { data: pending, loading, refetch } = usePanelBotsQuery({
         variables: {
-            status: "Approved"
+            status: BotStatus.Approved
         }
     })
 
-    const [reject, rejectResult] = useMutation<Mutation>(REJECT_BOT, {
-        ...withAuth(parseCookies().session),
-    })
-    const [remove, removeResult] = useMutation<Mutation>(DELETE_BOT, {
-        ...withAuth(parseCookies().session),
-    })
-
-    const [rejectReason, setRejectReason] = useState<string | null>()
+    const [deny, denyResult] = useDenyBotMutation()
+    const [remove, removeResult] = useDeleteBotMutation()
+    const [denyReason, setDenyReason] = useState<string>("")
 
     useEffect(() => {
-        if (rejectResult.called && !rejectResult.loading) {
-            toast(`Rejected ${rejectResult.data?.rejectBot.name} successfully.`)
+        if (denyResult.called && !denyResult.loading) {
+            toast.success(`Denied ${denyResult.data?.rejectBot.name} successfully.`)
             refetch()
-            rejectResult.reset()
+            denyResult.reset()
         }
-    }, [rejectResult.called, rejectResult.loading])
+    }, [denyResult.called, denyResult.loading])
 
     useEffect(() => {
         if (removeResult.called && !removeResult.loading) {
-            toast(`Deleted ${removeResult.data?.deleteBot.name} successfully.`)
+            toast.success(`Deleted ${removeResult.data?.deleteBot.name} successfully.`)
             refetch()
             removeResult.reset()
         }
@@ -85,7 +74,7 @@ export default function Page() {
                                                         Reason
                                                     </Label>
                                                     <Input
-                                                        onChange={(e) => setRejectReason(e.currentTarget.value)}
+                                                        onChange={(e) => setDenyReason(e.currentTarget.value)}
                                                         id="reason"
                                                         placeholder="E.g: Bot has no commands lol"
                                                         className="col-span-3"
@@ -94,7 +83,7 @@ export default function Page() {
                                             </div>
                                             <DialogFooter>
                                                 <DialogClose asChild>
-                                                    <Button onClick={() => reject({ variables: { id: bot.id, reason: rejectReason } })} type="submit">Reject</Button>
+                                                    <Button onClick={() => deny({ variables: { id: bot.id, reason: denyReason } })} type="submit">Deny</Button>
                                                 </DialogClose>
                                             </DialogFooter>
                                         </DialogContent>

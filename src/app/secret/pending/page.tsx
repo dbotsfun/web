@@ -5,36 +5,24 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { APPROVE_BOT, DELETE_BOT, REJECT_BOT } from "@/lib/apollo/mutations/bots";
-import { GET_PANEL_BOTS } from "@/lib/apollo/queries/bots";
-import { Mutation, Query } from "@/lib/apollo/types/graphql";
-import { withAuth } from "@/lib/hooks/useSession";
+import { BotStatus, useApproveBotMutation, useDeleteBotMutation, useDenyBotMutation, usePanelBotsQuery } from "@/lib/apollo/types";
 import { avatar } from "@/lib/utils";
-import { useMutation, useQuery } from "@apollo/client";
 import { Label } from "@radix-ui/react-label";
 import { ArrowLeftIcon, CheckIcon, Trash2Icon, XIcon } from "lucide-react";
 import Link from "next/link";
-import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function Page() {
-    const { data: pending, loading, refetch } = useQuery<Query>(GET_PANEL_BOTS, {
-        ...withAuth(parseCookies().session),
+    const { data: pending, loading, refetch } = usePanelBotsQuery({
         variables: {
-            status: "Pending"
+            status: BotStatus.Pending
         }
     })
 
-    const [approve, approveResult] = useMutation<Mutation>(APPROVE_BOT, {
-        ...withAuth(parseCookies().session)
-    })
-    const [reject, rejectResult] = useMutation<Mutation>(REJECT_BOT, {
-        ...withAuth(parseCookies().session),
-    })
-    const [remove, removeResult] = useMutation<Mutation>(DELETE_BOT, {
-        ...withAuth(parseCookies().session),
-    })
+    const [approve, approveResult] = useApproveBotMutation()
+    const [deny, denyResult] = useDenyBotMutation()
+    const [remove, removeResult] = useDeleteBotMutation()
 
     const [rejectReason, setRejectReason] = useState<string | null>()
 
@@ -47,12 +35,12 @@ export default function Page() {
     }, [approveResult.called, approveResult.loading])
 
     useEffect(() => {
-        if (rejectResult.called && !rejectResult.loading) {
-            toast(`Rejected ${rejectResult.data?.rejectBot.name} successfully.`)
+        if (denyResult.called && !denyResult.loading) {
+            toast(`Denied ${denyResult.data?.rejectBot.name} successfully.`)
             refetch()
-            rejectResult.reset()
+            denyResult.reset()
         }
-    }, [rejectResult.called, rejectResult.loading])
+    }, [denyResult.called, denyResult.loading])
 
     useEffect(() => {
         if (removeResult.called && !removeResult.loading) {
@@ -108,7 +96,7 @@ export default function Page() {
                                             </div>
                                             <DialogFooter>
                                                 <DialogClose asChild>
-                                                    <Button onClick={() => reject({ variables: { id: bot.id, reason: rejectReason } })} type="submit">Reject</Button>
+                                                    <Button onClick={() => deny({ variables: { id: bot.id, reason: rejectReason ?? "no reason" } })} type="submit">Deny</Button>
                                                 </DialogClose>
                                             </DialogFooter>
                                         </DialogContent>

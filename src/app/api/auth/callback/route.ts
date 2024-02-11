@@ -1,6 +1,6 @@
 import { apolloClient } from "@/lib/apollo/client";
-import { TOKEN } from "@/lib/apollo/mutations/misc";
-import { Mutation } from "@/lib/apollo/types/graphql";
+import { Mutation } from "@/lib/apollo/types";
+import { gql } from "@apollo/client";
 import { serialize } from "cookie";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -22,8 +22,18 @@ export async function GET(req: NextRequest) {
         );
     }
 
+    const GET_TOKEN = gql`
+        mutation Token($token: String!) {
+            token(input: { token: $token }) {
+                expires_in
+                access_token
+                refresh_token
+            }
+        }
+    `
+
     const { data: token, errors } = await apolloClient.mutate<Mutation>({
-        mutation: TOKEN,
+        mutation: GET_TOKEN,
         variables: {
             token: code,
         },

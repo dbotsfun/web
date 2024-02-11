@@ -1,56 +1,46 @@
 "use client";
 
 import Tags from "@/components/shared/bots/list/tags"
+import BotDangerZone from "@/components/shared/bots/sections/panel/danger";
+import BotDeveloper from "@/components/shared/bots/sections/panel/developer";
+import BotWebhooks from "@/components/shared/bots/sections/panel/webhooks";
 import Ad from "@/components/shared/common/ad";
 import LoadingScreen from "@/components/shared/common/loading-screen";
+import Policy from "@/components/shared/policy";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { DELETE_BOT } from "@/lib/apollo/mutations/bots";
-import { GET_BOT } from "@/lib/apollo/queries/bots"
-import { Mutation, Query } from "@/lib/apollo/types/graphql"
-import { useSession, withAuth } from "@/lib/hooks/useSession";
+import { useApiKeyLazyQuery, useBotQuery } from "@/lib/apollo/types";
+import { useSession } from "@/lib/hooks/useSession";
 import { avatar } from "@/lib/utils"
-import { useMutation, useQuery } from "@apollo/client"
-import { AlertTriangleIcon, ChevronUpIcon, ClipboardCheckIcon, ClipboardIcon, EyeIcon, EyeOffIcon, InfoIcon, MessageCircleMoreIcon, MessageCircleOffIcon, PlusIcon, Settings2Icon, SlashSquareIcon } from "lucide-react"
+import { AlertTriangleIcon, ChevronUpIcon, FlagIcon, InfoIcon, MessageCircleMoreIcon, MessageCircleOffIcon, MoreHorizontalIcon, PlusIcon, Settings2Icon, SlashSquareIcon } from "lucide-react"
 import Link from "next/link"
-import { notFound, useRouter } from "next/navigation"
-import { parseCookies } from "nookies";
-import { useEffect, useState } from "react";
-import { useCopyToClipboard } from "react-use";
-import { toast } from "sonner";
+import { notFound } from "next/navigation"
+import { useEffect } from "react";
 
 export default function Page({ params }: { params: { id: string } }) {
-    const [viewKey, setViewKey] = useState(false)
-    const [copied, copy] = useCopyToClipboard()
-    const router = useRouter()
-
-    const { data: user } = useSession(parseCookies())
-    const { data, loading, error } = useQuery<Query>(GET_BOT, {
+    const { data: user } = useSession()
+    const { data, loading, error } = useBotQuery({
         variables: {
             id: params.id
         }
     })
-    const [deleteBot, result] = useMutation<Mutation>(DELETE_BOT, {
-        ...withAuth(parseCookies().session),
+    const [getApiKey, apiKey] = useApiKeyLazyQuery({
         variables: {
-            id: params.id
+            input: {
+                id: params.id
+            }
         }
     })
 
     const bot = data?.bot
-    const userIsOwner = !!user?.me.user.id && !!bot?.owners.find(x => x.id === user?.me.user.id)
+    const isOwner = !!bot?.owners.find(u => u.id === user?.me.user.id)
 
     useEffect(() => {
-        if (result.called && !result.loading) {
-            toast(`You deleted ${bot!.name}.`)
-            router.push("/")
-        }
-    }, [result.called, result.loading])
+        if (isOwner) getApiKey()
+    }, [isOwner])
 
     if (loading) return <LoadingScreen />
     if (error?.message === "Bot not found" || !bot) return notFound()
@@ -72,6 +62,18 @@ export default function Page({ params }: { params: { id: string } }) {
                 <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-min">
                     <Link href={bot.inviteLink ?? "/"} className={buttonVariants({ size: "lg", className: "w-full lg:w-min" })}><PlusIcon className="w-5 h-5 mr-2" />Invite</Link>
                     <Link href={`/bot/${bot.id}/vote`} className={buttonVariants({ size: "lg", variant: "secondary", className: "w-full lg:w-min" })}><ChevronUpIcon className="w-5 h-5 mr-2" />Vote</Link>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant={"secondary"} className="h-11 w-11" size={"icon"}>
+                                <MoreHorizontalIcon className="w-5 h-5" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuLabel>Extra options</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="hover:!bg-destructive hover:!text-destructive-foreground"><FlagIcon fill="currentColor" className="w-4 h-4 mr-2" />Report {bot.name}</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </div>
             <div className="w-full flex flex-col lg:flex-row justify-between gap-24">
@@ -80,10 +82,10 @@ export default function Page({ params }: { params: { id: string } }) {
                         <TabsTrigger value="overview"><InfoIcon className="w-4 h-4 mr-2" />Overview</TabsTrigger>
                         <TabsTrigger value="commands"><SlashSquareIcon className="w-4 h-4 mr-2" />Commands</TabsTrigger>
                         <TabsTrigger value="reviews"><MessageCircleMoreIcon className="w-4 h-4 mr-2" />Reviews</TabsTrigger>
-                        {userIsOwner && <TabsTrigger value="manage"><Settings2Icon className="w-4 h-4 mr-2" />Manage</TabsTrigger>}
+                        <Policy policy={isOwner}><TabsTrigger value="manage"><Settings2Icon className="w-4 h-4 mr-2" />Manage</TabsTrigger></Policy>
                     </TabsList>
-                    <TabsContent value="overview" className="max-w-xl">
-                        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
+                    <TabsContent value="overview" className="">
+                        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: i dont give a fuck */}
                         <div dangerouslySetInnerHTML={{ __html: bot.description! }} />
                     </TabsContent>
                     <TabsContent value="commands">
@@ -105,47 +107,11 @@ export default function Page({ params }: { params: { id: string } }) {
                             </div>
                         </div>
                     </TabsContent>
-                    {userIsOwner && <TabsContent value="manage" className="flex flex-col gap-4">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Developer panel</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <Label>API Key</Label>
-                                <div className="flex gap-2 items-center">
-                                    <Input aria-readonly readOnly type={!viewKey ? "password" : "text"} className="max-w-72" defaultValue={bot.apiKey ?? ""} />
-                                    <Button variant={"secondary"} size={"icon"} onClick={() => setViewKey(!viewKey)}>{viewKey ? <EyeOffIcon /> : <EyeIcon />}</Button>
-                                    <Button variant={copied.value ? "default" : "secondary"} size={"icon"} onClick={() => copy(bot.apiKey ?? "")}>{copied.value ? <ClipboardCheckIcon /> : <ClipboardIcon />}</Button>
-                                </div>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Webhooks</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="flex flex-col gap-5">
-                                    <div>
-                                        <Label>URL</Label>
-                                        <Input placeholder="Webhook URL" />
-                                    </div>
-                                    <div>
-                                        <Label>Secret</Label>
-                                        <Input placeholder="Client secret" />
-                                    </div>
-                                </div>
-                                <Button className="mt-5">Save</Button>
-                            </CardContent>
-                        </Card>
-                        <Card className="border-destructive bg-destructive/10 text-destructive">
-                            <CardHeader>
-                                <CardTitle>Danger zone</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <Button disabled={result.called || result.loading} onClick={() => deleteBot()} variant={"destructive"}>Delete {bot.name}</Button>
-                            </CardContent>
-                        </Card>
-                    </TabsContent>}
+                    <TabsContent value="manage" className="flex flex-col gap-4">
+                        <BotDeveloper apiKey={apiKey.data?.getAPIKey} />
+                        <BotWebhooks />
+                        <BotDangerZone name={bot.name} id={bot.id} />
+                    </TabsContent>
                 </Tabs>
                 <div className="w-1/3 flex flex-col justify-between sticky">
                     <div className="flex flex-col gap-3 h-80 sticky">
@@ -153,7 +119,7 @@ export default function Page({ params }: { params: { id: string } }) {
                             <h1 className="text-3xl font-black">Information</h1>
                             <div className="flex flex-row justify-between">
                                 <h1 className="text-base font-bold text-secondary-foreground">Prefix</h1>
-                                <h1 className="text-base font-normal text-muted-foreground">{bot.prefix}</h1>
+                                <h1 className="text-base font-normal text-muted-foreground">{bot.prefix ?? <Badge>Only slashes</Badge>}</h1>
                             </div>
                             <div className="flex flex-row justify-between">
                                 <h1 className="text-base font-bold text-secondary-foreground">Votes</h1>

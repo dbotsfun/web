@@ -26,7 +26,7 @@ export function Settings() {
     }, [color])
     return <DropdownMenu>
         <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
+            <Button variant="outline" className="w-11 h-11" size="icon">
                 <BrushIcon className="w-4" />
             </Button>
         </DropdownMenuTrigger>

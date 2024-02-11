@@ -3,32 +3,22 @@
 import LoadingScreen from "@/components/shared/common/loading-screen";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { APPROVE_BOT, DELETE_BOT } from "@/lib/apollo/mutations/bots";
-import { GET_PANEL_BOTS } from "@/lib/apollo/queries/bots";
-import { Mutation, Query } from "@/lib/apollo/types/graphql";
-import { withAuth } from "@/lib/hooks/useSession";
+import { BotStatus, useApproveBotMutation, useDeleteBotMutation, usePanelBotsQuery } from "@/lib/apollo/types";
 import { avatar } from "@/lib/utils";
-import { useMutation, useQuery } from "@apollo/client";
 import { ArrowLeftIcon, CheckIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
-import { parseCookies } from "nookies";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
 export default function Page() {
-    const { data: pending, loading, refetch } = useQuery<Query>(GET_PANEL_BOTS, {
-        ...withAuth(parseCookies().session),
+    const { data: pending, loading, refetch } = usePanelBotsQuery({
         variables: {
-            status: "Denied"
+            status: BotStatus.Denied
         }
     })
 
-    const [approve, approveResult] = useMutation<Mutation>(APPROVE_BOT, {
-        ...withAuth(parseCookies().session)
-    })
-    const [remove, removeResult] = useMutation<Mutation>(DELETE_BOT, {
-        ...withAuth(parseCookies().session),
-    })
+    const [approve, approveResult] = useApproveBotMutation()
+    const [remove, removeResult] = useDeleteBotMutation()
 
     useEffect(() => {
         if (approveResult.called && !approveResult.loading) {

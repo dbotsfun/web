@@ -1,0 +1,40 @@
+mutation VoteBot($id: String!) {
+  voteBot(id: $id) {
+    id
+    expires
+  }
+}
+
+mutation CreateBot($input: CreateBotInput!) {
+  createBot(input: $input) {
+    id
+    name
+    status
+  }
+}
+
+mutation DeleteBot($id: String!) {
+  deleteBot(id: $id) {
+    name
+  }
+}
+
+mutation DenyBot($id: String!, $reason: String!) {
+  rejectBot(id: $id, reason: $reason) {
+    name
+  }
+}
+
+mutation ApproveBot($id: String!) {
+  approveBot(id: $id) {
+    name
+  }
+}
+
+mutation Token($token: String!) {
+  token(input: { token: $token }) {
+    expires_in
+    access_token
+    refresh_token
+  }
+}

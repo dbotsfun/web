@@ -5,12 +5,13 @@ import { useSession } from "@/lib/hooks/useSession";
 import { cn } from "@/lib/utils";
 import { HomeIcon, Loader2Icon, PlusCircleIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
-import { parseCookies } from "nookies";
+import DiscordIcon from "../icons/discord";
+import Policy from "../policy";
 import Auth from "./auth";
 import { Settings } from "./settings";
 
 export default function Header() {
-    const { data: auth, loading } = useSession(parseCookies())
+    const { data: auth, loading } = useSession()
     return <header className={cn("bg-card/90 top-0 z-50 fixed border-accent backdrop-blur flex items-center gap-8 w-full px-8 transition-all lg:px-28 py-4 border-b")}>
         <div className="flex flex-1 items-center justify-end md:justify-between">
             <div className="flex items-center gap-10">
@@ -32,9 +33,11 @@ export default function Header() {
             </div>
             <div className="flex items-center gap-2">
                 <Settings />
-                {
-                    loading ? <Loader2Icon className="w-5 h-5 animate-spin" /> : auth?.me.user ? <Auth username={auth.me.user.username} id={auth.me.user.id} /> : <Link href="/api/auth/login" className={buttonVariants()}>Login with Discord</Link>
-                }
+                {loading ?
+                    <Loader2Icon className="w-5 h-5 animate-spin" /> :
+                    <Policy fallback={<Link href="/api/auth/login" className={buttonVariants()}><DiscordIcon className="mr-2 w-6 h-6" />Login</Link>} policy={!!auth?.me.user}>
+                        <Auth username={auth?.me.user.username!} avatarId={auth?.me.user.avatar ?? undefined} id={auth?.me.user.id!} />
+                    </Policy>}
             </div>
         </div>
     </header>

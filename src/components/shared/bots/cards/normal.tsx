@@ -1,6 +1,5 @@
 import { badgeVariants } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { BotObject } from "@/lib/apollo/types/graphql";
 import { avatar as av } from "@/lib/utils";
 import { AsteriskIcon, ChevronUp } from "lucide-react";
 import Image from "next/image";

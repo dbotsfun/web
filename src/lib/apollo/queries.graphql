@@ -1,0 +1,114 @@
+query Session {
+    me {
+        user {
+         username
+         avatar
+         id
+        }
+    }
+}
+
+query Tags {
+  tags {
+    nodes {
+      name
+    }
+  }
+}
+
+query Bots {
+    bots {
+      nodes {
+        id
+        name
+        avatar
+        certified
+        shortDescription
+        tags
+        votes
+      }
+    }
+}
+
+# Get bot's API KEY
+query ApiKey($input: GetKeyInput!) {
+  getAPIKey(input: $input)
+}
+
+query Bot($id: String!) {
+        bot(id: $id) {
+            id
+            avatar
+            certified
+            name
+            status
+            description
+            shortDescription
+            prefix
+            inviteLink
+            supportServer
+            website
+            github
+            guildCount
+            tags
+            votes
+            owners {
+              id
+              username
+            }
+        }
+}
+
+query VoteCheck($id: String!) {
+    voteCheck(id: $id)
+}
+
+query FrontBots {
+    voted: bots(first: 4, filters: { orderBy: { direction: desc, field: votes } }) {
+      nodes {
+        id
+        name
+        avatar
+        certified
+        shortDescription
+        tags
+        votes
+      }
+    }
+    rated: bots(first: 4, filters: { orderBy: { direction: desc, field: reviews } }) {
+      nodes {
+        id
+        name
+        avatar
+        certified
+        shortDescription
+        tags
+        votes
+      }
+    }
+    recent: bots(first: 4, filters: { orderBy: { direction: desc, field: createdAt } }) {
+      nodes {
+        id
+        name
+        avatar
+        certified
+        shortDescription
+        tags
+        votes
+      }
+    }
+}
+
+query PanelBots($status: BotStatus!) {
+    bots(filters: { status: $status }) {
+      nodes {
+        id
+        name
+        avatar
+        certified
+        shortDescription
+        tags
+        votes
+      }
+    }
+}
