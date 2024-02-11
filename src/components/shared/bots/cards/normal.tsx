@@ -6,7 +6,16 @@ import Image from "next/image";
 import Link from "next/link";
 import Logo from "../../../../../public/icon.png"
 
-export default function BotCard({ id, avatar, name, votes, tags, shortDescription, certified }: BotObject) {
+export default function BotCard({ id, avatar, name, votes, tags, shortDescription, certified }: {
+    __typename?: "BotObject" | undefined;
+    id: string;
+    name: string;
+    avatar?: string | null | undefined;
+    certified: boolean;
+    shortDescription?: string | null | undefined;
+    tags: string[];
+    votes: number;
+}) {
     return <div className="relative overflow-hidden bg-card w-full h-full p-6 rounded-xl cursor-pointer">
         <div className="relative z-[2]">
             <div className="flex items-center mb-4 gap-4">

@@ -1,8 +1,16 @@
-import { BotObject } from "@/lib/apollo/types/graphql";
 import Card from "../cards/normal";
 
 interface BotsProps {
-    bots: BotObject[];
+    bots: {
+        __typename?: "BotObject" | undefined;
+        id: string;
+        name: string;
+        avatar?: string | null | undefined;
+        certified: boolean;
+        shortDescription?: string | null | undefined;
+        tags: string[];
+        votes: number;
+    }[];
 }
 
 export default function Bots({ bots }: BotsProps) {
