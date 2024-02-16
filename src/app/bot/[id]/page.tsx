@@ -12,13 +12,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useApiKeyLazyQuery, useBotQuery } from "@/lib/apollo/types";
+import { useBotQuery } from "@/lib/apollo/types";
 import { useSession } from "@/lib/hooks/useSession";
 import { avatar } from "@/lib/utils"
 import { AlertTriangleIcon, ChevronUpIcon, FlagIcon, InfoIcon, MessageCircleMoreIcon, MessageCircleOffIcon, MoreHorizontalIcon, PlusIcon, Settings2Icon, SlashSquareIcon } from "lucide-react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { useEffect } from "react";
 
 export default function Page({ params }: { params: { id: string } }) {
     const { data: user } = useSession()
@@ -27,20 +26,9 @@ export default function Page({ params }: { params: { id: string } }) {
             id: params.id
         }
     })
-    const [getApiKey, apiKey] = useApiKeyLazyQuery({
-        variables: {
-            input: {
-                id: params.id
-            }
-        }
-    })
 
-    const bot = data?.bot
+    const bot = data?.getBot
     const isOwner = !!bot?.owners.find(u => u.id === user?.me.user.id)
-
-    useEffect(() => {
-        if (isOwner) getApiKey()
-    }, [isOwner])
 
     if (loading) return <LoadingScreen />
     if (error?.message === "Bot not found" || !bot) return notFound()
@@ -108,7 +96,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         </div>
                     </TabsContent>
                     <TabsContent value="manage" className="flex flex-col gap-4">
-                        <BotDeveloper apiKey={apiKey.data?.getAPIKey} />
+                        <BotDeveloper />
                         <BotWebhooks />
                         <BotDangerZone name={bot.name} id={bot.id} />
                     </TabsContent>

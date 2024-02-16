@@ -37,7 +37,7 @@ export default function RootLayout({
           <main className="py-3 px-8 lg:px-28 mt-24">
             {children}
           </main>
-          <Toaster />
+          <Toaster richColors />
           <Footer />
         </Providers>
         <Analytics />

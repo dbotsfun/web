@@ -1,17 +1,20 @@
 "use client";
 
-import { buttonVariants } from "@/components/ui/button";
 import { useSession } from "@/lib/hooks/useSession";
 import { cn } from "@/lib/utils";
 import { HomeIcon, Loader2Icon, PlusCircleIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
-import DiscordIcon from "../icons/discord";
+import { usePathname } from "next/navigation";
+import LoginButton from "../common/login-button";
 import Policy from "../policy";
 import Auth from "./auth";
 import { Settings } from "./settings";
 
 export default function Header() {
     const { data: auth, loading } = useSession()
+    const pathname = usePathname();
+
+    if (pathname === "/api/auth/success") return <></>
     return <header className={cn("bg-card/90 top-0 z-50 fixed border-accent backdrop-blur flex items-center gap-8 w-full px-8 transition-all lg:px-28 py-4 border-b")}>
         <div className="flex flex-1 items-center justify-end md:justify-between">
             <div className="flex items-center gap-10">
@@ -21,7 +24,7 @@ export default function Header() {
                         <HomeIcon className="w-4 h-4" />
                         Home
                     </Link>
-                    <Link className="text-muted-foreground hover:text-primary text-xs flex items-center gap-1" href="/bots">
+                    <Link className="text-muted-foreground hover:text-primary text-xs flex items-center gap-1" href="/explore">
                         <SearchIcon className="w-4 h-4" />
                         Explore
                     </Link>
@@ -35,7 +38,7 @@ export default function Header() {
                 <Settings />
                 {loading ?
                     <Loader2Icon className="w-5 h-5 animate-spin" /> :
-                    <Policy fallback={<Link href="/api/auth/login" className={buttonVariants()}><DiscordIcon className="mr-2 w-6 h-6" />Login</Link>} policy={!!auth?.me.user}>
+                    <Policy fallback={<LoginButton>Login</LoginButton>} policy={!!auth?.me.user}>
                         <Auth username={auth?.me.user.username!} avatarId={auth?.me.user.avatar ?? undefined} id={auth?.me.user.id!} />
                     </Policy>}
             </div>

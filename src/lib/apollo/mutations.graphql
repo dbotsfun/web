@@ -1,4 +1,4 @@
-mutation VoteBot($id: String!) {
+mutation VoteBot($id: ID!) {
   voteBot(id: $id) {
     id
     expires
@@ -13,20 +13,22 @@ mutation CreateBot($input: CreateBotInput!) {
   }
 }
 
-mutation DeleteBot($id: String!) {
-  deleteBot(id: $id) {
+mutation RemoveBot($id: ID!) {
+  removeBot(id: $id) {
     name
   }
 }
 
-mutation DenyBot($id: String!, $reason: String!) {
-  rejectBot(id: $id, reason: $reason) {
+mutation DenyBot($input: RejectBotInput!) {
+  rejectBot(input: $input) {
     name
+    id
   }
 }
 
-mutation ApproveBot($id: String!) {
-  approveBot(id: $id) {
+mutation ApproveBot($approveBotId: ID!) {
+  approveBot(id: $approveBotId) {
+    id
     name
   }
 }

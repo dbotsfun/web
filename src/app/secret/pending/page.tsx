@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { BotStatus, useApproveBotMutation, useDeleteBotMutation, useDenyBotMutation, usePanelBotsQuery } from "@/lib/apollo/types";
+import { BotStatus, useApproveBotMutation, useDenyBotMutation, usePanelBotsQuery, useRemoveBotMutation } from "@/lib/apollo/types";
 import { avatar } from "@/lib/utils";
 import { Label } from "@radix-ui/react-label";
 import { ArrowLeftIcon, CheckIcon, Trash2Icon, XIcon } from "lucide-react";
@@ -22,13 +22,12 @@ export default function Page() {
 
     const [approve, approveResult] = useApproveBotMutation()
     const [deny, denyResult] = useDenyBotMutation()
-    const [remove, removeResult] = useDeleteBotMutation()
-
-    const [rejectReason, setRejectReason] = useState<string | null>()
+    const [remove, removeResult] = useRemoveBotMutation()
+    const [denyReason, setDenyReason] = useState<string>("")
 
     useEffect(() => {
         if (approveResult.called && !approveResult.loading) {
-            toast(`Approved ${approveResult.data?.approveBot.name} successfully.`)
+            toast.success(`Approved ${approveResult.data?.approveBot.name}`)
             refetch()
             approveResult.reset()
         }
@@ -36,7 +35,7 @@ export default function Page() {
 
     useEffect(() => {
         if (denyResult.called && !denyResult.loading) {
-            toast(`Denied ${denyResult.data?.rejectBot.name} successfully.`)
+            toast.success(`Denied ${denyResult.data?.rejectBot.name}`)
             refetch()
             denyResult.reset()
         }
@@ -44,7 +43,7 @@ export default function Page() {
 
     useEffect(() => {
         if (removeResult.called && !removeResult.loading) {
-            toast(`Deleted ${removeResult.data?.deleteBot.name} successfully.`)
+            toast.success(`Deleted ${removeResult.data?.removeBot.name}`)
             refetch()
             removeResult.reset()
         }
@@ -65,7 +64,7 @@ export default function Page() {
                                     <p>{bot.name}</p>
                                 </div>
                                 <div className="flex gap-1 items-center">
-                                    <Button size={"icon"} onClick={() => approve({ variables: { id: bot.id } })}>
+                                    <Button size={"icon"} onClick={() => approve({ variables: { approveBotId: bot.id } })}>
                                         <CheckIcon className="w-5 h-5" />
                                     </Button>
                                     <Dialog>
@@ -87,7 +86,7 @@ export default function Page() {
                                                         Reason
                                                     </Label>
                                                     <Input
-                                                        onChange={(e) => setRejectReason(e.currentTarget.value)}
+                                                        onChange={(e) => setDenyReason(e.currentTarget.value)}
                                                         id="reason"
                                                         placeholder="E.g: Bot has no commands lol"
                                                         className="col-span-3"
@@ -96,7 +95,14 @@ export default function Page() {
                                             </div>
                                             <DialogFooter>
                                                 <DialogClose asChild>
-                                                    <Button onClick={() => deny({ variables: { id: bot.id, reason: rejectReason ?? "no reason" } })} type="submit">Deny</Button>
+                                                    <Button onClick={() => deny({
+                                                        variables: {
+                                                            input: {
+                                                                id: bot.id,
+                                                                reason: denyReason
+                                                            }
+                                                        }
+                                                    })} type="submit">Deny</Button>
                                                 </DialogClose>
                                             </DialogFooter>
                                         </DialogContent>

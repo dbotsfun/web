@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useDeleteBotMutation } from "@/lib/apollo/types";
+import { useRemoveBotMutation } from "@/lib/apollo/types";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -17,9 +17,9 @@ export default function BotDangerZone({
     name
 }: BotDangerZoneProps) {
     const router = useRouter()
-    const [remove, removeResult] = useDeleteBotMutation({
+    const [remove, removeResult] = useRemoveBotMutation({
         variables: {
-            id: id
+            id
         }
     })
 

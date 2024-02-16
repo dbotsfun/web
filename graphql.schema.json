@@ -6,7 +6,9 @@
     "mutationType": {
       "name": "Mutation"
     },
-    "subscriptionType": null,
+    "subscriptionType": {
+      "name": "Subscription"
+    },
     "types": [
       {
         "kind": "OBJECT",
@@ -93,8 +95,8 @@
               "name": "String",
               "ofType": null
             },
-            "isDeprecated": false,
-            "deprecationReason": null
+            "isDeprecated": true,
+            "deprecationReason": "This field is going to be removed in the future."
           },
           {
             "name": "id",
@@ -471,7 +473,7 @@
             "args": [
               {
                 "name": "after",
-                "description": null,
+                "description": "The cursor to start at",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -483,7 +485,7 @@
               },
               {
                 "name": "before",
-                "description": null,
+                "description": "The cursor to end at",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -495,7 +497,7 @@
               },
               {
                 "name": "first",
-                "description": null,
+                "description": "The number of items to take",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
@@ -507,7 +509,7 @@
               },
               {
                 "name": "last",
-                "description": null,
+                "description": "The number of items to take",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
@@ -519,7 +521,7 @@
               },
               {
                 "name": "skip",
-                "description": null,
+                "description": "The number of items to skip",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
@@ -1100,16 +1102,12 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
-            "isDeprecated": false,
-            "deprecationReason": null
+            "isDeprecated": true,
+            "deprecationReason": "This field is going to be removed in the future."
           },
           {
             "name": "id",
@@ -1374,12 +1372,12 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "CreateBotInput",
-        "description": null,
+        "description": "The input to create a bot.",
         "fields": null,
         "inputFields": [
           {
             "name": "description",
-            "description": null,
+            "description": "A description of the bot",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -1395,7 +1393,7 @@
           },
           {
             "name": "github",
-            "description": null,
+            "description": "The GitHub repository URL",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -1407,7 +1405,7 @@
           },
           {
             "name": "id",
-            "description": null,
+            "description": "ID must be a valid snowflake.",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -1423,7 +1421,7 @@
           },
           {
             "name": "inviteLink",
-            "description": null,
+            "description": "The invite link to the bot.",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -1455,7 +1453,7 @@
           },
           {
             "name": "prefix",
-            "description": null,
+            "description": "The bot prefix",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -1467,7 +1465,7 @@
           },
           {
             "name": "shortDescription",
-            "description": null,
+            "description": "A short description of the bot",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -1483,7 +1481,7 @@
           },
           {
             "name": "supportServer",
-            "description": null,
+            "description": "The invite link to the support server",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -1495,21 +1493,17 @@
           },
           {
             "name": "tags",
-            "description": null,
+            "description": "The bot's tags",
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
                 }
               }
             },
@@ -1519,7 +1513,7 @@
           },
           {
             "name": "website",
-            "description": null,
+            "description": "The website URL",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -1549,6 +1543,108 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CreateReplyInput",
+        "description": "The input to create a reply",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "content",
+            "description": "The content of the reply",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "reviewId",
+            "description": "The ID of the review to reply to",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "CreateReviewInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "botId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "content",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rating",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               }
             },
@@ -1615,7 +1711,7 @@
                 }
               }
             },
-            "defaultValue": null,
+            "defaultValue": "[]",
             "isDeprecated": false,
             "deprecationReason": null
           },
@@ -1627,7 +1723,7 @@
               "name": "BotStatus",
               "ofType": null
             },
-            "defaultValue": null,
+            "defaultValue": "Approved",
             "isDeprecated": false,
             "deprecationReason": null
           },
@@ -1647,34 +1743,7 @@
                 }
               }
             },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "GetKeyInput",
-        "description": "Input to get a key",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "id",
-            "description": "Bot id",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
+            "defaultValue": "[]",
             "isDeprecated": false,
             "deprecationReason": null
           }
@@ -1714,13 +1783,13 @@
             "args": [
               {
                 "name": "id",
-                "description": null,
+                "description": "ID must be a valid snowflake.",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
@@ -1775,67 +1844,18 @@
             "deprecationReason": null
           },
           {
-            "name": "deleteAccount",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "UserObject",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "deleteBot",
-            "description": "Delete a bot",
+            "name": "createReply",
+            "description": "Reply to a review",
             "args": [
               {
-                "name": "id",
+                "name": "input",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "BotObject",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "deleteReply",
-            "description": null,
-            "args": [
-              {
-                "name": "id",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateReplyInput",
                     "ofType": null
                   }
                 },
@@ -1857,18 +1877,18 @@
             "deprecationReason": null
           },
           {
-            "name": "deleteReview",
+            "name": "createReview",
             "description": null,
             "args": [
               {
-                "name": "id",
+                "name": "input",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateReviewInput",
                     "ofType": null
                   }
                 },
@@ -1890,8 +1910,8 @@
             "deprecationReason": null
           },
           {
-            "name": "deleteTag",
-            "description": null,
+            "name": "createTag",
+            "description": "Create a new tag.",
             "args": [
               {
                 "name": "name",
@@ -1916,6 +1936,72 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "TagObject",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "editReply",
+            "description": "Edit a reply",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CreateReplyInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ReplyObject",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "editReview",
+            "description": null,
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "UpdateReviewInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ReviewObject",
                 "ofType": null
               }
             },
@@ -1943,30 +2029,14 @@
             "description": "Approve a bot",
             "args": [
               {
-                "name": "id",
+                "name": "input",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "reason",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
+                    "kind": "INPUT_OBJECT",
+                    "name": "RejectBotInput",
                     "ofType": null
                   }
                 },
@@ -1988,27 +2058,126 @@
             "deprecationReason": null
           },
           {
-            "name": "renameTag",
-            "description": null,
+            "name": "removeAccount",
+            "description": "Delete your account.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UserObject",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "removeBot",
+            "description": "Delete a bot",
             "args": [
               {
-                "name": "name",
-                "description": null,
+                "name": "id",
+                "description": "ID must be a valid snowflake.",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
-              },
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "BotObject",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "removeReply",
+            "description": "Remove a reply",
+            "args": [
               {
-                "name": "newName",
+                "name": "id",
+                "description": "Reply ID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ReplyObject",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "removeReview",
+            "description": null,
+            "args": [
+              {
+                "name": "id",
+                "description": "Review ID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ReviewObject",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "removeTag",
+            "description": "Remove a tag.",
+            "args": [
+              {
+                "name": "name",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -2037,34 +2206,18 @@
             "deprecationReason": null
           },
           {
-            "name": "reply",
-            "description": null,
+            "name": "renameTag",
+            "description": "Rename a tag.",
             "args": [
               {
-                "name": "content",
+                "name": "input",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "reviewId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
+                    "kind": "INPUT_OBJECT",
+                    "name": "RenameTagInput",
                     "ofType": null
                   }
                 },
@@ -2078,7 +2231,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "ReplyObject",
+                "name": "TagObject",
                 "ofType": null
               }
             },
@@ -2119,71 +2272,6 @@
             "deprecationReason": null
           },
           {
-            "name": "review",
-            "description": null,
-            "args": [
-              {
-                "name": "botId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "content",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "rating",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "ReviewObject",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "revokeToken",
             "description": "Log out and invalidate the access token.",
             "args": [],
@@ -2193,39 +2281,6 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "tag",
-            "description": "Create a new tag.",
-            "args": [
-              {
-                "name": "name",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "TagObject",
                 "ofType": null
               }
             },
@@ -2332,148 +2387,18 @@
             "deprecationReason": null
           },
           {
-            "name": "updateReply",
-            "description": null,
+            "name": "voteBot",
+            "description": "Vote for a bot.",
             "args": [
-              {
-                "name": "content",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "reviewId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "ReplyObject",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "updateReview",
-            "description": null,
-            "args": [
-              {
-                "name": "botId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "content",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
               {
                 "name": "id",
-                "description": null,
+                "description": "ID must be a valid snowflake.",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
                     "name": "ID",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "rating",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "ReviewObject",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "voteBot",
-            "description": "Vote for a bot.",
-            "args": [
-              {
-                "name": "id",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
                     "ofType": null
                   }
                 },
@@ -2596,78 +2521,12 @@
         "description": null,
         "fields": [
           {
-            "name": "applicationInfo",
-            "description": "Get the API information of a bot",
-            "args": [
-              {
-                "name": "id",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "BotStatsObject",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "bot",
-            "description": "Get a bot by its ID",
-            "args": [
-              {
-                "name": "id",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "BotObject",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "bots",
             "description": "Get all bots in the database",
             "args": [
               {
                 "name": "after",
-                "description": null,
+                "description": "The cursor to start at",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -2679,7 +2538,7 @@
               },
               {
                 "name": "before",
-                "description": null,
+                "description": "The cursor to end at",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -2703,7 +2562,7 @@
               },
               {
                 "name": "first",
-                "description": null,
+                "description": "The number of items to take",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
@@ -2715,7 +2574,7 @@
               },
               {
                 "name": "last",
-                "description": null,
+                "description": "The number of items to take",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
@@ -2727,7 +2586,7 @@
               },
               {
                 "name": "skip",
-                "description": null,
+                "description": "The number of items to skip",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
@@ -2751,18 +2610,18 @@
             "deprecationReason": null
           },
           {
-            "name": "getAPIKey",
-            "description": "Get the API key of a bot",
+            "name": "getApplicationInfo",
+            "description": "Get the API information of a bot",
             "args": [
               {
-                "name": "input",
-                "description": null,
+                "name": "id",
+                "description": "ID must be a valid snowflake.",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "GetKeyInput",
+                    "kind": "SCALAR",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
@@ -2775,8 +2634,8 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "OBJECT",
+                "name": "BotStatsObject",
                 "ofType": null
               }
             },
@@ -2784,15 +2643,32 @@
             "deprecationReason": null
           },
           {
-            "name": "me",
-            "description": "Log out and invalidate the access token.",
-            "args": [],
+            "name": "getBot",
+            "description": "Get a bot by its ID",
+            "args": [
+              {
+                "name": "id",
+                "description": "ID must be a valid snowflake.",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "AuthUserObject",
+                "name": "BotObject",
                 "ofType": null
               }
             },
@@ -2800,12 +2676,12 @@
             "deprecationReason": null
           },
           {
-            "name": "reply",
-            "description": null,
+            "name": "getReply",
+            "description": "Get a reply by its ID",
             "args": [
               {
                 "name": "id",
-                "description": null,
+                "description": "Reply ID",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
@@ -2833,12 +2709,12 @@
             "deprecationReason": null
           },
           {
-            "name": "review",
+            "name": "getReview",
             "description": null,
             "args": [
               {
                 "name": "id",
-                "description": null,
+                "description": "Review ID",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
@@ -2866,100 +2742,7 @@
             "deprecationReason": null
           },
           {
-            "name": "reviews",
-            "description": null,
-            "args": [
-              {
-                "name": "after",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "before",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "botId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "first",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "last",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "skip",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "ReviewsConnection",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "tag",
+            "name": "getTag",
             "description": "Get a tag by its name.",
             "args": [
               {
@@ -2992,12 +2775,28 @@
             "deprecationReason": null
           },
           {
-            "name": "tags",
-            "description": "Get all tags.",
+            "name": "me",
+            "description": "Log out and invalidate the access token.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AuthUserObject",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "reviews",
+            "description": null,
             "args": [
               {
                 "name": "after",
-                "description": null,
+                "description": "The cursor to start at",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -3009,7 +2808,7 @@
               },
               {
                 "name": "before",
-                "description": null,
+                "description": "The cursor to end at",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -3021,7 +2820,7 @@
               },
               {
                 "name": "first",
-                "description": null,
+                "description": "The number of items to take",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
@@ -3032,8 +2831,24 @@
                 "deprecationReason": null
               },
               {
-                "name": "last",
+                "name": "input",
                 "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "SnowFlakeInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "last",
+                "description": "The number of items to take",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
@@ -3045,7 +2860,84 @@
               },
               {
                 "name": "skip",
-                "description": null,
+                "description": "The number of items to skip",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ReviewsConnection",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "tags",
+            "description": "Get all tags.",
+            "args": [
+              {
+                "name": "after",
+                "description": "The cursor to start at",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "before",
+                "description": "The cursor to end at",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "first",
+                "description": "The number of items to take",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "last",
+                "description": "The number of items to take",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "skip",
+                "description": "The number of items to skip",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
@@ -3074,7 +2966,7 @@
             "args": [
               {
                 "name": "id",
-                "description": null,
+                "description": "ID must be a valid snowflake.",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
@@ -3107,13 +2999,13 @@
             "args": [
               {
                 "name": "id",
-                "description": null,
+                "description": "ID must be a valid snowflake.",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "ID",
                     "ofType": null
                   }
                 },
@@ -3137,6 +3029,92 @@
         ],
         "inputFields": null,
         "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "RejectBotInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": "ID must be a valid snowflake.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "reason",
+            "description": "The reason for rejecting the bot",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "RenameTagInput",
+        "description": "The input to rename a tag.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "name",
+            "description": "The name of the tag to rename.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "newName",
+            "description": "The new name for the tag.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -3195,7 +3173,7 @@
           },
           {
             "name": "review",
-            "description": null,
+            "description": "The review this reply is for",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -3553,12 +3531,79 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "SnowFlakeInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": "ID must be a valid snowflake.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "SCALAR",
         "name": "String",
         "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Subscription",
+        "description": null,
+        "fields": [
+          {
+            "name": "botStatusChanged",
+            "description": "Subscribe to bot status changes",
+            "args": [
+              {
+                "name": "status",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "BotObject",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
         "enumValues": null,
         "possibleTypes": null
       },
@@ -3573,7 +3618,7 @@
             "args": [
               {
                 "name": "after",
-                "description": null,
+                "description": "The cursor to start at",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -3585,7 +3630,7 @@
               },
               {
                 "name": "before",
-                "description": null,
+                "description": "The cursor to end at",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -3597,7 +3642,7 @@
               },
               {
                 "name": "first",
-                "description": null,
+                "description": "The number of items to take",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
@@ -3609,7 +3654,7 @@
               },
               {
                 "name": "last",
-                "description": null,
+                "description": "The number of items to take",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
@@ -3621,7 +3666,7 @@
               },
               {
                 "name": "skip",
-                "description": null,
+                "description": "The number of items to skip",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
@@ -3839,7 +3884,7 @@
           },
           {
             "name": "id",
-            "description": "The ID of the bot",
+            "description": "ID must be a valid snowflake.",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -3878,7 +3923,7 @@
         "inputFields": [
           {
             "name": "description",
-            "description": "The bot avatar URL",
+            "description": "",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -3914,7 +3959,7 @@
           },
           {
             "name": "id",
-            "description": "The ID of the bot to update",
+            "description": "ID must be a valid snowflake.",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -3942,7 +3987,7 @@
           },
           {
             "name": "owners",
-            "description": "The bot owners",
+            "description": "List of owners that can manage the bot",
             "type": {
               "kind": "LIST",
               "name": null,
@@ -3962,7 +4007,7 @@
           },
           {
             "name": "prefix",
-            "description": "The bot's prefix",
+            "description": "The bot prefix",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -4025,6 +4070,116 @@
               "ofType": null
             },
             "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "UpdateReviewInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "botId",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "content",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rating",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "UserGetBotInput",
+        "description": "The input to get a bot.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "orderBy",
+            "description": "Decide how to order the bots",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BotOrder",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": "The bot status",
+            "type": {
+              "kind": "ENUM",
+              "name": "BotStatus",
+              "ofType": null
+            },
+            "defaultValue": "Approved",
             "isDeprecated": false,
             "deprecationReason": null
           }
@@ -4104,7 +4259,7 @@
             "args": [
               {
                 "name": "after",
-                "description": null,
+                "description": "The cursor to start at",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -4116,7 +4271,7 @@
               },
               {
                 "name": "before",
-                "description": null,
+                "description": "The cursor to end at",
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
@@ -4127,8 +4282,20 @@
                 "deprecationReason": null
               },
               {
-                "name": "first",
+                "name": "filter",
                 "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "UserGetBotInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "first",
+                "description": "The number of items to take",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
@@ -4140,22 +4307,10 @@
               },
               {
                 "name": "last",
-                "description": null,
+                "description": "The number of items to take",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "orderBy",
-                "description": null,
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "BotOrder",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -4164,31 +4319,11 @@
               },
               {
                 "name": "skip",
-                "description": null,
+                "description": "The number of items to skip",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
                   "ofType": null
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "status",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "BotStatus",
-                      "ofType": null
-                    }
-                  }
                 },
                 "defaultValue": null,
                 "isDeprecated": false,

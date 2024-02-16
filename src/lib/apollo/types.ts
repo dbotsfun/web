@@ -39,7 +39,10 @@ export type AuthUserInforObject = {
   __typename?: 'AuthUserInforObject';
   /** Avatar in Discord. */
   avatar?: Maybe<Scalars['String']['output']>;
-  /** Discriminator in Discord. */
+  /**
+   * Discriminator in Discord.
+   * @deprecated This field is going to be removed in the future.
+   */
   discriminator?: Maybe<Scalars['String']['output']>;
   /** User ID in Discord. */
   id: Scalars['String']['output'];
@@ -149,7 +152,8 @@ export type BotStatsBot = {
   avatar: Scalars['String']['output'];
   avatar_decoration?: Maybe<Scalars['String']['output']>;
   bot?: Maybe<Scalars['Boolean']['output']>;
-  discriminator: Scalars['String']['output'];
+  /** @deprecated This field is going to be removed in the future. */
+  discriminator?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   public_flags: Scalars['Int']['output'];
   username: Scalars['String']['output'];
@@ -182,17 +186,27 @@ export type BotsConnection = {
   totalCount: Scalars['Int']['output'];
 };
 
+/** The input to create a bot. */
 export type CreateBotInput = {
+  /** A description of the bot */
   description: Scalars['String']['input'];
+  /** The GitHub repository URL */
   github?: InputMaybe<Scalars['String']['input']>;
+  /** ID must be a valid snowflake. */
   id: Scalars['ID']['input'];
+  /** The invite link to the bot. */
   inviteLink?: InputMaybe<Scalars['String']['input']>;
   /** List of owners that can manage the bot */
   owners?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** The bot prefix */
   prefix?: InputMaybe<Scalars['String']['input']>;
+  /** A short description of the bot */
   shortDescription: Scalars['String']['input'];
+  /** The invite link to the support server */
   supportServer?: InputMaybe<Scalars['String']['input']>;
-  tags: Array<Scalars['String']['input']>;
+  /** The bot's tags */
+  tags?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** The website URL */
   website?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -200,6 +214,20 @@ export type CreateBotInput = {
 export type CreateKeyInput = {
   /** Bot id */
   id: Scalars['String']['input'];
+};
+
+/** The input to create a reply */
+export type CreateReplyInput = {
+  /** The content of the reply */
+  content: Scalars['String']['input'];
+  /** The ID of the review to reply to */
+  reviewId: Scalars['Int']['input'];
+};
+
+export type CreateReviewInput = {
+  botId: Scalars['ID']['input'];
+  content: Scalars['String']['input'];
+  rating: Scalars['Int']['input'];
 };
 
 /** The input to get bots from the database */
@@ -214,52 +242,52 @@ export type GetBotFormInput = {
   tags?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
-/** Input to get a key */
-export type GetKeyInput = {
-  /** Bot id */
-  id: Scalars['String']['input'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   /** Approve a bot */
   approveBot: BotObject;
   /** Create a bot */
   createBot: BotObject;
-  deleteAccount: UserObject;
-  /** Delete a bot */
-  deleteBot: BotObject;
-  deleteReply: ReplyObject;
-  deleteReview: ReviewObject;
-  deleteTag: TagObject;
+  /** Reply to a review */
+  createReply: ReplyObject;
+  createReview: ReviewObject;
+  /** Create a new tag. */
+  createTag: TagObject;
+  /** Edit a reply */
+  editReply: ReplyObject;
+  editReview: ReviewObject;
   /** Refresh the access token. */
   refreshToken: AuthTokensObject;
   /** Approve a bot */
   rejectBot: BotObject;
+  /** Delete your account. */
+  removeAccount: UserObject;
+  /** Delete a bot */
+  removeBot: BotObject;
+  /** Remove a reply */
+  removeReply: ReplyObject;
+  removeReview: ReviewObject;
+  /** Remove a tag. */
+  removeTag: TagObject;
+  /** Rename a tag. */
   renameTag: TagObject;
-  reply: ReplyObject;
   /** Generate a new API key for a bot */
   resetAPIKey: Scalars['String']['output'];
-  review: ReviewObject;
   /** Log out and invalidate the access token. */
   revokeToken: Scalars['Boolean']['output'];
-  /** Create a new tag. */
-  tag: TagObject;
   /** Obtain access token to use the user account in the application. */
   token: AuthTokensObject;
   /** Update a bot */
   updateBot: BotObject;
   /** Update the bot information */
   updateBotInformation: BotObject;
-  updateReply: ReplyObject;
-  updateReview: ReviewObject;
   /** Vote for a bot. */
   voteBot: VoteObject;
 };
 
 
 export type MutationApproveBotArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
 };
 
 
@@ -268,58 +296,63 @@ export type MutationCreateBotArgs = {
 };
 
 
-export type MutationDeleteBotArgs = {
-  id: Scalars['String']['input'];
+export type MutationCreateReplyArgs = {
+  input: CreateReplyInput;
 };
 
 
-export type MutationDeleteReplyArgs = {
-  id: Scalars['Int']['input'];
+export type MutationCreateReviewArgs = {
+  input: CreateReviewInput;
 };
 
 
-export type MutationDeleteReviewArgs = {
-  id: Scalars['Int']['input'];
-};
-
-
-export type MutationDeleteTagArgs = {
+export type MutationCreateTagArgs = {
   name: Scalars['String']['input'];
+};
+
+
+export type MutationEditReplyArgs = {
+  input: CreateReplyInput;
+};
+
+
+export type MutationEditReviewArgs = {
+  input: UpdateReviewInput;
 };
 
 
 export type MutationRejectBotArgs = {
-  id: Scalars['String']['input'];
-  reason: Scalars['String']['input'];
+  input: RejectBotInput;
+};
+
+
+export type MutationRemoveBotArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationRemoveReplyArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationRemoveReviewArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationRemoveTagArgs = {
+  name: Scalars['String']['input'];
 };
 
 
 export type MutationRenameTagArgs = {
-  name: Scalars['String']['input'];
-  newName: Scalars['String']['input'];
-};
-
-
-export type MutationReplyArgs = {
-  content: Scalars['String']['input'];
-  reviewId: Scalars['Int']['input'];
+  input: RenameTagInput;
 };
 
 
 export type MutationResetApiKeyArgs = {
   input: CreateKeyInput;
-};
-
-
-export type MutationReviewArgs = {
-  botId: Scalars['String']['input'];
-  content: Scalars['String']['input'];
-  rating: Scalars['Int']['input'];
-};
-
-
-export type MutationTagArgs = {
-  name: Scalars['String']['input'];
 };
 
 
@@ -338,22 +371,8 @@ export type MutationUpdateBotInformationArgs = {
 };
 
 
-export type MutationUpdateReplyArgs = {
-  content: Scalars['String']['input'];
-  reviewId: Scalars['Int']['input'];
-};
-
-
-export type MutationUpdateReviewArgs = {
-  botId: Scalars['String']['input'];
-  content: Scalars['String']['input'];
-  id: Scalars['ID']['input'];
-  rating: Scalars['Int']['input'];
-};
-
-
 export type MutationVoteBotArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
 };
 
 /** Possible directions in which to order a list of items when provided an `orderBy` argument. */
@@ -372,36 +391,25 @@ export type PageInfo = {
 
 export type Query = {
   __typename?: 'Query';
-  /** Get the API information of a bot */
-  applicationInfo: BotStatsObject;
-  /** Get a bot by its ID */
-  bot: BotObject;
   /** Get all bots in the database */
   bots: BotsConnection;
-  /** Get the API key of a bot */
-  getAPIKey: Scalars['String']['output'];
+  /** Get the API information of a bot */
+  getApplicationInfo: BotStatsObject;
+  /** Get a bot by its ID */
+  getBot: BotObject;
+  /** Get a reply by its ID */
+  getReply: ReplyObject;
+  getReview: ReviewObject;
+  /** Get a tag by its name. */
+  getTag: TagObject;
   /** Log out and invalidate the access token. */
   me: AuthUserObject;
-  reply: ReplyObject;
-  review: ReviewObject;
   reviews: ReviewsConnection;
-  /** Get a tag by its name. */
-  tag: TagObject;
   /** Get all tags. */
   tags: TagsConnection;
   user: UserObject;
   /** Check if the user has voted for a bot. */
   voteCheck: Scalars['Boolean']['output'];
-};
-
-
-export type QueryApplicationInfoArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type QueryBotArgs = {
-  id: Scalars['String']['input'];
 };
 
 
@@ -415,33 +423,38 @@ export type QueryBotsArgs = {
 };
 
 
-export type QueryGetApiKeyArgs = {
-  input: GetKeyInput;
+export type QueryGetApplicationInfoArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
-export type QueryReplyArgs = {
+export type QueryGetBotArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryGetReplyArgs = {
   id: Scalars['Int']['input'];
 };
 
 
-export type QueryReviewArgs = {
+export type QueryGetReviewArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type QueryGetTagArgs = {
+  name: Scalars['String']['input'];
 };
 
 
 export type QueryReviewsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
-  botId: Scalars['Int']['input'];
   first?: InputMaybe<Scalars['Int']['input']>;
+  input: SnowFlakeInput;
   last?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QueryTagArgs = {
-  name: Scalars['String']['input'];
 };
 
 
@@ -460,7 +473,22 @@ export type QueryUserArgs = {
 
 
 export type QueryVoteCheckArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
+};
+
+export type RejectBotInput = {
+  /** ID must be a valid snowflake. */
+  id: Scalars['ID']['input'];
+  /** The reason for rejecting the bot */
+  reason: Scalars['String']['input'];
+};
+
+/** The input to rename a tag. */
+export type RenameTagInput = {
+  /** The name of the tag to rename. */
+  name: Scalars['String']['input'];
+  /** The new name for the tag. */
+  newName: Scalars['String']['input'];
 };
 
 export type ReplyObject = {
@@ -468,6 +496,7 @@ export type ReplyObject = {
   content: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
+  /** The review this reply is for */
   review: ReviewObject;
   reviewId: Scalars['Int']['output'];
   updatedAt: Scalars['DateTime']['output'];
@@ -499,6 +528,22 @@ export type ReviewsConnection = {
   nodes?: Maybe<Array<ReviewObject>>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
+};
+
+export type SnowFlakeInput = {
+  /** ID must be a valid snowflake. */
+  id: Scalars['ID']['input'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  /** Subscribe to bot status changes */
+  botStatusChanged: BotObject;
+};
+
+
+export type SubscriptionBotStatusChangedArgs = {
+  status?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type TagObject = {
@@ -539,26 +584,25 @@ export type TokenInput = {
 export type UpdateBotInformationInput = {
   /** The bot's avatar */
   avatar?: InputMaybe<Scalars['String']['input']>;
-  /** The ID of the bot */
+  /** ID must be a valid snowflake. */
   id: Scalars['ID']['input'];
   /** The bot's name */
   name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateBotInput = {
-  /** The bot avatar URL */
   description?: InputMaybe<Scalars['String']['input']>;
   /** The GitHub repository URL */
   github?: InputMaybe<Scalars['String']['input']>;
   /** The amount of guilds the bot is in */
   guildCount?: InputMaybe<Scalars['Int']['input']>;
-  /** The ID of the bot to update */
+  /** ID must be a valid snowflake. */
   id: Scalars['ID']['input'];
   /** The invite link to the bot. */
   inviteLink?: InputMaybe<Scalars['String']['input']>;
-  /** The bot owners */
+  /** List of owners that can manage the bot */
   owners?: InputMaybe<Array<Scalars['String']['input']>>;
-  /** The bot's prefix */
+  /** The bot prefix */
   prefix?: InputMaybe<Scalars['String']['input']>;
   /** A short description of the bot */
   shortDescription?: InputMaybe<Scalars['String']['input']>;
@@ -568,6 +612,21 @@ export type UpdateBotInput = {
   tags?: InputMaybe<Array<Scalars['String']['input']>>;
   /** The website URL */
   website?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateReviewInput = {
+  botId: Scalars['ID']['input'];
+  content: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
+  rating: Scalars['Int']['input'];
+};
+
+/** The input to get a bot. */
+export type UserGetBotInput = {
+  /** Decide how to order the bots */
+  orderBy?: InputMaybe<BotOrder>;
+  /** The bot status */
+  status?: InputMaybe<BotStatus>;
 };
 
 export type UserObject = {
@@ -589,11 +648,10 @@ export type UserObject = {
 export type UserObjectBotsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<UserGetBotInput>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<BotOrder>;
   skip?: InputMaybe<Scalars['Int']['input']>;
-  status?: InputMaybe<Array<BotStatus>>;
 };
 
 export type VoteObject = {
@@ -699,23 +757,30 @@ export type ResolversTypes = {
   BotsConnection: ResolverTypeWrapper<BotsConnection>;
   CreateBotInput: CreateBotInput;
   CreateKeyInput: CreateKeyInput;
+  CreateReplyInput: CreateReplyInput;
+  CreateReviewInput: CreateReviewInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   GetBotFormInput: GetBotFormInput;
-  GetKeyInput: GetKeyInput;
   Mutation: ResolverTypeWrapper<{}>;
   OrderDirection: OrderDirection;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Query: ResolverTypeWrapper<{}>;
+  RejectBotInput: RejectBotInput;
+  RenameTagInput: RenameTagInput;
   ReplyObject: ResolverTypeWrapper<ReplyObject>;
   ReviewObject: ResolverTypeWrapper<ReviewObject>;
   ReviewObjectEdge: ResolverTypeWrapper<ReviewObjectEdge>;
   ReviewsConnection: ResolverTypeWrapper<ReviewsConnection>;
+  SnowFlakeInput: SnowFlakeInput;
+  Subscription: ResolverTypeWrapper<{}>;
   TagObject: ResolverTypeWrapper<TagObject>;
   TagObjectEdge: ResolverTypeWrapper<TagObjectEdge>;
   TagsConnection: ResolverTypeWrapper<TagsConnection>;
   TokenInput: TokenInput;
   UpdateBotInformationInput: UpdateBotInformationInput;
   UpdateBotInput: UpdateBotInput;
+  UpdateReviewInput: UpdateReviewInput;
+  UserGetBotInput: UserGetBotInput;
   UserObject: ResolverTypeWrapper<UserObject>;
   VoteObject: ResolverTypeWrapper<VoteObject>;
 };
@@ -742,22 +807,29 @@ export type ResolversParentTypes = {
   BotsConnection: BotsConnection;
   CreateBotInput: CreateBotInput;
   CreateKeyInput: CreateKeyInput;
+  CreateReplyInput: CreateReplyInput;
+  CreateReviewInput: CreateReviewInput;
   DateTime: Scalars['DateTime']['output'];
   GetBotFormInput: GetBotFormInput;
-  GetKeyInput: GetKeyInput;
   Mutation: {};
   PageInfo: PageInfo;
   Query: {};
+  RejectBotInput: RejectBotInput;
+  RenameTagInput: RenameTagInput;
   ReplyObject: ReplyObject;
   ReviewObject: ReviewObject;
   ReviewObjectEdge: ReviewObjectEdge;
   ReviewsConnection: ReviewsConnection;
+  SnowFlakeInput: SnowFlakeInput;
+  Subscription: {};
   TagObject: TagObject;
   TagObjectEdge: TagObjectEdge;
   TagsConnection: TagsConnection;
   TokenInput: TokenInput;
   UpdateBotInformationInput: UpdateBotInformationInput;
   UpdateBotInput: UpdateBotInput;
+  UpdateReviewInput: UpdateReviewInput;
+  UserGetBotInput: UserGetBotInput;
   UserObject: UserObject;
   VoteObject: VoteObject;
 };
@@ -850,7 +922,7 @@ export type BotStatsBotResolvers<ContextType = any, ParentType extends Resolvers
   avatar?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   avatar_decoration?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   bot?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  discriminator?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  discriminator?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   public_flags?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -884,24 +956,24 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   approveBot?: Resolver<ResolversTypes['BotObject'], ParentType, ContextType, RequireFields<MutationApproveBotArgs, 'id'>>;
   createBot?: Resolver<ResolversTypes['BotObject'], ParentType, ContextType, RequireFields<MutationCreateBotArgs, 'input'>>;
-  deleteAccount?: Resolver<ResolversTypes['UserObject'], ParentType, ContextType>;
-  deleteBot?: Resolver<ResolversTypes['BotObject'], ParentType, ContextType, RequireFields<MutationDeleteBotArgs, 'id'>>;
-  deleteReply?: Resolver<ResolversTypes['ReplyObject'], ParentType, ContextType, RequireFields<MutationDeleteReplyArgs, 'id'>>;
-  deleteReview?: Resolver<ResolversTypes['ReviewObject'], ParentType, ContextType, RequireFields<MutationDeleteReviewArgs, 'id'>>;
-  deleteTag?: Resolver<ResolversTypes['TagObject'], ParentType, ContextType, RequireFields<MutationDeleteTagArgs, 'name'>>;
+  createReply?: Resolver<ResolversTypes['ReplyObject'], ParentType, ContextType, RequireFields<MutationCreateReplyArgs, 'input'>>;
+  createReview?: Resolver<ResolversTypes['ReviewObject'], ParentType, ContextType, RequireFields<MutationCreateReviewArgs, 'input'>>;
+  createTag?: Resolver<ResolversTypes['TagObject'], ParentType, ContextType, RequireFields<MutationCreateTagArgs, 'name'>>;
+  editReply?: Resolver<ResolversTypes['ReplyObject'], ParentType, ContextType, RequireFields<MutationEditReplyArgs, 'input'>>;
+  editReview?: Resolver<ResolversTypes['ReviewObject'], ParentType, ContextType, RequireFields<MutationEditReviewArgs, 'input'>>;
   refreshToken?: Resolver<ResolversTypes['AuthTokensObject'], ParentType, ContextType>;
-  rejectBot?: Resolver<ResolversTypes['BotObject'], ParentType, ContextType, RequireFields<MutationRejectBotArgs, 'id' | 'reason'>>;
-  renameTag?: Resolver<ResolversTypes['TagObject'], ParentType, ContextType, RequireFields<MutationRenameTagArgs, 'name' | 'newName'>>;
-  reply?: Resolver<ResolversTypes['ReplyObject'], ParentType, ContextType, RequireFields<MutationReplyArgs, 'content' | 'reviewId'>>;
+  rejectBot?: Resolver<ResolversTypes['BotObject'], ParentType, ContextType, RequireFields<MutationRejectBotArgs, 'input'>>;
+  removeAccount?: Resolver<ResolversTypes['UserObject'], ParentType, ContextType>;
+  removeBot?: Resolver<ResolversTypes['BotObject'], ParentType, ContextType, RequireFields<MutationRemoveBotArgs, 'id'>>;
+  removeReply?: Resolver<ResolversTypes['ReplyObject'], ParentType, ContextType, RequireFields<MutationRemoveReplyArgs, 'id'>>;
+  removeReview?: Resolver<ResolversTypes['ReviewObject'], ParentType, ContextType, RequireFields<MutationRemoveReviewArgs, 'id'>>;
+  removeTag?: Resolver<ResolversTypes['TagObject'], ParentType, ContextType, RequireFields<MutationRemoveTagArgs, 'name'>>;
+  renameTag?: Resolver<ResolversTypes['TagObject'], ParentType, ContextType, RequireFields<MutationRenameTagArgs, 'input'>>;
   resetAPIKey?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationResetApiKeyArgs, 'input'>>;
-  review?: Resolver<ResolversTypes['ReviewObject'], ParentType, ContextType, RequireFields<MutationReviewArgs, 'botId' | 'content' | 'rating'>>;
   revokeToken?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  tag?: Resolver<ResolversTypes['TagObject'], ParentType, ContextType, RequireFields<MutationTagArgs, 'name'>>;
   token?: Resolver<ResolversTypes['AuthTokensObject'], ParentType, ContextType, RequireFields<MutationTokenArgs, 'input'>>;
   updateBot?: Resolver<ResolversTypes['BotObject'], ParentType, ContextType, RequireFields<MutationUpdateBotArgs, 'input'>>;
   updateBotInformation?: Resolver<ResolversTypes['BotObject'], ParentType, ContextType, RequireFields<MutationUpdateBotInformationArgs, 'input'>>;
-  updateReply?: Resolver<ResolversTypes['ReplyObject'], ParentType, ContextType, RequireFields<MutationUpdateReplyArgs, 'content' | 'reviewId'>>;
-  updateReview?: Resolver<ResolversTypes['ReviewObject'], ParentType, ContextType, RequireFields<MutationUpdateReviewArgs, 'botId' | 'content' | 'id' | 'rating'>>;
   voteBot?: Resolver<ResolversTypes['VoteObject'], ParentType, ContextType, RequireFields<MutationVoteBotArgs, 'id'>>;
 };
 
@@ -914,15 +986,14 @@ export type PageInfoResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  applicationInfo?: Resolver<ResolversTypes['BotStatsObject'], ParentType, ContextType, RequireFields<QueryApplicationInfoArgs, 'id'>>;
-  bot?: Resolver<ResolversTypes['BotObject'], ParentType, ContextType, RequireFields<QueryBotArgs, 'id'>>;
   bots?: Resolver<ResolversTypes['BotsConnection'], ParentType, ContextType, Partial<QueryBotsArgs>>;
-  getAPIKey?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<QueryGetApiKeyArgs, 'input'>>;
+  getApplicationInfo?: Resolver<ResolversTypes['BotStatsObject'], ParentType, ContextType, RequireFields<QueryGetApplicationInfoArgs, 'id'>>;
+  getBot?: Resolver<ResolversTypes['BotObject'], ParentType, ContextType, RequireFields<QueryGetBotArgs, 'id'>>;
+  getReply?: Resolver<ResolversTypes['ReplyObject'], ParentType, ContextType, RequireFields<QueryGetReplyArgs, 'id'>>;
+  getReview?: Resolver<ResolversTypes['ReviewObject'], ParentType, ContextType, RequireFields<QueryGetReviewArgs, 'id'>>;
+  getTag?: Resolver<ResolversTypes['TagObject'], ParentType, ContextType, RequireFields<QueryGetTagArgs, 'name'>>;
   me?: Resolver<ResolversTypes['AuthUserObject'], ParentType, ContextType>;
-  reply?: Resolver<ResolversTypes['ReplyObject'], ParentType, ContextType, RequireFields<QueryReplyArgs, 'id'>>;
-  review?: Resolver<ResolversTypes['ReviewObject'], ParentType, ContextType, RequireFields<QueryReviewArgs, 'id'>>;
-  reviews?: Resolver<ResolversTypes['ReviewsConnection'], ParentType, ContextType, RequireFields<QueryReviewsArgs, 'botId'>>;
-  tag?: Resolver<ResolversTypes['TagObject'], ParentType, ContextType, RequireFields<QueryTagArgs, 'name'>>;
+  reviews?: Resolver<ResolversTypes['ReviewsConnection'], ParentType, ContextType, RequireFields<QueryReviewsArgs, 'input'>>;
   tags?: Resolver<ResolversTypes['TagsConnection'], ParentType, ContextType, Partial<QueryTagsArgs>>;
   user?: Resolver<ResolversTypes['UserObject'], ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   voteCheck?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryVoteCheckArgs, 'id'>>;
@@ -964,6 +1035,10 @@ export type ReviewsConnectionResolvers<ContextType = any, ParentType extends Res
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
+  botStatusChanged?: SubscriptionResolver<ResolversTypes['BotObject'], "botStatusChanged", ParentType, ContextType, Partial<SubscriptionBotStatusChangedArgs>>;
 };
 
 export type TagObjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['TagObject'] = ResolversParentTypes['TagObject']> = {
@@ -1031,6 +1106,7 @@ export type Resolvers<ContextType = any> = {
   ReviewObject?: ReviewObjectResolvers<ContextType>;
   ReviewObjectEdge?: ReviewObjectEdgeResolvers<ContextType>;
   ReviewsConnection?: ReviewsConnectionResolvers<ContextType>;
+  Subscription?: SubscriptionResolvers<ContextType>;
   TagObject?: TagObjectResolvers<ContextType>;
   TagObjectEdge?: TagObjectEdgeResolvers<ContextType>;
   TagsConnection?: TagsConnectionResolvers<ContextType>;
@@ -1040,7 +1116,7 @@ export type Resolvers<ContextType = any> = {
 
 
 export type VoteBotMutationVariables = Exact<{
-  id: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
 }>;
 
 
@@ -1053,27 +1129,26 @@ export type CreateBotMutationVariables = Exact<{
 
 export type CreateBotMutation = { __typename?: 'Mutation', createBot: { __typename?: 'BotObject', id: string, name: string, status: string } };
 
-export type DeleteBotMutationVariables = Exact<{
-  id: Scalars['String']['input'];
+export type RemoveBotMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
 }>;
 
 
-export type DeleteBotMutation = { __typename?: 'Mutation', deleteBot: { __typename?: 'BotObject', name: string } };
+export type RemoveBotMutation = { __typename?: 'Mutation', removeBot: { __typename?: 'BotObject', name: string } };
 
 export type DenyBotMutationVariables = Exact<{
-  id: Scalars['String']['input'];
-  reason: Scalars['String']['input'];
+  input: RejectBotInput;
 }>;
 
 
-export type DenyBotMutation = { __typename?: 'Mutation', rejectBot: { __typename?: 'BotObject', name: string } };
+export type DenyBotMutation = { __typename?: 'Mutation', rejectBot: { __typename?: 'BotObject', name: string, id: string } };
 
 export type ApproveBotMutationVariables = Exact<{
-  id: Scalars['String']['input'];
+  approveBotId: Scalars['ID']['input'];
 }>;
 
 
-export type ApproveBotMutation = { __typename?: 'Mutation', approveBot: { __typename?: 'BotObject', name: string } };
+export type ApproveBotMutation = { __typename?: 'Mutation', approveBot: { __typename?: 'BotObject', id: string, name: string } };
 
 export type TokenMutationVariables = Exact<{
   token: Scalars['String']['input'];
@@ -1095,24 +1170,29 @@ export type TagsQuery = { __typename?: 'Query', tags: { __typename?: 'TagsConnec
 export type BotsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type BotsQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number }> | null } };
+export type BotsQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null } };
 
-export type ApiKeyQueryVariables = Exact<{
-  input: GetKeyInput;
+export type ExploreBotsQueryVariables = Exact<{
+  filters?: InputMaybe<GetBotFormInput>;
 }>;
 
 
-export type ApiKeyQuery = { __typename?: 'Query', getAPIKey: string };
+export type ExploreBotsQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null } };
+
+export type BotCountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type BotCountQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnection', totalCount: number } };
 
 export type BotQueryVariables = Exact<{
-  id: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
 }>;
 
 
-export type BotQuery = { __typename?: 'Query', bot: { __typename?: 'BotObject', id: string, avatar?: string | null, certified: boolean, name: string, status: string, description?: string | null, shortDescription?: string | null, prefix?: string | null, inviteLink?: string | null, supportServer?: string | null, website?: string | null, github?: string | null, guildCount: number, tags: Array<string>, votes: number, owners: Array<{ __typename?: 'UserObject', id: string, username: string }> } };
+export type BotQuery = { __typename?: 'Query', getBot: { __typename?: 'BotObject', id: string, avatar?: string | null, certified: boolean, name: string, status: string, description?: string | null, shortDescription?: string | null, prefix?: string | null, inviteLink?: string | null, supportServer?: string | null, website?: string | null, github?: string | null, guildCount: number, tags: Array<string>, votes: number, owners: Array<{ __typename?: 'UserObject', id: string, username: string }> } };
 
 export type VoteCheckQueryVariables = Exact<{
-  id: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
 }>;
 
 
@@ -1121,7 +1201,7 @@ export type VoteCheckQuery = { __typename?: 'Query', voteCheck: boolean };
 export type FrontBotsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FrontBotsQuery = { __typename?: 'Query', voted: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number }> | null }, rated: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number }> | null }, recent: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number }> | null } };
+export type FrontBotsQuery = { __typename?: 'Query', voted: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null }, rated: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null }, recent: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null } };
 
 export type PanelBotsQueryVariables = Exact<{
   status: BotStatus;
@@ -1132,7 +1212,7 @@ export type PanelBotsQuery = { __typename?: 'Query', bots: { __typename?: 'BotsC
 
 
 export const VoteBotDocument = gql`
-    mutation VoteBot($id: String!) {
+    mutation VoteBot($id: ID!) {
   voteBot(id: $id) {
     id
     expires
@@ -1200,43 +1280,44 @@ export function useCreateBotMutation(baseOptions?: Apollo.MutationHookOptions<Cr
 export type CreateBotMutationHookResult = ReturnType<typeof useCreateBotMutation>;
 export type CreateBotMutationResult = Apollo.MutationResult<CreateBotMutation>;
 export type CreateBotMutationOptions = Apollo.BaseMutationOptions<CreateBotMutation, CreateBotMutationVariables>;
-export const DeleteBotDocument = gql`
-    mutation DeleteBot($id: String!) {
-  deleteBot(id: $id) {
+export const RemoveBotDocument = gql`
+    mutation RemoveBot($id: ID!) {
+  removeBot(id: $id) {
     name
   }
 }
     `;
-export type DeleteBotMutationFn = Apollo.MutationFunction<DeleteBotMutation, DeleteBotMutationVariables>;
+export type RemoveBotMutationFn = Apollo.MutationFunction<RemoveBotMutation, RemoveBotMutationVariables>;
 
 /**
- * __useDeleteBotMutation__
+ * __useRemoveBotMutation__
  *
- * To run a mutation, you first call `useDeleteBotMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteBotMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useRemoveBotMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveBotMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [deleteBotMutation, { data, loading, error }] = useDeleteBotMutation({
+ * const [removeBotMutation, { data, loading, error }] = useRemoveBotMutation({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useDeleteBotMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBotMutation, DeleteBotMutationVariables>) {
+export function useRemoveBotMutation(baseOptions?: Apollo.MutationHookOptions<RemoveBotMutation, RemoveBotMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteBotMutation, DeleteBotMutationVariables>(DeleteBotDocument, options);
+        return Apollo.useMutation<RemoveBotMutation, RemoveBotMutationVariables>(RemoveBotDocument, options);
       }
-export type DeleteBotMutationHookResult = ReturnType<typeof useDeleteBotMutation>;
-export type DeleteBotMutationResult = Apollo.MutationResult<DeleteBotMutation>;
-export type DeleteBotMutationOptions = Apollo.BaseMutationOptions<DeleteBotMutation, DeleteBotMutationVariables>;
+export type RemoveBotMutationHookResult = ReturnType<typeof useRemoveBotMutation>;
+export type RemoveBotMutationResult = Apollo.MutationResult<RemoveBotMutation>;
+export type RemoveBotMutationOptions = Apollo.BaseMutationOptions<RemoveBotMutation, RemoveBotMutationVariables>;
 export const DenyBotDocument = gql`
-    mutation DenyBot($id: String!, $reason: String!) {
-  rejectBot(id: $id, reason: $reason) {
+    mutation DenyBot($input: RejectBotInput!) {
+  rejectBot(input: $input) {
     name
+    id
   }
 }
     `;
@@ -1255,8 +1336,7 @@ export type DenyBotMutationFn = Apollo.MutationFunction<DenyBotMutation, DenyBot
  * @example
  * const [denyBotMutation, { data, loading, error }] = useDenyBotMutation({
  *   variables: {
- *      id: // value for 'id'
- *      reason: // value for 'reason'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -1268,8 +1348,9 @@ export type DenyBotMutationHookResult = ReturnType<typeof useDenyBotMutation>;
 export type DenyBotMutationResult = Apollo.MutationResult<DenyBotMutation>;
 export type DenyBotMutationOptions = Apollo.BaseMutationOptions<DenyBotMutation, DenyBotMutationVariables>;
 export const ApproveBotDocument = gql`
-    mutation ApproveBot($id: String!) {
-  approveBot(id: $id) {
+    mutation ApproveBot($approveBotId: ID!) {
+  approveBot(id: $approveBotId) {
+    id
     name
   }
 }
@@ -1289,7 +1370,7 @@ export type ApproveBotMutationFn = Apollo.MutationFunction<ApproveBotMutation, A
  * @example
  * const [approveBotMutation, { data, loading, error }] = useApproveBotMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      approveBotId: // value for 'approveBotId'
  *   },
  * });
  */
@@ -1430,6 +1511,7 @@ export const BotsDocument = gql`
       shortDescription
       tags
       votes
+      guildCount
     }
   }
 }
@@ -1466,47 +1548,97 @@ export type BotsQueryHookResult = ReturnType<typeof useBotsQuery>;
 export type BotsLazyQueryHookResult = ReturnType<typeof useBotsLazyQuery>;
 export type BotsSuspenseQueryHookResult = ReturnType<typeof useBotsSuspenseQuery>;
 export type BotsQueryResult = Apollo.QueryResult<BotsQuery, BotsQueryVariables>;
-export const ApiKeyDocument = gql`
-    query ApiKey($input: GetKeyInput!) {
-  getAPIKey(input: $input)
+export const ExploreBotsDocument = gql`
+    query ExploreBots($filters: GetBotFormInput) {
+  bots(filters: $filters) {
+    nodes {
+      id
+      name
+      avatar
+      certified
+      shortDescription
+      tags
+      votes
+      guildCount
+    }
+  }
 }
     `;
 
 /**
- * __useApiKeyQuery__
+ * __useExploreBotsQuery__
  *
- * To run a query within a React component, call `useApiKeyQuery` and pass it any options that fit your needs.
- * When your component renders, `useApiKeyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useExploreBotsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useExploreBotsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useApiKeyQuery({
+ * const { data, loading, error } = useExploreBotsQuery({
  *   variables: {
- *      input: // value for 'input'
+ *      filters: // value for 'filters'
  *   },
  * });
  */
-export function useApiKeyQuery(baseOptions: Apollo.QueryHookOptions<ApiKeyQuery, ApiKeyQueryVariables> & ({ variables: ApiKeyQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useExploreBotsQuery(baseOptions?: Apollo.QueryHookOptions<ExploreBotsQuery, ExploreBotsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ApiKeyQuery, ApiKeyQueryVariables>(ApiKeyDocument, options);
+        return Apollo.useQuery<ExploreBotsQuery, ExploreBotsQueryVariables>(ExploreBotsDocument, options);
       }
-export function useApiKeyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ApiKeyQuery, ApiKeyQueryVariables>) {
+export function useExploreBotsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ExploreBotsQuery, ExploreBotsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ApiKeyQuery, ApiKeyQueryVariables>(ApiKeyDocument, options);
+          return Apollo.useLazyQuery<ExploreBotsQuery, ExploreBotsQueryVariables>(ExploreBotsDocument, options);
         }
-export function useApiKeySuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<ApiKeyQuery, ApiKeyQueryVariables>) {
+export function useExploreBotsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<ExploreBotsQuery, ExploreBotsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ApiKeyQuery, ApiKeyQueryVariables>(ApiKeyDocument, options);
+          return Apollo.useSuspenseQuery<ExploreBotsQuery, ExploreBotsQueryVariables>(ExploreBotsDocument, options);
         }
-export type ApiKeyQueryHookResult = ReturnType<typeof useApiKeyQuery>;
-export type ApiKeyLazyQueryHookResult = ReturnType<typeof useApiKeyLazyQuery>;
-export type ApiKeySuspenseQueryHookResult = ReturnType<typeof useApiKeySuspenseQuery>;
-export type ApiKeyQueryResult = Apollo.QueryResult<ApiKeyQuery, ApiKeyQueryVariables>;
+export type ExploreBotsQueryHookResult = ReturnType<typeof useExploreBotsQuery>;
+export type ExploreBotsLazyQueryHookResult = ReturnType<typeof useExploreBotsLazyQuery>;
+export type ExploreBotsSuspenseQueryHookResult = ReturnType<typeof useExploreBotsSuspenseQuery>;
+export type ExploreBotsQueryResult = Apollo.QueryResult<ExploreBotsQuery, ExploreBotsQueryVariables>;
+export const BotCountDocument = gql`
+    query BotCount {
+  bots {
+    totalCount
+  }
+}
+    `;
+
+/**
+ * __useBotCountQuery__
+ *
+ * To run a query within a React component, call `useBotCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBotCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBotCountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useBotCountQuery(baseOptions?: Apollo.QueryHookOptions<BotCountQuery, BotCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BotCountQuery, BotCountQueryVariables>(BotCountDocument, options);
+      }
+export function useBotCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BotCountQuery, BotCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BotCountQuery, BotCountQueryVariables>(BotCountDocument, options);
+        }
+export function useBotCountSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<BotCountQuery, BotCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<BotCountQuery, BotCountQueryVariables>(BotCountDocument, options);
+        }
+export type BotCountQueryHookResult = ReturnType<typeof useBotCountQuery>;
+export type BotCountLazyQueryHookResult = ReturnType<typeof useBotCountLazyQuery>;
+export type BotCountSuspenseQueryHookResult = ReturnType<typeof useBotCountSuspenseQuery>;
+export type BotCountQueryResult = Apollo.QueryResult<BotCountQuery, BotCountQueryVariables>;
 export const BotDocument = gql`
-    query Bot($id: String!) {
-  bot(id: $id) {
+    query Bot($id: ID!) {
+  getBot(id: $id) {
     id
     avatar
     certified
@@ -1563,7 +1695,7 @@ export type BotLazyQueryHookResult = ReturnType<typeof useBotLazyQuery>;
 export type BotSuspenseQueryHookResult = ReturnType<typeof useBotSuspenseQuery>;
 export type BotQueryResult = Apollo.QueryResult<BotQuery, BotQueryVariables>;
 export const VoteCheckDocument = gql`
-    query VoteCheck($id: String!) {
+    query VoteCheck($id: ID!) {
   voteCheck(id: $id)
 }
     `;
@@ -1611,6 +1743,7 @@ export const FrontBotsDocument = gql`
       shortDescription
       tags
       votes
+      guildCount
     }
   }
   rated: bots(first: 4, filters: {orderBy: {direction: desc, field: reviews}}) {
@@ -1622,6 +1755,7 @@ export const FrontBotsDocument = gql`
       shortDescription
       tags
       votes
+      guildCount
     }
   }
   recent: bots(first: 4, filters: {orderBy: {direction: desc, field: createdAt}}) {
@@ -1633,6 +1767,7 @@ export const FrontBotsDocument = gql`
       shortDescription
       tags
       votes
+      guildCount
     }
   }
 }

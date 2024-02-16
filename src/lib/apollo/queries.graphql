@@ -26,17 +26,34 @@ query Bots {
         shortDescription
         tags
         votes
+        guildCount
       }
     }
 }
 
-# Get bot's API KEY
-query ApiKey($input: GetKeyInput!) {
-  getAPIKey(input: $input)
+query ExploreBots($filters: GetBotFormInput) {
+  bots(filters: $filters) {
+    nodes {
+      id
+      name
+      avatar
+      certified
+      shortDescription
+      tags
+      votes
+      guildCount
+    }
+  }
 }
 
-query Bot($id: String!) {
-        bot(id: $id) {
+query BotCount {
+  bots {
+    totalCount
+  }
+}
+
+query Bot($id: ID!) {
+        getBot(id: $id) {
             id
             avatar
             certified
@@ -59,7 +76,7 @@ query Bot($id: String!) {
         }
 }
 
-query VoteCheck($id: String!) {
+query VoteCheck($id: ID!) {
     voteCheck(id: $id)
 }
 
@@ -73,6 +90,7 @@ query FrontBots {
         shortDescription
         tags
         votes
+        guildCount
       }
     }
     rated: bots(first: 4, filters: { orderBy: { direction: desc, field: reviews } }) {
@@ -84,6 +102,7 @@ query FrontBots {
         shortDescription
         tags
         votes
+        guildCount
       }
     }
     recent: bots(first: 4, filters: { orderBy: { direction: desc, field: createdAt } }) {
@@ -95,6 +114,7 @@ query FrontBots {
         shortDescription
         tags
         votes
+        guildCount
       }
     }
 }

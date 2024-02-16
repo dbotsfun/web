@@ -18,26 +18,30 @@ import { toast } from "sonner"
 
 export default function Page({ params }: { params: { id: string } }) {
     const { data: user, loading } = useSession();
-    const { data, error, refetch } = useBotQuery({
+    const { data, error, refetch: botRefetch } = useBotQuery({
         variables: { id: params.id }
     })
 
-    const { data: check, refetch: reloadCheck } = useVoteCheckQuery({
+    const { data: check, refetch: checkRefetch } = useVoteCheckQuery({
         variables: { id: params.id }
     })
     const [vote, result] = useVoteBotMutation({
         variables: { id: params.id }
     })
 
-    let bot = data?.bot;
+    let bot = data?.getBot;
     const hasVoted = check?.voteCheck;
     const isOwner = !!bot?.owners.find(u => u.id === user?.me.user.id)
     const canAccess = bot && bot.status === "APPROVED" || isOwner
 
+    const refresh = () => {
+        checkRefetch();
+        botRefetch()
+    }
+
     useEffect(() => {
         if (result.called && !result.loading) {
-            reloadCheck();
-            refetch();
+            refresh();
             toast.success(`You voted for ${bot!.name}`);
         }
     }, [result.loading, result.called]);
@@ -54,14 +58,14 @@ export default function Page({ params }: { params: { id: string } }) {
                     <div className="flex flex-col lg:flex-row items-center gap-5">
                         <img src={avatar(bot.avatar, bot.id)} alt="avatar" className="w-20 rounded-full ring-offset-1 ring-offset-background ring-ring ring-2" />
                         <div className="flex flex-col items-center lg:items-start">
-                            <span className="text-xs font-semibold text-muted-foreground uppercase">Voting for...</span>
+                            <span className="text-xs font-semibold text-muted-foreground uppercase">{hasVoted ? "Voted" : "Voting"} for...</span>
                             <h1 className="text-2xl font-bold">{bot!.name}</h1>
                             <div className="font-semibold flex items-center gap-1 text-muted-foreground">
                                 {bot.votes} <ChevronUpIcon className="w-4 h-4" />
                             </div>
                         </div>
                     </div>
-                    {loading ? <Loader /> : hasVoted ? <Button disabled aria-disabled>Come back later</Button> : <Button onClick={() => vote()} size={"lg"}>Vote for {bot!.name}</Button>}
+                    {loading ? <Loader /> : hasVoted ? null : <Button onClick={() => vote()} size={"lg"}>Vote for {bot!.name}</Button>}
                 </div>
                 {result.error && <p className="text-destructive mt-2">{result.error.message}</p>}
             </div>

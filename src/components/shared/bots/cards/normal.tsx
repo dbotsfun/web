@@ -1,12 +1,12 @@
 import { badgeVariants } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { avatar as av } from "@/lib/utils";
-import { AsteriskIcon, ChevronUp } from "lucide-react";
+import { AsteriskIcon, ChevronUp, ServerIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "../../../../../public/icon.png"
 
-export default function BotCard({ id, avatar, name, votes, tags, shortDescription, certified }: {
+export default function BotCard({ id, avatar, name, votes, tags, shortDescription, certified, guildCount }: {
     __typename?: "BotObject" | undefined;
     id: string;
     name: string;
@@ -15,6 +15,7 @@ export default function BotCard({ id, avatar, name, votes, tags, shortDescriptio
     shortDescription?: string | null | undefined;
     tags: string[];
     votes: number;
+    guildCount?: number;
 }) {
     return <div className="relative overflow-hidden bg-card w-full h-full p-6 rounded-xl cursor-pointer">
         <div className="relative z-[2]">
@@ -41,7 +42,7 @@ export default function BotCard({ id, avatar, name, votes, tags, shortDescriptio
                             </h3>
                             {certified && <AsteriskIcon className="w-5 text-primary" />}
                         </div>
-                        <Link href={`/bot/${id}/vote`} className={badgeVariants({ className: "text-muted-foreground", variant: "secondary" })}>
+                        <Link href={`/bot/${id}/vote`} className={badgeVariants({ className: "text-muted-foreground", variant: "secondary", })}>
                             <ChevronUp className="mr-1 w-4" /> {votes}
                         </Link>
                     </div>
@@ -51,6 +52,10 @@ export default function BotCard({ id, avatar, name, votes, tags, shortDescriptio
             <p className="text-secondary-foreground text-sm mt-1 line-clamp-4 text-wrap break-words h-20">
                 {shortDescription}
             </p>
+            <div className="flex flex-row items-center gap-1 text-xs text-muted-foreground">
+                <ServerIcon className="w-3 h-3" />
+                {guildCount}
+            </div>
             <div className="flex items-center gap-2 mt-4">
                 <Link href={`/bot/${id}`} className={buttonVariants({ className: "w-full", variant: "default" })}>View</Link>
                 <Button className="w-full" variant={"secondary"}>Invite</Button>

@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
 
     console.log(cookie, token.token.access_token)
 
-    const res = NextResponse.redirect(new URL("/", req.url));
+    const res = NextResponse.redirect(new URL("/api/auth/success", req.url));
     res.headers.append("Set-Cookie", cookie);
 
     return res;

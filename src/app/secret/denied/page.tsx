@@ -3,7 +3,7 @@
 import LoadingScreen from "@/components/shared/common/loading-screen";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BotStatus, useApproveBotMutation, useDeleteBotMutation, usePanelBotsQuery } from "@/lib/apollo/types";
+import { BotStatus, useApproveBotMutation, usePanelBotsQuery, useRemoveBotMutation } from "@/lib/apollo/types";
 import { avatar } from "@/lib/utils";
 import { ArrowLeftIcon, CheckIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
@@ -18,11 +18,11 @@ export default function Page() {
     })
 
     const [approve, approveResult] = useApproveBotMutation()
-    const [remove, removeResult] = useDeleteBotMutation()
+    const [remove, removeResult] = useRemoveBotMutation()
 
     useEffect(() => {
         if (approveResult.called && !approveResult.loading) {
-            toast(`Approved ${approveResult.data?.approveBot.name} successfully.`)
+            toast.success(`Approved ${approveResult.data?.approveBot.name}`)
             refetch()
             approveResult.reset()
         }
@@ -30,7 +30,7 @@ export default function Page() {
 
     useEffect(() => {
         if (removeResult.called && !removeResult.loading) {
-            toast(`Deleted ${removeResult.data?.deleteBot.name} successfully.`)
+            toast.success(`Deleted ${removeResult.data?.removeBot.name}`)
             refetch()
             removeResult.reset()
         }
@@ -51,7 +51,7 @@ export default function Page() {
                                     <p>{bot.name}</p>
                                 </div>
                                 <div className="flex gap-1 items-center">
-                                    <Button size={"icon"} onClick={() => approve({ variables: { id: bot.id } })}>
+                                    <Button size={"icon"} onClick={() => approve({ variables: { approveBotId: bot.id } })}>
                                         <CheckIcon className="w-5 h-5" />
                                     </Button>
                                     <Button variant={"destructive"} size={"icon"} onClick={() => remove({ variables: { id: bot.id } })}>
