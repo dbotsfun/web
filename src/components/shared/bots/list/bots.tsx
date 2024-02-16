@@ -1,16 +1,8 @@
+import { BotCardProps } from "@/lib/types/bots";
 import Card from "../cards/normal";
 
 interface BotsProps {
-    bots: {
-        id: string;
-        name: string;
-        avatar?: string | null | undefined;
-        certified: boolean;
-        shortDescription?: string | null | undefined;
-        tags: string[];
-        votes: number;
-        guildCount?: number;
-    }[];
+    bots: BotCardProps[];
 }
 
 export default function Bots({ bots }: BotsProps) {

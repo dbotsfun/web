@@ -1,22 +1,13 @@
 import { badgeVariants } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { BotCardProps } from "@/lib/types/bots";
 import { avatar as av } from "@/lib/utils";
 import { AsteriskIcon, ChevronUp, ServerIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "../../../../../public/icon.png"
 
-export default function BotCard({ id, avatar, name, votes, tags, shortDescription, certified, guildCount }: {
-    __typename?: "BotObject" | undefined;
-    id: string;
-    name: string;
-    avatar?: string | null | undefined;
-    certified: boolean;
-    shortDescription?: string | null | undefined;
-    tags: string[];
-    votes: number;
-    guildCount?: number;
-}) {
+export default function BotCard({ id, avatar, name, votes, tags, shortDescription, certified, guildCount }: BotCardProps) {
     return <div className="relative overflow-hidden bg-card w-full h-full p-6 rounded-xl cursor-pointer">
         <div className="relative z-[2]">
             <div className="flex items-center mb-4 gap-4">

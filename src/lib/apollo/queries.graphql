@@ -16,6 +16,19 @@ query Tags {
   }
 }
 
+query User($userId: ID!) {
+  user(id: $userId) {
+    avatar
+    badges {
+      description
+      id
+    }
+    bio
+    id
+    username
+  }
+}
+
 query Bots {
     bots {
       nodes {

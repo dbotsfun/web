@@ -186,7 +186,7 @@
 
   /* LIMITED THEMES START */
   [data-theme="valentine"] {
-    --card: 340 67% 99%;
+    --card: 340 39% 3%;
     --ring: 340 70% 57%;
     --input: 220 13% 91%;
     --muted: 340 6% 93%;
@@ -209,7 +209,7 @@
   }
 
   [data-theme="valentine"].dark {
-    --card: 340 54% 1%;
+    --card: 340 39% 3%;
     --ring: 340 70% 57%;
     --input: 215 27.9% 16.9%;
     --muted: 340 6% 7%;
@@ -234,7 +234,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-accent;
   }
   body {
     @apply bg-background text-foreground;

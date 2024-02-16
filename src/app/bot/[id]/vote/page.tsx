@@ -10,7 +10,8 @@ import { APIErrorMessages } from "@/lib/api/messages";
 import { useBotQuery, useVoteBotMutation, useVoteCheckQuery } from "@/lib/apollo/types";
 import { useSession } from "@/lib/hooks/useSession";
 import { avatar } from "@/lib/utils";
-import { ArrowLeftIcon, ChevronUpIcon } from "lucide-react";
+import { ArrowLeftIcon, ChevronUpIcon, ServerIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { useEffect } from "react";
@@ -22,7 +23,7 @@ export default function Page({ params }: { params: { id: string } }) {
         variables: { id: params.id }
     })
 
-    const { data: check, refetch: checkRefetch } = useVoteCheckQuery({
+    const { data: check, refetch: checkRefetch, loading: checking } = useVoteCheckQuery({
         variables: { id: params.id }
     })
     const [vote, result] = useVoteBotMutation({
@@ -52,24 +53,45 @@ export default function Page({ params }: { params: { id: string } }) {
 
     bot = bot!
     return (
-        <div className="flex flex-col h-[50vh] justify-center">
-            <div className="bg-secondary p-5 rounded-xl border border-accent w-full lg:w-1/2 mx-auto">
-                <div className="flex flex-col lg:flex-row justify-between items-center">
-                    <div className="flex flex-col lg:flex-row items-center gap-5">
-                        <img src={avatar(bot.avatar, bot.id)} alt="avatar" className="w-20 rounded-full ring-offset-1 ring-offset-background ring-ring ring-2" />
-                        <div className="flex flex-col items-center lg:items-start">
-                            <span className="text-xs font-semibold text-muted-foreground uppercase">{hasVoted ? "Voted" : "Voting"} for...</span>
-                            <h1 className="text-2xl font-bold">{bot!.name}</h1>
-                            <div className="font-semibold flex items-center gap-1 text-muted-foreground">
-                                {bot.votes} <ChevronUpIcon className="w-4 h-4" />
+        <div className="flex items-center justify-center h-[60vh]">
+            <div className="max-w-xl flex flex-col items-center w-full">
+                <div className="flex flex-col items-center w-full mt-5 md:mx-auto py-7 px-10 rounded-xl bg-card">
+                    <div className="flex-col sm:flex-row items-center flex justify-between w-full">
+                        <div className="flex flex-col w-full md:w-auto md:items-center md:flex-row">
+                            <div className="flex-shrink-0 md:mr-6">
+                                <Image src={avatar(bot.avatar, bot.id)} width={96} height={96} alt="avatar" className="w-24 rounded-full ring-offset-1 ring-offset-background ring-ring ring-2" />
+                            </div>
+                            <div className="flex-col  flex">
+                                <h1 className="mt-3 mb-1 md:mt-0 md:mb-0 text-2xl font-semibold">
+                                    {bot.name}
+                                </h1>
+                                <div className="flex text-sm text-muted-foreground">
+                                    <div className="flex items-center mt-2 gap-4">
+                                        <div className="flex items-center font-medium">
+                                            <ServerIcon className="mr-1 w-4 h-4" />
+                                            {bot.guildCount}
+                                        </div>
+                                        <div className="flex items-center font-medium">
+                                            <ChevronUpIcon className="mr-1 w-4 h-4" />
+                                            {bot.votes}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>{" "}
+                        <div className="flex flex-col items-center w-full mt-2 rounded-md md:w-auto md:mt-0">
+                            <div className="w-full text-center md:w-full">
+                                {checking ? <Loader /> : hasVoted ? <p>You voted!</p> : <Button onClick={() => vote()} size={"lg"}>Vote now</Button>}
                             </div>
                         </div>
                     </div>
-                    {loading ? <Loader /> : hasVoted ? null : <Button onClick={() => vote()} size={"lg"}>Vote for {bot!.name}</Button>}
                 </div>
-                {result.error && <p className="text-destructive mt-2">{result.error.message}</p>}
+                {hasVoted && <div className="flex animate-in fade-in slide-in-from-bottom flex-col w-full mt-5 py-7 px-10 md:mx-auto rounded-xl bg-card">
+                    <h3 className="text-xl font-semibold text-card-foreground">Thanks for voting {bot.name}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">Come back tomorrow to vote again!</p>
+                </div>}
+                <Link href={`/bot/${bot!.id}`} className={buttonVariants({ variant: "ghost", className: "w-min mx-auto my-5" })}><ArrowLeftIcon className="w-5 h-5 mr-2" />Return to {bot!.name}</Link>
             </div>
-            <Link href={`/bot/${bot!.id}`} className={buttonVariants({ variant: "secondary", className: "w-min mx-auto my-5" })}><ArrowLeftIcon className="w-5 h-5 mr-2" />Return to {bot!.name}</Link>
         </div>
     )
 }
