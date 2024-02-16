@@ -48,7 +48,6 @@ export function Settings() {
                 <DropdownMenuRadioItem value="pine">Pine</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="berry">Berry</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="valentine">Valentine</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="unruly">Unruly</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
         </DropdownMenuContent>
     </DropdownMenu>
