@@ -1,23 +1,32 @@
 "use client";
 
-import Tags from "@/components/shared/bots/list/tags"
 import BotDangerZone from "@/components/shared/bots/sections/panel/danger";
 import BotDeveloper from "@/components/shared/bots/sections/panel/developer";
 import BotWebhooks from "@/components/shared/bots/sections/panel/webhooks";
-import Ad from "@/components/shared/common/ad";
 import LoadingScreen from "@/components/shared/common/loading-screen";
+import MD from "@/components/shared/common/md";
+import TagButton from "@/components/shared/common/tag-button";
 import Policy from "@/components/shared/policy";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import AnimatedNumber from "@/components/ui/animated-number";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { useBotQuery } from "@/lib/apollo/types";
 import { useSession } from "@/lib/hooks/useSession";
 import { avatar } from "@/lib/utils"
-import { AlertTriangleIcon, ChevronUpIcon, FlagIcon, InfoIcon, MessageCircleMoreIcon, MessageCircleOffIcon, MoreHorizontalIcon, PlusIcon, Settings2Icon, SlashSquareIcon } from "lucide-react"
+import { ChatBubbleLeftRightIcon, CheckCircleIcon, ChevronUpIcon, Cog6ToothIcon, EllipsisHorizontalIcon, FlagIcon, InformationCircleIcon, PaperAirplaneIcon, PlusIcon, StarIcon } from "@heroicons/react/20/solid";
+import { Tab, Tabs } from "@nextui-org/tabs"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+
+/**
+ * <Badge className="bg-gradient-to-r text-white group from-purple-500 h-6 to-indigo-500"><img alt="dlist.gg" src="/ext/dlistgg.svg" className="h-4 w-4 group-hover:mr-2 duration-150" />
+                                <p className="group-hover:flex hidden">Imported from dlist.gg</p>
+                            </Badge>
+ */
 
 export default function Page({ params }: { params: { id: string } }) {
     const { data: user } = useSession()
@@ -37,12 +46,10 @@ export default function Page({ params }: { params: { id: string } }) {
         <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-3 lg:flex-row w-full justify-between items-center py-5">
                 <div className="flex flex-col lg:flex-row gap-5 items-center">
-                    <img src={avatar(bot.avatar, bot.id)} alt="avatar" className="w-24 rounded-full ring-offset-1 ring-offset-background ring-ring ring-2" />
+                    <img src={avatar(bot.avatar, bot.id)} alt="avatar" className="w-24 rounded-xl ring-secondary ring-4 drop-shadow-2xl" />
                     <div className="flex flex-col lg:items-start items-center gap-1">
-                        <h1 className="mr-3 md:text-3xl text-2xl font-semibold">
-                            {bot.name} <Badge className="bg-gradient-to-r text-white group from-purple-500 h-6 to-indigo-500"><img alt="dlist.gg" src="/ext/dlistgg.svg" className="h-4 w-4 group-hover:mr-2 duration-150" />
-                                <p className="group-hover:flex hidden">Imported from dlist.gg</p>
-                            </Badge>
+                        <h1 className="mr-3 md:text-3xl text-2xl flex gap-2 items-center font-semibold">
+                            {bot.name} {bot.certified && <CheckCircleIcon className="w-8 text-primary" />}
                         </h1>
                         <p className="text-muted-foreground lg:text-start text-center">{bot.shortDescription}</p>
                     </div>
@@ -52,56 +59,92 @@ export default function Page({ params }: { params: { id: string } }) {
                     <Link href={`/bot/${bot.id}/vote`} className={buttonVariants({ size: "lg", variant: "secondary", className: "w-full lg:w-min" })}><ChevronUpIcon className="w-5 h-5 mr-2" />Vote</Link>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant={"secondary"} className="h-11 w-11" size={"icon"}>
-                                <MoreHorizontalIcon className="w-5 h-5" />
+                            <Button variant={"outline"} className="h-10 w-10" size={"icon"}>
+                                <EllipsisHorizontalIcon className="w-5 h-5" />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent>
+                        <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Extra options</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem className="hover:!bg-destructive hover:!text-destructive-foreground"><FlagIcon fill="currentColor" className="w-4 h-4 mr-2" />Report {bot.name}</DropdownMenuItem>
+                            <DropdownMenuItem className="hover:!bg-destructive hover:!text-destructive-foreground"><FlagIcon className="w-4 h-4 mr-2" />Report {bot.name}</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
             </div>
             <div className="w-full flex flex-col lg:flex-row justify-between gap-24">
-                <Tabs orientation="horizontal" defaultValue="overview" className="w-full">
-                    <TabsList>
-                        <TabsTrigger value="overview"><InfoIcon className="w-4 h-4 mr-2" />Overview</TabsTrigger>
-                        <TabsTrigger value="commands"><SlashSquareIcon className="w-4 h-4 mr-2" />Commands</TabsTrigger>
-                        <TabsTrigger value="reviews"><MessageCircleMoreIcon className="w-4 h-4 mr-2" />Reviews</TabsTrigger>
-                        <Policy policy={isOwner}><TabsTrigger value="manage"><Settings2Icon className="w-4 h-4 mr-2" />Manage</TabsTrigger></Policy>
-                    </TabsList>
-                    <TabsContent value="overview" className="">
-                        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: i dont give a fuck */}
-                        <div dangerouslySetInnerHTML={{ __html: bot.description! }} />
-                    </TabsContent>
-                    <TabsContent value="commands">
-                        <Alert variant={"destructive"}>
-                            <AlertTriangleIcon className="h-4 w-4" />
-                            <AlertTitle>Oops...</AlertTitle>
-                            <AlertDescription>
-                                This section is under development at the moment, come back later!
-                            </AlertDescription>
-                        </Alert>
-                    </TabsContent>
-                    <TabsContent value="reviews">
-                        <div className="h-56 flex flex-col justify-center">
-                            <div className="flex flex-col gap-3 w-max mx-auto">
-                                <div className="flex w-min mx-auto items-center justify-center p-5 rounded-full bg-accent">
-                                    <MessageCircleOffIcon className="text-accent-foreground w-6 h-6" />
+                <div className="w-full">
+                    <Tabs variant="underlined" className="w-full" defaultSelectedKey={"Overview"} classNames={{
+                        tabList: "gap-6 w-full relative rounded-none p-0 border-b border-divider",
+                        cursor: "w-full bg-primary",
+                        tab: "max-w-fit px-0 h-12",
+                        tabContent: "group-data-[selected=true]:text-primary"
+                    }}>
+                        <Tab title={<div className="flex flex-row items-center gap-2"><InformationCircleIcon className="w-4 h-4" />Overview</div>}>
+                            <MD content={bot.description!} />
+                        </Tab>
+                        <Tab title={<div className="flex flex-row items-center gap-2"><ChatBubbleLeftRightIcon className="w-4 h-4" />Reviews</div>}>
+                            <div className="flex flex-col lg:flex-row gap-12">
+                                <div className="w-1/2 flex flex-col p-6">
+                                    <h3 className="text-xl font-bold">Rating</h3>
+                                    <div className="flex flex-col gap-3">
+                                        {[...Array(5)].map((_, i) =>
+                                            <div className="flex items-center gap-2">
+                                                <div className="flex items-center gap-2 text-lg">
+                                                    <p className="font-bold">{i + 1}</p>
+                                                    <StarIcon fill="currentColor" className="w-5 h-5 text-amber-500" />
+                                                </div>
+                                                <Progress className="w-full h-2" value={100} />
+                                                <p className="text-muted-foreground text-sm font-medium w-12 text-right">40%</p>
+                                            </div>).reverse()}
+                                    </div>
                                 </div>
-                                <p className="text-muted-foreground">No reviews at the moment</p>
+                                <div className="flex flex-col w-full h-full">
+                                    <Policy policy={!!user?.me.user}>
+                                        <div className="flex gap-6 w-full mt-5">
+                                            <img src={avatar(user?.me.user.avatar, user?.me.user.id!)} alt="" className="w-14 h-14 rounded-full" />
+                                            <div className="flex flex-col justify-center w-full space-y-2">
+                                                <div>
+                                                    <h3 className="text-lg font-semibold text-white">simxnet</h3>
+                                                </div>
+                                                <div className="relative ">
+                                                    <Textarea
+                                                        placeholder="Please be respectful"
+                                                        autoComplete="off"
+                                                        className="h-full w-full resize-none"
+                                                        rows={6}
+                                                        maxLength={1000}
+                                                    />
+                                                    <div className="flex flex-col mt-2" />
+                                                </div>
+                                                <div className="flex gap-2 justify-between">
+                                                    <div className="flex gap-2">
+                                                        <p className="text-muted-foreground">0/1000</p>
+                                                    </div>
+                                                    <Button disabled aria-disabled>Send <PaperAirplaneIcon className="ml-2 w-5 h-5" /></Button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Separator className="my-5" />
+                                    </Policy>
+                                    <div className="h-36 w-full flex flex-col justify-center">
+                                        <div className="flex flex-col gap-3 w-max mx-auto">
+                                            <div className="flex w-min mx-auto items-center justify-center p-5 rounded-full bg-accent">
+                                                <ChatBubbleLeftRightIcon className="text-accent-foreground w-6 h-6" />
+                                            </div>
+                                            <p className="text-muted-foreground">No reviews at the moment</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </TabsContent>
-                    <TabsContent value="manage" className="flex flex-col gap-4">
-                        <BotDeveloper />
-                        <BotWebhooks />
-                        <BotDangerZone name={bot.name} id={bot.id} />
-                    </TabsContent>
-                </Tabs>
-                <div className="w-1/3 flex flex-col justify-between sticky">
+                        </Tab>
+                        {isOwner && <Tab title={<div className="flex flex-row items-center gap-2"><Cog6ToothIcon className="w-4 h-4" />Manage</div>} className="flex flex-col gap-4">
+                            <BotDeveloper />
+                            <BotWebhooks />
+                            <BotDangerZone name={bot.name} id={bot.id} />
+                        </Tab>}
+                    </Tabs>
+                </div>
+                <div className="w-1/4 flex flex-col justify-between sticky">
                     <div className="flex flex-col gap-3 h-80 sticky">
                         <div className="flex flex-col gap-2">
                             <h1 className="text-3xl font-black">Information</h1>
@@ -111,21 +154,24 @@ export default function Page({ params }: { params: { id: string } }) {
                             </div>
                             <div className="flex flex-row justify-between">
                                 <h1 className="text-base font-bold text-secondary-foreground">Votes</h1>
-                                <h1 className="text-base font-normal text-muted-foreground">{bot.votes}</h1>
+                                <h1 className="text-base font-normal text-muted-foreground">
+                                    <AnimatedNumber value={bot.votes} />
+                                </h1>
                             </div>
                             <div className="flex flex-row justify-between">
                                 <h1 className="text-base font-bold text-secondary-foreground">Guilds</h1>
-                                <h1 className="text-base font-normal text-muted-foreground">{bot.guildCount ?? "Not provided"}</h1>
+                                <h1 className="text-base font-normal text-muted-foreground">
+                                    <AnimatedNumber value={bot.guildCount ?? 0} />
+                                </h1>
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">
                             <h1 className="text-3xl font-black">Tags</h1>
-                            <div className="flex flex-row gap-2">
-                                <Tags tags={bot.tags} />
+                            <div className="flex flex-row gap-1">
+                                {bot.tags.map(t => <TagButton tag={t} />)}
                             </div>
                         </div>
                     </div>
-                    <Ad />
                 </div>
             </div>
         </div>

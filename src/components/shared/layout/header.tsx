@@ -2,7 +2,8 @@
 
 import { useSession } from "@/lib/hooks/useSession";
 import { cn } from "@/lib/utils";
-import { HomeIcon, Loader2Icon, PlusCircleIcon, SearchIcon } from "lucide-react";
+import { HomeIcon, MagnifyingGlassIcon, PlusCircleIcon } from "@heroicons/react/20/solid";
+import { Loader2Icon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import LoginButton from "../common/login-button";
@@ -25,7 +26,7 @@ export default function Header() {
                         Home
                     </Link>
                     <Link className="text-muted-foreground hover:text-primary text-xs flex items-center gap-1" href="/explore">
-                        <SearchIcon className="w-4 h-4" />
+                        <MagnifyingGlassIcon className="w-4 h-4" />
                         Explore
                     </Link>
                     <Link className="text-muted-foreground hover:text-primary text-xs flex items-center gap-1" href="/bot/add">

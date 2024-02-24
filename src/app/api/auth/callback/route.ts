@@ -2,7 +2,7 @@ import { apolloClient } from "@/lib/apollo/client";
 import { Mutation } from "@/lib/apollo/types";
 import { gql } from "@apollo/client";
 import { serialize } from "cookie";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     const query = req.nextUrl.searchParams;

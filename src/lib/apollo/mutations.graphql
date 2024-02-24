@@ -33,10 +33,22 @@ mutation ApproveBot($approveBotId: ID!) {
   }
 }
 
+mutation ImportBot($input: ImpotBotInput!) {
+  importBot(input: $input) {
+    id
+    name
+    status
+  }
+}
+
 mutation Token($token: String!) {
   token(input: { token: $token }) {
     expires_in
     access_token
     refresh_token
   }
+}
+
+mutation RevokeToken {
+  revokeToken
 }

@@ -12,6 +12,9 @@ query Tags {
   tags {
     nodes {
       name
+      bots {
+        totalCount
+      }
     }
   }
 }
@@ -56,11 +59,12 @@ query ExploreBots($filters: GetBotFormInput) {
       votes
       guildCount
     }
+    totalCount
   }
 }
 
 query BotCount {
-  bots {
+  bots(filters: { }) {
     totalCount
   }
 }
@@ -90,8 +94,12 @@ query Bot($id: ID!) {
 }
 
 query VoteCheck($id: ID!) {
-    voteCheck(id: $id)
+  voteCheck(id: $id) {
+    voted
+    expires
+  }
 }
+
 
 query FrontBots {
     voted: bots(first: 4, filters: { orderBy: { direction: desc, field: votes } }) {

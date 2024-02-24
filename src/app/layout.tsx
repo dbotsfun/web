@@ -5,13 +5,13 @@ import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils"
 import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next'
-import { Inter as FontSans } from "next/font/google";
+import { DM_Sans as FontSans } from "next/font/google";
 import '../style/globals.css'
 
 export const metadata: Metadata = {
   title: "discordbots | Public botlist",
   description: "Browse hundreds of bots made for your community.",
-  icons: ["/icon.png"]
+  icons: ["/favicon.ico"]
 }
 
 const font = FontSans({
@@ -37,7 +37,7 @@ export default function RootLayout({
           <main className="py-3 px-8 lg:px-28 mt-24">
             {children}
           </main>
-          <Toaster richColors />
+          <Toaster className="select-none active:cursor-grabbing cursor-pointer" position="top-right" richColors />
           <Footer />
         </Providers>
         <Analytics />

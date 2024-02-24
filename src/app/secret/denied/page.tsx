@@ -1,20 +1,21 @@
 "use client";
 
 import LoadingScreen from "@/components/shared/common/loading-screen";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BotStatus, useApproveBotMutation, usePanelBotsQuery, useRemoveBotMutation } from "@/lib/apollo/types";
 import { avatar } from "@/lib/utils";
-import { ArrowLeftIcon, CheckIcon, Trash2Icon } from "lucide-react";
-import Link from "next/link";
+import { CheckIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
 export default function Page() {
-    const { data: pending, loading, refetch } = usePanelBotsQuery({
+    const { data: denied, loading, refetch } = usePanelBotsQuery({
         variables: {
             status: BotStatus.Denied
-        }
+        },
+        fetchPolicy: "no-cache"
     })
 
     const [approve, approveResult] = useApproveBotMutation()
@@ -26,43 +27,54 @@ export default function Page() {
             refetch()
             approveResult.reset()
         }
+
+        if (approveResult.error) toast.error(approveResult.error.message)
     }, [approveResult.called, approveResult.loading])
 
     useEffect(() => {
-        if (removeResult.called && !removeResult.loading) {
+        if (removeResult.called && !removeResult.loading && !removeResult.error) {
             toast.success(`Deleted ${removeResult.data?.removeBot.name}`)
             refetch()
             removeResult.reset()
         }
+
+        if (removeResult.error) toast.error(removeResult.error.message)
     }, [removeResult.called, removeResult.loading])
-    return (
-        <div className="flex flex-col gap-3">
-            <Card>
-                <CardHeader>
-                    <Link href="/secret" className="text-xs uppercase font-bold text-muted-foreground flex items-center"><ArrowLeftIcon className="mr-2 w-4 h-4" /> Back</Link>
-                    <CardTitle>Pending bots</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {loading ? <LoadingScreen /> : (
-                        <div className="flex flex-col gap-3">
-                            {pending?.bots.nodes?.length ? pending.bots.nodes.map(bot => <div className="flex w-full justify-between items-center">
-                                <div className="flex gap-2 items-center">
-                                    <img src={avatar(bot.avatar, bot.id)} alt="bot" className="rounded-full ring ring-accent w-9 h-9" />
-                                    <p>{bot.name}</p>
-                                </div>
-                                <div className="flex gap-1 items-center">
-                                    <Button size={"icon"} onClick={() => approve({ variables: { approveBotId: bot.id } })}>
-                                        <CheckIcon className="w-5 h-5" />
-                                    </Button>
-                                    <Button variant={"destructive"} size={"icon"} onClick={() => remove({ variables: { id: bot.id } })}>
-                                        <Trash2Icon className="w-5 h-5" />
-                                    </Button>
-                                </div>
-                            </div>) : <p>No rejected bots</p>}
+    return loading ? <LoadingScreen /> : denied?.bots.nodes?.length ? <Table>
+        <TableCaption>Current denied bots</TableCaption>
+        <TableHeader>
+            <TableRow>
+                <TableHead className="w-[100px]">Name</TableHead>
+                <TableHead>Owner</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+        </TableHeader>
+        <TableBody>
+            {denied.bots.nodes.map((bot) => (
+                <TableRow key={bot.id}>
+                    <TableCell className="font-medium w-56">
+                        <div className="flex flex-row gap-2 items-center">
+                            <Avatar>
+                                <AvatarImage src={avatar(bot.avatar, bot.id)} />
+                            </Avatar>
+                            {bot.name}
                         </div>
-                    )}
-                </CardContent>
-            </Card>
-        </div>
-    )
+                    </TableCell>
+                    <TableCell>No one</TableCell>
+                    <TableCell>Denied</TableCell>
+                    <TableCell className="justify-end flex"><div className="flex gap-1 items-center">
+                        <Button size={"icon"} variant={"secondary"} onClick={() => approve({ variables: { approveBotId: bot.id } })}>
+                            <CheckIcon className="w-5 h-5" />
+                        </Button>
+                        <Button variant={"secondary"} size={"icon"} onClick={() => remove({ variables: { id: bot.id } })}>
+                            <TrashIcon className="w-5 h-5" />
+                        </Button>
+                    </div></TableCell>
+                </TableRow>
+            ))}
+        </TableBody>
+    </Table> : <div className="flex flex-col h-full items-center justify-center">
+        No denied bots
+    </div>
 }

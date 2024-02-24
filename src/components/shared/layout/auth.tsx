@@ -1,11 +1,13 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useRevokeTokenMutation } from "@/lib/apollo/types";
 import { avatar } from "@/lib/utils";
-import { Settings2Icon, UserCog2Icon } from "lucide-react";
+import { ArrowLeftStartOnRectangleIcon, Cog6ToothIcon, UserIcon } from "@heroicons/react/20/solid";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import Policy from "../policy";
 
 interface AuthProps {
@@ -16,27 +18,40 @@ interface AuthProps {
 
 export default function Auth({ username, id, avatarId }: AuthProps) {
     const router = useRouter()
+    const [logout, logoutResult] = useRevokeTokenMutation()
+
+    useEffect(() => {
+        if (logoutResult.called) router.push("/")
+    })
     return <DropdownMenu>
         <DropdownMenuTrigger asChild>
-            <Button size="lg" variant={"ghost"} className="flex flex-row gap-3 items-center px-4">
+            <div className="flex flex-row gap-2 items-center cursor-pointer hover:opacity-60 duration-150 ml-3">
                 <Avatar>
                     <AvatarImage src={avatar(avatarId, id)} />
-                    <AvatarFallback>{username}</AvatarFallback>
+                    <AvatarFallback>{username.substring(0, 2).toUpperCase()}</AvatarFallback>
                 </Avatar>
-                <h3 className="text-md font-bold">{username}</h3>
-            </Button>
+                <h3 className="text-xs font-bold">{username}</h3>
+            </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-64" align="end">
             <DropdownMenuLabel>User</DropdownMenuLabel>
-            <DropdownMenuItem>
-                <UserCog2Icon className="w-4 mr-2" /> {username}
-            </DropdownMenuItem>
+            <Link href={`/user/${id}`}>
+                <DropdownMenuItem>
+                    <UserIcon className="w-4 mr-2" /> {username}
+                </DropdownMenuItem>
+            </Link>
             <Policy policy={id === "1076700780175831100"}>
+                <DropdownMenuSeparator />
                 <DropdownMenuLabel>Admin</DropdownMenuLabel>
                 <DropdownMenuItem onClick={() => router.push("/secret")}>
-                    <Settings2Icon className="w-4 mr-2" /> Secret panel
+                    <Cog6ToothIcon className="w-4 mr-2" /> Secret panel
                 </DropdownMenuItem>
             </Policy>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Danger</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => logout()}>
+                <ArrowLeftStartOnRectangleIcon className="w-4 mr-2" /> Logout
+            </DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>
 }

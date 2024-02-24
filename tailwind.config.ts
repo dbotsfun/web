@@ -1,10 +1,12 @@
+import { nextui } from "@nextui-org/theme"
 import type { Config } from 'tailwindcss'
 import { fontFamily } from "tailwindcss/defaultTheme";
 
 const config: Config = {
   darkMode: ["class"],
   content: [
-    './src/**/*.{ts,tsx}',
+    "./src/**/*.{ts,tsx}",
+    "./node_modules/@nextui-org/theme/dist/components/tabs.js"
   ],
   prefix: "",
   theme: {
@@ -75,7 +77,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), nextui()],
 }
 
 export default config

@@ -2,7 +2,7 @@
 
 import LoadingScreen from "@/components/shared/common/loading-screen";
 import { useSession } from "@/lib/hooks/useSession";
-import { CheckIcon, XIcon } from "lucide-react";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 
 export default function Page() {
     const { data: auth, loading } = useSession()
@@ -19,7 +19,7 @@ export default function Page() {
         </div>
     </div> : <div className="flex flex-col justify-center items-center h-screen">
         <div className="flex flex-col gap-2 items-center">
-            <XIcon className="w-12 h-12 text-destructive" />
+            <XMarkIcon className="w-12 h-12 text-destructive" />
             <h2 className="text-2xl font-semibold">Something went wrong</h2>
             <h2 className="text-xl font-normal">This window will close automatically</h2>
         </div>

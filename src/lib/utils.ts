@@ -15,16 +15,18 @@ export function avatar(
     : "https://cdn.discordapp.com/embed/avatars/2.png";
 }
 
-export function formatMilliseconds(ms: number): string {
-  const seconds = Math.floor(ms / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
+export function formatMilliseconds(ms: number) {
+  let minutes = Math.floor((ms / (1000 * 60)) % 60)
+  let hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
 
-  const formattedHours = hours > 0 ? `${hours}h ` : '';
-  const formattedMinutes = minutes % 60 > 0 ? `${minutes % 60}m ` : '';
-  const formattedSeconds = seconds % 60 > 0 ? `${seconds % 60}s` : '';
+  hours = (hours < 10) ? Number(`0${hours}`) : hours;
+  minutes = (minutes < 10) ? Number(`0${minutes}`) : minutes;
 
-  return formattedHours + formattedMinutes + formattedSeconds;
+  return `${hours}h ${minutes}m`;
+}
+
+export function capitalize(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 export type AvatarSizes = 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096;

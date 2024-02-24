@@ -14,7 +14,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { BrushIcon, MoonIcon, SunIcon } from "lucide-react";
+import { MoonIcon, PaintBrushIcon, SunIcon } from "@heroicons/react/20/solid";
 import { useLocalStorage } from "react-use";
 
 export function Settings() {
@@ -26,8 +26,8 @@ export function Settings() {
     }, [color])
     return <DropdownMenu>
         <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-11 h-11" size="icon">
-                <BrushIcon className="w-4" />
+            <Button variant="outline" size="icon">
+                <PaintBrushIcon className="w-4" />
             </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-64" align="end">
