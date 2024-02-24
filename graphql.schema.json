@@ -3679,6 +3679,29 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "StatusChangedSubscriptionInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "status",
+            "description": "The status of the bot to filter by",
+            "type": {
+              "kind": "ENUM",
+              "name": "BotStatus",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "SCALAR",
         "name": "String",
         "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
@@ -3698,11 +3721,11 @@
             "description": "Subscribe to bot status changes",
             "args": [
               {
-                "name": "status",
+                "name": "filter",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
+                  "kind": "INPUT_OBJECT",
+                  "name": "StatusChangedSubscriptionInput",
                   "ofType": null
                 },
                 "defaultValue": null,

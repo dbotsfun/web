@@ -54,10 +54,8 @@ export async function GET(req: NextRequest) {
         );
     }
 
-    const expiresInMilliseconds = token.token.expires_in * 1000;
-
     const cookie = serialize("session", token.token.access_token, {
-        expires: new Date(Date.now() + expiresInMilliseconds),
+        expires: new Date(Date.now() + token.token.expires_in),
         httpOnly: process.env.NODE_ENV === "development" ? false : true, // do not set the 'true' if in 'dev'
         secure: process.env.NODE_ENV === "development" ? false : true, // do not set the 'true' if in 'dev'
         path: "/",

@@ -573,6 +573,11 @@ export type SnowFlakeInput = {
   id: Scalars['ID']['input'];
 };
 
+export type StatusChangedSubscriptionInput = {
+  /** The status of the bot to filter by */
+  status?: InputMaybe<BotStatus>;
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   /** Subscribe to bot status changes */
@@ -581,7 +586,7 @@ export type Subscription = {
 
 
 export type SubscriptionBotStatusChangedArgs = {
-  status?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<StatusChangedSubscriptionInput>;
 };
 
 export type TagObject = {
@@ -843,6 +848,7 @@ export type ResolversTypes = {
   ReviewObjectEdge: ResolverTypeWrapper<ReviewObjectEdge>;
   ReviewsConnection: ResolverTypeWrapper<ReviewsConnection>;
   SnowFlakeInput: SnowFlakeInput;
+  StatusChangedSubscriptionInput: StatusChangedSubscriptionInput;
   Subscription: ResolverTypeWrapper<{}>;
   TagObject: ResolverTypeWrapper<TagObject>;
   TagObjectEdge: ResolverTypeWrapper<TagObjectEdge>;
@@ -894,6 +900,7 @@ export type ResolversParentTypes = {
   ReviewObjectEdge: ReviewObjectEdge;
   ReviewsConnection: ReviewsConnection;
   SnowFlakeInput: SnowFlakeInput;
+  StatusChangedSubscriptionInput: StatusChangedSubscriptionInput;
   Subscription: {};
   TagObject: TagObject;
   TagObjectEdge: TagObjectEdge;
