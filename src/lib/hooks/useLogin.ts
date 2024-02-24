@@ -6,7 +6,7 @@ export function login() {
     const top = (screen.height - newWindowHeight) / 2;
 
     const w = window.open(
-        'http://localhost:3000/api/auth/login',
+        `${process.env.NEXT_PUBLIC_URL}/api/auth/login`,
         '_blank',
         `width=${newWindowWidth},height=${newWindowHeight},left=${left},top=${top}`
     );
