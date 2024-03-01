@@ -3,8 +3,9 @@
 import LoadingScreen from "@/components/shared/common/loading-screen";
 import { Button } from "@/components/ui/button"
 import { useSession } from "@/lib/hooks/use-session";
-import { CheckCircleIcon, ClockIcon, HomeModernIcon, XMarkIcon } from "@heroicons/react/20/solid"
-import { notFound, usePathname, useRouter } from "next/navigation";
+import { GlobeAltIcon, HomeModernIcon } from "@heroicons/react/20/solid"
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default function PanelLayout({
     children,
@@ -12,11 +13,9 @@ export default function PanelLayout({
     children: React.ReactNode
 }) {
     const { data: auth, loading } = useSession()
-    const path = usePathname();
-    const router = useRouter();
 
     if (!loading && !auth) return notFound()
-    return loading ? <LoadingScreen /> : <div className="flex lg:flex-row flex-col gap-5">
+    return loading ? <LoadingScreen /> : <div className="flex lg:flex-row flex-col gap-5 h-full">
         <div className={"pb-12 w-1/4 bg-card h-full rounded-lg sticky top-24"}>
             <div className="space-y-4 py-4">
                 <div className="px-3 py-2">
@@ -24,28 +23,17 @@ export default function PanelLayout({
                         General
                     </h2>
                     <div className="flex flex-col gap-1">
-                        <Button onClick={() => router.push("/secret")} variant={path === "/secret" ? "secondary" : "ghost"} className="w-full justify-start">
-                            <HomeModernIcon className="w-4 h-4 mr-2" />
-                            Panel
+                        <Button variant={"ghost"} asChild className="w-full justify-start">
+                            <Link href="/secret">
+                                <HomeModernIcon className="w-4 h-4 mr-2" />
+                                Panel
+                            </Link>
                         </Button>
-                    </div>
-                </div>
-                <div className="px-3 py-2">
-                    <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-                        Manage bots
-                    </h2>
-                    <div className="flex flex-col gap-1">
-                        <Button onClick={() => router.push("/secret/pending")} variant={path === "/secret/pending" ? "secondary" : "ghost"} className="w-full justify-start">
-                            <ClockIcon className="w-4 h-4 mr-2" />
-                            Pending
-                        </Button>
-                        <Button onClick={() => router.push("/secret/denied")} variant={path === "/secret/denied" ? "secondary" : "ghost"} className="w-full justify-start">
-                            <XMarkIcon className="w-4 h-4 mr-2" />
-                            Denied
-                        </Button>
-                        <Button onClick={() => router.push("/secret/approved")} variant={path === "/secret/approved" ? "secondary" : "ghost"} className="w-full justify-start">
-                            <CheckCircleIcon className="w-4 h-4 mr-2" />
-                            Approved
+                        <Button variant={"ghost"} asChild className="w-full justify-start">
+                            <Link href="/secret/bots">
+                                <GlobeAltIcon className="w-4 h-4 mr-2" />
+                                Bots
+                            </Link>
                         </Button>
                     </div>
                 </div>

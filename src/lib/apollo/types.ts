@@ -1337,6 +1337,11 @@ export type BotCountQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type BotCountQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnection', totalCount: number } };
 
+export type PanelBotCountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PanelBotCountQuery = { __typename?: 'Query', approved: { __typename?: 'BotsConnection', totalCount: number }, pending: { __typename?: 'BotsConnection', totalCount: number }, denied: { __typename?: 'BotsConnection', totalCount: number } };
+
 export type BotQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -1361,7 +1366,7 @@ export type PanelBotsQueryVariables = Exact<{
 }>;
 
 
-export type PanelBotsQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number }> | null } };
+export type PanelBotsQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, status: string, owners: Array<{ __typename?: 'UserObject', id: string, username: string, avatar?: string | null }> }> | null } };
 
 
 export const VoteBotDocument = gql`
@@ -2025,6 +2030,51 @@ export type BotCountQueryHookResult = ReturnType<typeof useBotCountQuery>;
 export type BotCountLazyQueryHookResult = ReturnType<typeof useBotCountLazyQuery>;
 export type BotCountSuspenseQueryHookResult = ReturnType<typeof useBotCountSuspenseQuery>;
 export type BotCountQueryResult = Apollo.QueryResult<BotCountQuery, BotCountQueryVariables>;
+export const PanelBotCountDocument = gql`
+    query PanelBotCount {
+  approved: bots(filters: {status: Approved}) {
+    totalCount
+  }
+  pending: bots(filters: {status: Pending}) {
+    totalCount
+  }
+  denied: bots(filters: {status: Denied}) {
+    totalCount
+  }
+}
+    `;
+
+/**
+ * __usePanelBotCountQuery__
+ *
+ * To run a query within a React component, call `usePanelBotCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePanelBotCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePanelBotCountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePanelBotCountQuery(baseOptions?: Apollo.QueryHookOptions<PanelBotCountQuery, PanelBotCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PanelBotCountQuery, PanelBotCountQueryVariables>(PanelBotCountDocument, options);
+      }
+export function usePanelBotCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PanelBotCountQuery, PanelBotCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PanelBotCountQuery, PanelBotCountQueryVariables>(PanelBotCountDocument, options);
+        }
+export function usePanelBotCountSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<PanelBotCountQuery, PanelBotCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<PanelBotCountQuery, PanelBotCountQueryVariables>(PanelBotCountDocument, options);
+        }
+export type PanelBotCountQueryHookResult = ReturnType<typeof usePanelBotCountQuery>;
+export type PanelBotCountLazyQueryHookResult = ReturnType<typeof usePanelBotCountLazyQuery>;
+export type PanelBotCountSuspenseQueryHookResult = ReturnType<typeof usePanelBotCountSuspenseQuery>;
+export type PanelBotCountQueryResult = Apollo.QueryResult<PanelBotCountQuery, PanelBotCountQueryVariables>;
 export const BotDocument = gql`
     query Bot($id: ID!) {
   getBot(id: $id) {
@@ -2203,10 +2253,12 @@ export const PanelBotsDocument = gql`
       id
       name
       avatar
-      certified
-      shortDescription
-      tags
-      votes
+      status
+      owners {
+        id
+        username
+        avatar
+      }
     }
   }
 }

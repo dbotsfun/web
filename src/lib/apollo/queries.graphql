@@ -88,6 +88,18 @@ query BotCount {
   }
 }
 
+query PanelBotCount {
+  approved: bots(filters: { status: Approved }) {
+    totalCount
+  }
+  pending: bots(filters: { status: Pending }) {
+    totalCount
+  }
+  denied: bots(filters: { status: Denied }) {
+    totalCount
+  }
+}
+
 query Bot($id: ID!) {
         getBot(id: $id) {
             id
@@ -165,10 +177,12 @@ query PanelBots($status: BotStatus!) {
         id
         name
         avatar
-        certified
-        shortDescription
-        tags
-        votes
+        status
+        owners {
+          id
+          username
+          avatar
+        }
       }
     }
 }
