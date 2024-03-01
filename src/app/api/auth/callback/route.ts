@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
             },
             context: {
                 headers: {
-                    "X-Build": "production"
+                    "x-build": "production"
                 }
             }
         })

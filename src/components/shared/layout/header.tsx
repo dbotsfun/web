@@ -44,6 +44,18 @@ export default function Header() {
     })
 
     useEffect(() => {
+        if (auth && !navLinks.includes({
+            label: "Submit",
+            icon: <PlusCircleIcon className="w-4 h-4" />,
+            href: "/bot/add"
+        })) navLinks.push({
+            label: "Submit",
+            icon: <PlusCircleIcon className="w-4 h-4" />,
+            href: "/bot/add"
+        })
+    }, [auth])
+
+    useEffect(() => {
         document.getElementById("html_element")?.setAttribute("data-theme", color ?? "main")
     }, [color])
 
