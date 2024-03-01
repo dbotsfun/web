@@ -1,4 +1,4 @@
-import { apolloClient } from '@/lib/apollo/client'
+import { apolloClient } from '@/components/shared/apollo-client'
 import { Query } from '@/lib/apollo/types'
 import { avatar } from '@/lib/utils'
 import { gql } from '@apollo/client'
@@ -38,19 +38,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          height: '100%',
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#fff',
-          fontSize: 52,
-          fontWeight: 900,
-        }}
-      >
+      <div tw="bg-zinc-900 w-full h-full font-bold text-xl">
         <img alt="" width={200} tw="border-4 border-rose-500" style={{ borderRadius: 9999 }} src={avatar(bot.getBot.avatar, bot.getBot.id)} />
         <h1 style={{ marginTop: 20 }}>{bot.getBot.name}</h1>
       </div>

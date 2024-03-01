@@ -1,11 +1,11 @@
 "use client";
 
-import { apolloClient } from "@/lib/apollo/client";
 import { ApolloProvider } from "@apollo/client";
 import { NextUIProvider } from "@nextui-org/system";
 import { ThemeProvider } from "next-themes";
 import ProgressBar from 'nextjs-toploader';
 import React from "react";
+import { apolloClient } from "./apollo-client";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
     return <NextUIProvider>

@@ -55,7 +55,7 @@ export default function Page() {
                         <button onClick={() => setHistory([])} className="text-muted-foreground px-4 text-xs mb-2">Clear</button>
                       </div>
                       <div className="px-4 py-2">
-                        {history?.length ? history?.map(h => <Link href={`/explore?q=${h.toLowerCase()}`}>
+                        {history?.length ? history?.map((h, key) => <Link key={key} href={`/explore?q=${h.toLowerCase()}`}>
                           <div className="w-full flex items-center justify-start hover:bg-dark-1/20 transition-all duration-200 cursor-pointer">
                             <ArrowPathRoundedSquareIcon className="w-5 h-5 flex items-center justify-center text-muted-foreground" />
                             <span className="line-clamp-1 ml-2">{h}</span>
@@ -70,7 +70,7 @@ export default function Page() {
                   </div>
                 </div>}
               </div>
-              {tags?.tags.nodes?.length && <div className="flex flex-wrap items-center gap-2 w-full animate-in fade-in slide-in-from-bottom-3">{tags.tags.nodes.map(t => <TagButton tag={t.name} count={t.bots.totalCount.toString()} />)}</div>}
+              {tags?.tags.nodes?.length && <div className="flex flex-wrap items-center gap-2 w-full animate-in fade-in slide-in-from-bottom-3">{tags.tags.nodes.map(t => <TagButton key={t.name} tag={t.name} count={t.bots.totalCount.toString()} />)}</div>}
             </div>
           </div>
         </div>

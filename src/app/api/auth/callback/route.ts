@@ -1,8 +1,12 @@
-import { apolloClient } from "@/lib/apollo/client";
 import { Mutation } from "@/lib/apollo/types";
-import { gql } from "@apollo/client";
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import { serialize } from "cookie";
 import { type NextRequest, NextResponse } from "next/server";
+
+const apolloClient = new ApolloClient({
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+    cache: new InMemoryCache()
+});
 
 export async function GET(req: NextRequest) {
     const query = req.nextUrl.searchParams;
@@ -32,44 +36,43 @@ export async function GET(req: NextRequest) {
         }
     `
 
-    const { data: token, errors } = await apolloClient.mutate<Mutation>({
-        mutation: GET_TOKEN,
-        variables: {
-            token: code,
-        },
-        context: {
-            headers: {
-                "X-Dev-Build": process.env.NODE_ENV === "development" ? "yes" : "no"
+    try {
+        const { data: token } = await apolloClient.mutate<Mutation>({
+            mutation: GET_TOKEN,
+            variables: {
+                token: code,
+            },
+            context: {
+                headers: {
+                    "X-Build": process.env.NODE_ENV
+                }
             }
+        })
+
+        if (!token?.token.access_token) {
+            return NextResponse.redirect(
+                new URL(`/?err=${encodeURIComponent(
+                    "No access_token was provided from Discord. Please try again later"
+                )}`, req.url)
+            );
         }
-    })
 
-    if (errors?.length) {
-        console.log(errors)
-        return NextResponse.redirect(
-            new URL(`/?err=${encodeURIComponent(errors[0].message)}`, req.url)
-        );
+        const cookie = serialize("session", token.token.access_token, {
+            expires: new Date(Date.now() + token.token.expires_in),
+            httpOnly: process.env.NODE_ENV !== "development",
+            secure: process.env.NODE_ENV !== "development",
+            path: "/",
+        });
+
+        const res = NextResponse.redirect(new URL("/api/auth/success", req.url));
+        res.headers.append("Set-Cookie", cookie);
+
+        return res;
+    } catch (e) {
+        console.log(e);
+        return Response.json({
+            ok: false,
+            message: "server error, check dev console"
+        })
     }
-
-    if (!token?.token.access_token) {
-        return NextResponse.redirect(
-            new URL(`/?err=${encodeURIComponent(
-                "No access_token was provided from Discord. Please try again later"
-            )}`, req.url)
-        );
-    }
-
-    const cookie = serialize("session", token.token.access_token, {
-        expires: new Date(Date.now() + token.token.expires_in),
-        httpOnly: process.env.NODE_ENV === "development" ? false : true, // do not set the 'true' if in 'dev'
-        secure: process.env.NODE_ENV === "development" ? false : true, // do not set the 'true' if in 'dev'
-        path: "/",
-    });
-
-    console.log(cookie, token.token.access_token)
-
-    const res = NextResponse.redirect(new URL("/api/auth/success", req.url));
-    res.headers.append("Set-Cookie", cookie);
-
-    return res;
 }

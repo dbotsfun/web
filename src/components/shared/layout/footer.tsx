@@ -37,10 +37,10 @@ export default function Footer() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-4">
-                    {footerLinks.map(f => <div>
+                    {footerLinks.map((f, key) => <div key={key}>
                         <p className="font-medium">{f.label}</p>
                         <ul className="mt-6 space-y-4 text-sm">
-                            {f.sublinks.map(l => <li>
+                            {f.sublinks.map((l, lkey) => <li key={lkey}>
                                 <a href={l.href} className="text-muted-foreground">
                                     {l.label}
                                 </a>
