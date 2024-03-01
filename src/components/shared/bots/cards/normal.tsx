@@ -8,8 +8,9 @@ import { MouseEvent } from "react";
 import { usePalette } from 'react-palette';
 import Logo from "../../../../../public/ico.png"
 import CertifiedIcon from "../certified-icon";
+import PendingIcon from "../pending-icon";
 
-export default function BotCard({ id, avatar, name, votes, tags, shortDescription, certified, guildCount }: BotCardProps) {
+export default function BotCard({ id, avatar, name, votes, tags, shortDescription, certified, guildCount, status }: BotCardProps) {
     const { data, loading } = usePalette(av(avatar, id, 4096))
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
@@ -65,6 +66,7 @@ export default function BotCard({ id, avatar, name, votes, tags, shortDescriptio
                                     {name}
                                 </h3>
                                 {certified && <CertifiedIcon className="w-5" />}
+                                {status === "PENDING" && <PendingIcon className="w-5" />}
                             </div>
                         </div>
                         <h4 className="text-muted-foreground text-xs">{tags.join(", ")}</h4>

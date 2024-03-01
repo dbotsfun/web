@@ -7,4 +7,5 @@ export interface BotCardProps {
     tags: string[];
     votes: number;
     guildCount?: number;
+    status?: string
 }

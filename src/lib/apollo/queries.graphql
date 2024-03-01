@@ -46,6 +46,7 @@ query UserBots($userId: ID!) {
         tags
         votes
         guildCount
+        status
       }
     }
   }
@@ -62,6 +63,7 @@ query Bots {
         tags
         votes
         guildCount
+        status
       }
     }
 }

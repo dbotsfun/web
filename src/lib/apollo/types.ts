@@ -1317,12 +1317,12 @@ export type UserBotsQueryVariables = Exact<{
 }>;
 
 
-export type UserBotsQuery = { __typename?: 'Query', user: { __typename?: 'UserObject', bots: { __typename?: 'BotsConnection', totalCount: number, nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null } } };
+export type UserBotsQuery = { __typename?: 'Query', user: { __typename?: 'UserObject', bots: { __typename?: 'BotsConnection', totalCount: number, nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number, status: string }> | null } } };
 
 export type BotsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type BotsQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null } };
+export type BotsQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number, status: string }> | null } };
 
 export type ExploreBotsQueryVariables = Exact<{
   filters?: InputMaybe<GetBotFormInput>;
@@ -1854,6 +1854,7 @@ export const UserBotsDocument = gql`
         tags
         votes
         guildCount
+        status
       }
     }
   }
@@ -1904,6 +1905,7 @@ export const BotsDocument = gql`
       tags
       votes
       guildCount
+      status
     }
   }
 }

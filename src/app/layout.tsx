@@ -1,3 +1,4 @@
+import BetaBanner from "@/components/shared/common/beta-banner";
 import Footer from "@/components/shared/layout/footer"
 import Header from "@/components/shared/layout/header"
 import Providers from "@/components/shared/providers";
@@ -40,6 +41,7 @@ export default function RootLayout({
         )}
       >
         <Providers>
+          <BetaBanner />
           <Header />
           <main className="py-3 px-8 lg:px-28 mt-24">
             {children}
