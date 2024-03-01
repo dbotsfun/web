@@ -86,7 +86,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         <Tab title={<div className="flex flex-row items-center gap-2"><ChatBubbleLeftRightIcon className="w-4 h-4" />Reviews</div>}>
                             <div className="flex flex-col lg:flex-row gap-12">
                                 <div className="w-full md:w-1/2 flex flex-col p-6 animate-in fade-in slide-in-from-left-3">
-                                    <h3 className="text-xl font-bold">Rating</h3>
+                                    <h3 className="text-xl font-bold">Rating<span className="text-xs font-normal ml-1 text-muted-foreground">Based on 0 reviews</span></h3>
                                     <div className="flex flex-col gap-3">
                                         {[...Array(5)].map((_, i) =>
                                             <div key={i} className="flex items-center gap-2">
@@ -94,8 +94,8 @@ export default function Page({ params }: { params: { id: string } }) {
                                                     <p className="font-bold">{i + 1}</p>
                                                     <StarIcon fill="currentColor" className="w-5 h-5 text-amber-500" />
                                                 </div>
-                                                <Progress className="w-full h-2" value={100} />
-                                                <p className="text-muted-foreground text-sm font-medium w-12 text-right">40%</p>
+                                                <Progress className="w-full h-2" value={Number(`${++i}0`)} />
+                                                <p className="text-muted-foreground text-sm font-medium w-12 text-right">{i++}0%</p>
                                             </div>).reverse()}
                                     </div>
                                 </div>

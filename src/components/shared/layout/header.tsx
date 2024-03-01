@@ -37,12 +37,6 @@ export default function Header() {
     const { setTheme, resolvedTheme } = useTheme();
     const [color, setColor] = useLocalStorage<string>("main", "main")
 
-    if (auth) navLinks.push({
-        label: "Submit",
-        icon: <PlusCircleIcon className="w-4 h-4" />,
-        href: "/bot/add"
-    })
-
     useEffect(() => {
         if (auth && !navLinks.includes({
             label: "Submit",
