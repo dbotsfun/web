@@ -1288,6 +1288,13 @@ export type EditUserMutationVariables = Exact<{
 
 export type EditUserMutation = { __typename?: 'Mutation', editUser: { __typename?: 'UserObject', bio?: string | null, banner?: string | null, id: string } };
 
+export type ResetApiKeyMutationVariables = Exact<{
+  input: CreateKeyInput;
+}>;
+
+
+export type ResetApiKeyMutation = { __typename?: 'Mutation', resetAPIKey: string };
+
 export type SessionQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1662,6 +1669,37 @@ export function useEditUserMutation(baseOptions?: Apollo.MutationHookOptions<Edi
 export type EditUserMutationHookResult = ReturnType<typeof useEditUserMutation>;
 export type EditUserMutationResult = Apollo.MutationResult<EditUserMutation>;
 export type EditUserMutationOptions = Apollo.BaseMutationOptions<EditUserMutation, EditUserMutationVariables>;
+export const ResetApiKeyDocument = gql`
+    mutation ResetApiKey($input: CreateKeyInput!) {
+  resetAPIKey(input: $input)
+}
+    `;
+export type ResetApiKeyMutationFn = Apollo.MutationFunction<ResetApiKeyMutation, ResetApiKeyMutationVariables>;
+
+/**
+ * __useResetApiKeyMutation__
+ *
+ * To run a mutation, you first call `useResetApiKeyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useResetApiKeyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [resetApiKeyMutation, { data, loading, error }] = useResetApiKeyMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useResetApiKeyMutation(baseOptions?: Apollo.MutationHookOptions<ResetApiKeyMutation, ResetApiKeyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ResetApiKeyMutation, ResetApiKeyMutationVariables>(ResetApiKeyDocument, options);
+      }
+export type ResetApiKeyMutationHookResult = ReturnType<typeof useResetApiKeyMutation>;
+export type ResetApiKeyMutationResult = Apollo.MutationResult<ResetApiKeyMutation>;
+export type ResetApiKeyMutationOptions = Apollo.BaseMutationOptions<ResetApiKeyMutation, ResetApiKeyMutationVariables>;
 export const SessionDocument = gql`
     query Session {
   me {

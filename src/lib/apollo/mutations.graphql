@@ -60,3 +60,7 @@ mutation EditUser($input: UpdateUserInput!) {
     id
   }
 }
+
+mutation ResetApiKey($input: CreateKeyInput!) {
+  resetAPIKey(input: $input)
+}

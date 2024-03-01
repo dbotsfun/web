@@ -139,7 +139,7 @@ export default function Page({ params }: { params: { id: string } }) {
                             </div>
                         </Tab>
                         {isOwner && <Tab title={<div className="flex flex-row items-center gap-2"><Cog6ToothIcon className="w-4 h-4" />Manage</div>} className="flex flex-col gap-4">
-                            <BotDeveloper />
+                            <BotDeveloper id={bot.id} />
                             <BotWebhooks />
                             <BotDangerZone name={bot.name} id={bot.id} />
                         </Tab>}
