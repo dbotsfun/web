@@ -29,6 +29,25 @@ query User($userId: ID!) {
     bio
     id
     username
+    banner
+  }
+}
+
+query UserBots($userId: ID!) {
+  user(id: $userId) {
+    bots {
+      totalCount
+      nodes {
+        id
+        name
+        avatar
+        certified
+        shortDescription
+        tags
+        votes
+        guildCount
+      }
+    }
   }
 }
 
@@ -47,8 +66,8 @@ query Bots {
     }
 }
 
-query ExploreBots($filters: GetBotFormInput) {
-  bots(filters: $filters) {
+query ExploreBots($filters: GetBotFormInput, $first: Int) {
+  bots(filters: $filters, first: $first) {
     nodes {
       id
       name

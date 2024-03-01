@@ -1,5 +1,6 @@
 "use client";
 
+import CertifiedIcon from "@/components/shared/bots/certified-icon";
 import BotDangerZone from "@/components/shared/bots/sections/panel/danger";
 import BotDeveloper from "@/components/shared/bots/sections/panel/developer";
 import BotWebhooks from "@/components/shared/bots/sections/panel/webhooks";
@@ -15,9 +16,9 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useBotQuery } from "@/lib/apollo/types";
-import { useSession } from "@/lib/hooks/useSession";
+import { useSession } from "@/lib/hooks/use-session";
 import { avatar } from "@/lib/utils"
-import { ChatBubbleLeftRightIcon, CheckCircleIcon, ChevronUpIcon, Cog6ToothIcon, EllipsisHorizontalIcon, FlagIcon, InformationCircleIcon, PaperAirplaneIcon, PlusIcon, StarIcon } from "@heroicons/react/20/solid";
+import { ChatBubbleLeftRightIcon, ChevronUpIcon, Cog6ToothIcon, EllipsisHorizontalIcon, FlagIcon, InformationCircleIcon, PaperAirplaneIcon, PlusIcon, StarIcon } from "@heroicons/react/20/solid";
 import { Tab, Tabs } from "@nextui-org/tabs"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -36,30 +37,29 @@ export default function Page({ params }: { params: { id: string } }) {
         }
     })
 
-    const bot = data?.getBot
-    const isOwner = !!bot?.owners.find(u => u.id === user?.me.user.id)
-
     if (loading) return <LoadingScreen />
-    if (error?.message === "Bot not found" || !bot) return notFound()
-    if (error) return <>server error</>;
+    if (error) return notFound() // if there is an error, bot will be null anyways so
+
+    const bot = data?.getBot!
+    const isOwner = !!bot.owners.find(u => u.id === user?.me.user.id)
     return (
         <div className="flex flex-col gap-5">
-            <div className="flex flex-col gap-3 lg:flex-row w-full justify-between items-center py-5">
-                <div className="flex flex-col lg:flex-row gap-5 items-center">
+            <div className="flex flex-col gap-3 md:flex-row w-full justify-between items-center py-5">
+                <div className="flex flex-col md:flex-row gap-5 items-center">
                     <img src={avatar(bot.avatar, bot.id)} alt="avatar" className="w-24 rounded-xl ring-secondary ring-4 drop-shadow-2xl" />
-                    <div className="flex flex-col lg:items-start items-center gap-1">
-                        <h1 className="mr-3 md:text-3xl text-2xl flex gap-2 items-center font-semibold">
-                            {bot.name} {bot.certified && <CheckCircleIcon className="w-8 text-primary" />}
+                    <div className="flex flex-col md:items-start items-center gap-1">
+                        <h1 className="mr-3 md:text-3xl lg:text-4xl text-2xl flex gap-2 items-center font-bold">
+                            {bot.name} {bot.certified && <CertifiedIcon className="w-7" />}
                         </h1>
-                        <p className="text-muted-foreground lg:text-start text-center">{bot.shortDescription}</p>
+                        <p className="text-muted-foreground md:text-start text-center">{bot.shortDescription}</p>
                     </div>
                 </div>
-                <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-min">
+                <div className="flex flex-col md:flex-row gap-2 w-full md:w-min">
                     <Link href={bot.inviteLink ?? "/"} className={buttonVariants({ size: "lg", className: "w-full lg:w-min" })}><PlusIcon className="w-5 h-5 mr-2" />Invite</Link>
                     <Link href={`/bot/${bot.id}/vote`} className={buttonVariants({ size: "lg", variant: "secondary", className: "w-full lg:w-min" })}><ChevronUpIcon className="w-5 h-5 mr-2" />Vote</Link>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant={"outline"} className="h-10 w-10" size={"icon"}>
+                            <Button variant={"outline"} className="h-10 w-10 md:flex hidden" size={"icon"}>
                                 <EllipsisHorizontalIcon className="w-5 h-5" />
                             </Button>
                         </DropdownMenuTrigger>
@@ -71,24 +71,25 @@ export default function Page({ params }: { params: { id: string } }) {
                     </DropdownMenu>
                 </div>
             </div>
-            <div className="w-full flex flex-col lg:flex-row justify-between gap-24">
+            <div className="w-full flex flex-col md:flex-row justify-between gap-24">
                 <div className="w-full">
                     <Tabs variant="underlined" className="w-full" defaultSelectedKey={"Overview"} classNames={{
                         tabList: "gap-6 w-full relative rounded-none p-0 border-b border-divider",
                         cursor: "w-full bg-primary",
                         tab: "max-w-fit px-0 h-12",
-                        tabContent: "group-data-[selected=true]:text-primary"
+                        tabContent: "group-data-[selected=true]:text-primary",
+                        panel: "animate-in fade-in slide-in-from-left-5"
                     }}>
                         <Tab title={<div className="flex flex-row items-center gap-2"><InformationCircleIcon className="w-4 h-4" />Overview</div>}>
                             <MD content={bot.description!} />
                         </Tab>
                         <Tab title={<div className="flex flex-row items-center gap-2"><ChatBubbleLeftRightIcon className="w-4 h-4" />Reviews</div>}>
                             <div className="flex flex-col lg:flex-row gap-12">
-                                <div className="w-1/2 flex flex-col p-6">
+                                <div className="w-full md:w-1/2 flex flex-col p-6 animate-in fade-in slide-in-from-left-3">
                                     <h3 className="text-xl font-bold">Rating</h3>
                                     <div className="flex flex-col gap-3">
                                         {[...Array(5)].map((_, i) =>
-                                            <div className="flex items-center gap-2">
+                                            <div key={i} className="flex items-center gap-2">
                                                 <div className="flex items-center gap-2 text-lg">
                                                     <p className="font-bold">{i + 1}</p>
                                                     <StarIcon fill="currentColor" className="w-5 h-5 text-amber-500" />
@@ -104,7 +105,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                             <img src={avatar(user?.me.user.avatar, user?.me.user.id!)} alt="" className="w-14 h-14 rounded-full" />
                                             <div className="flex flex-col justify-center w-full space-y-2">
                                                 <div>
-                                                    <h3 className="text-lg font-semibold text-white">simxnet</h3>
+                                                    <h3 className="text-lg font-semibold text-white">{user?.me.user.username}</h3>
                                                 </div>
                                                 <div className="relative ">
                                                     <Textarea
@@ -144,7 +145,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         </Tab>}
                     </Tabs>
                 </div>
-                <div className="w-1/4 flex flex-col justify-between sticky">
+                <div className="md:w-1/3 w-full flex flex-col justify-between sticky">
                     <div className="flex flex-col gap-3 h-80 sticky">
                         <div className="flex flex-col gap-2">
                             <h1 className="text-3xl font-black">Information</h1>
@@ -168,7 +169,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         <div className="flex flex-col gap-2">
                             <h1 className="text-3xl font-black">Tags</h1>
                             <div className="flex flex-row gap-1">
-                                {bot.tags.map(t => <TagButton tag={t} />)}
+                                {bot.tags.map(t => <TagButton key={t} tag={t} />)}
                             </div>
                         </div>
                     </div>

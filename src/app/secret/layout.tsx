@@ -1,17 +1,22 @@
 "use client";
 
+import LoadingScreen from "@/components/shared/common/loading-screen";
 import { Button } from "@/components/ui/button"
+import { useSession } from "@/lib/hooks/use-session";
 import { CheckCircleIcon, ClockIcon, HomeModernIcon, XMarkIcon } from "@heroicons/react/20/solid"
-import { usePathname, useRouter } from "next/navigation";
+import { notFound, usePathname, useRouter } from "next/navigation";
 
 export default function PanelLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
-    const path = usePathname()
-    const router = useRouter()
-    return <div className="flex gap-5">
+    const { data: auth, loading } = useSession()
+    const path = usePathname();
+    const router = useRouter();
+
+    if (!loading && !auth) return notFound()
+    return loading ? <LoadingScreen /> : <div className="flex lg:flex-row flex-col gap-5">
         <div className={"pb-12 w-1/4 bg-card h-full rounded-lg sticky top-24"}>
             <div className="space-y-4 py-4">
                 <div className="px-3 py-2">

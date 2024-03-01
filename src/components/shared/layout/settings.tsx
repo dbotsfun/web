@@ -44,10 +44,8 @@ export function Settings() {
             <DropdownMenuSeparator />
             <DropdownMenuRadioGroup value={color} onValueChange={setColor}>
                 <DropdownMenuRadioItem value="df">Default</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="discord_old">Discord</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="pine">Pine</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="berry">Berry</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="valentine">Valentine</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="coral">Coral</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
         </DropdownMenuContent>
     </DropdownMenu>

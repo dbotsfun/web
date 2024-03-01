@@ -17,7 +17,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         >
             <ProgressBar color="hsl(var(--primary))" />
             <ApolloProvider client={apolloClient}>
-                {children}
+                <div>
+                    {children}
+                </div>
             </ApolloProvider>
         </ThemeProvider>
     </NextUIProvider>

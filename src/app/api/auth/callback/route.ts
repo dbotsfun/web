@@ -37,6 +37,11 @@ export async function GET(req: NextRequest) {
         variables: {
             token: code,
         },
+        context: {
+            headers: {
+                "X-Dev-Build": process.env.NODE_ENV === "development" ? "yes" : "no"
+            }
+        }
     })
 
     if (errors?.length) {

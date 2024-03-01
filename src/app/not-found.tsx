@@ -1,16 +1,29 @@
-import { buttonVariants } from "@/components/ui/button";
-import { ArrowLeftIcon } from "@heroicons/react/20/solid";
-import Link from 'next/link'
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { LinkIcon } from "@heroicons/react/20/solid";
+import { useRouter } from "next/navigation";
 
 export default function NotFound() {
+    const router = useRouter()
     return (
-        <div className="flex h-[60vh] justify-center flex-col">
-            <h1 className="text-7xl font-bold text-center">404</h1>
-            <p className="text-xl font-normal text-center">Not found</p>
-            <Link className={buttonVariants({ className: "w-min mx-auto my-5", variant: "secondary" })} href="/">
-                <ArrowLeftIcon className="mr-2 w-5 h-5" />
-                Go home
-            </Link>
+        <div className="flex items-center min-h-[60vh] px-6 mx-auto">
+            <div className="flex flex-col items-center max-w-sm mx-auto text-center">
+                <div className="p-3 text-sm font-medium text-accent-foreground bg-accent rounded-full">
+                    <LinkIcon className="w-7 h-7" />
+                </div>
+                <h1 className="mt-3 text-2xl font-semibold md:text-3xl">
+                    Page not found
+                </h1>
+                <p className="mt-4 text-muted-foreground lg:text-base text-sm">
+                    You ran into an unexisting page (or restricted), what will you do now?
+                </p>
+                <div className="flex items-center mt-6 gap-2 shrink-0 sm:w-auto">
+                    <Button onClick={router.back} variant={"secondary"}>Go back</Button>
+                    <Button onClick={router.refresh}>Retry</Button>
+                </div>
+            </div>
         </div>
+
     )
 }

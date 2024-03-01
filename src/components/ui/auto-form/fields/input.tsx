@@ -22,7 +22,7 @@ export default function AutoFormInput({
           <Input type={type} {...fieldPropsWithoutShowLabel} />
         </FormControl>
         <AutoFormTooltip fieldConfigItem={fieldConfigItem} />
-        <FormMessage />
+        <FormMessage className="animate-in fade-in slide-in-from-bottom" />
       </FormItem>
     </div>
   );

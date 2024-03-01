@@ -52,3 +52,11 @@ mutation Token($token: String!) {
 mutation RevokeToken {
   revokeToken
 }
+
+mutation EditUser($input: UpdateUserInput!) {
+  editUser(input: $input) {
+    bio
+    banner
+    id
+  }
+}

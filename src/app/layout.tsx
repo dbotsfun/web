@@ -4,8 +4,8 @@ import Providers from "@/components/shared/providers";
 import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils"
 import { Analytics } from '@vercel/analytics/react';
-import type { Metadata } from 'next'
-import { DM_Sans as FontSans } from "next/font/google";
+import type { Metadata, Viewport } from 'next'
+import { Sora as FontSans } from "next/font/google";
 import '../style/globals.css'
 
 export const metadata: Metadata = {
@@ -18,6 +18,13 @@ const font = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 })
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+}
 
 export default function RootLayout({
   children,

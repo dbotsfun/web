@@ -1,4 +1,4 @@
-export function login() {
+export function promptLoginWindow() {
     if (typeof window === "undefined") return;
     const newWindowWidth = 500;
     const newWindowHeight = 500;

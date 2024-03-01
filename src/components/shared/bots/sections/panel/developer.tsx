@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 
 // biome-ignore lint/complexity/noBannedTypes: wip
 type BotDeveloperProps = {}
@@ -12,14 +11,11 @@ export default function BotDeveloper({
 }: BotDeveloperProps) {
     return <Card>
         <CardHeader>
-            <CardTitle>Developer panel</CardTitle>
+            <CardTitle>API Key</CardTitle>
+            In order to see your API Key, you will need to reset it.
         </CardHeader>
         <CardContent>
-            <Label>API Key</Label>
-            <div className="flex gap-2 items-center">
-                <Button>Reset API Key</Button>
-                <Label>You <strong>need</strong> to reset your api key in order to see it</Label>
-            </div>
+            <Button>Reset API Key</Button>
         </CardContent>
     </Card>
 }

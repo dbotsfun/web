@@ -10,8 +10,6 @@ const authLink = setContext((_, { headers }) => {
     const cookies = parseCookies();
     const session = cookies.session;
 
-    console.log(session)
-
     return {
         headers: {
             ...headers,

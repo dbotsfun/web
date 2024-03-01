@@ -52,7 +52,7 @@ export default function AutoFormRadioGroup({
             ))}
           </RadioGroup>
         </FormControl>
-        <FormMessage />
+        <FormMessage className="animate-in fade-in slide-in-from-bottom" />
       </FormItem>
       <AutoFormTooltip fieldConfigItem={fieldConfigItem} />
     </div>

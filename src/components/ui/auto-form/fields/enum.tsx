@@ -58,7 +58,7 @@ export default function AutoFormEnum({
         </Select>
       </FormControl>
       <AutoFormTooltip fieldConfigItem={fieldConfigItem} />
-      <FormMessage />
+      <FormMessage className="animate-in fade-in slide-in-from-bottom" />
     </FormItem>
   );
 }

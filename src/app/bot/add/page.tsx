@@ -10,7 +10,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { BotListSource, useCreateBotMutation, useImportBotMutation } from "@/lib/apollo/types";
-import { useSession } from "@/lib/hooks/useSession";
+import { BOT_DESCRIPTION_MAX_LENGTH, BOT_DESCRIPTION_MIN_LENGTH, BOT_PREFIX_MAX_LENGTH, BOT_PREFIX_MIN_LENGTH, BOT_SHORT_DESCRIPTION_MAX_LENGTH, BOT_SHORT_DESCRIPTION_MIN_LENGTH } from "@/lib/constants";
+import { useSession } from "@/lib/hooks/use-session";
 import { ArrowDownTrayIcon, ArrowUpRightIcon, CommandLineIcon, DocumentTextIcon, TagIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -32,10 +33,10 @@ const formSchema = z.object({
             required_error: "Short description is required.",
         })
         .describe("Short description")
-        .min(20, {
+        .min(BOT_SHORT_DESCRIPTION_MIN_LENGTH, {
             message: "Short description must be at least 25 characters long.",
         })
-        .max(200, {
+        .max(BOT_SHORT_DESCRIPTION_MAX_LENGTH, {
             message: "Short description must be less than 250 characters long."
         }),
     prefix: z
@@ -43,10 +44,10 @@ const formSchema = z.object({
             required_error: "Prefix is required.",
         })
         .describe("Prefix")
-        .min(1, {
+        .min(BOT_PREFIX_MIN_LENGTH, {
             message: "Prefix must be at least 1 characters long.",
         })
-        .max(12, {
+        .max(BOT_PREFIX_MAX_LENGTH, {
             message: "Prefix must be less than 12 characters long."
         })
         .optional(),
@@ -56,10 +57,10 @@ const formSchema = z.object({
             required_error: "Long description is required.",
         })
         .describe("Long description")
-        .min(100, {
+        .min(BOT_DESCRIPTION_MIN_LENGTH, {
             message: "Description must be at least 100 characters long.",
         })
-        .max(2000, {
+        .max(BOT_DESCRIPTION_MAX_LENGTH, {
             message: "Description must be less than 2000 characters long."
         }),
     inviteLink: z
@@ -199,6 +200,7 @@ export default function Page() {
                     },
                     shortDescription: {
                         description: <div className="flex items-center text-muted-foreground"><DocumentTextIcon className="mr-1 w-4 h-4" />Min. 25, Max. 250</div>,
+                        fieldType: "textarea",
                         inputProps: {
                             placeholder: "E.g: An amazing bot who has this features, short",
                             autoComplete: "off"

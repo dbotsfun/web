@@ -1,7 +1,7 @@
 "use client";
 
 import LoadingScreen from "@/components/shared/common/loading-screen";
-import { useSession } from "@/lib/hooks/useSession";
+import { useSession } from "@/lib/hooks/use-session";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 
 export default function Page() {

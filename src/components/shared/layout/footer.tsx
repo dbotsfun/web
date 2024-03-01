@@ -4,6 +4,21 @@ import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/20/solid";
 import { usePathname } from "next/navigation";
 import { Button } from "../../ui/button";
 
+const footerLinks = [
+    {
+        label: "Socials",
+        sublinks: [
+            {
+                label: "Instagram",
+                href: "/api/redirect?s=ig"
+            },
+            {
+                label: "Discord",
+                href: "/api/redirect?s=dc"
+            }
+        ]
+    }
+]
 export default function Footer() {
     const pathname = usePathname();
 
@@ -22,119 +37,16 @@ export default function Footer() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-4">
-                    <div>
-                        <p className="font-medium text-gray-900 dark:text-white">Services</p>
-
+                    {footerLinks.map(f => <div>
+                        <p className="font-medium">{f.label}</p>
                         <ul className="mt-6 space-y-4 text-sm">
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    1on1 Coaching
+                            {f.sublinks.map(l => <li>
+                                <a href={l.href} className="text-muted-foreground">
+                                    {l.label}
                                 </a>
-                            </li>
-
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    Company Review
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    Accounts Review
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    HR Consulting
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    SEO Optimisation
-                                </a>
-                            </li>
+                            </li>)}
                         </ul>
-                    </div>
-
-                    <div>
-                        <p className="font-medium text-gray-900 dark:text-white">Company</p>
-
-                        <ul className="mt-6 space-y-4 text-sm">
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    About
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    Meet the Team
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    Accounts Review
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <p className="font-medium text-gray-900 dark:text-white">Helpful Links</p>
-
-                        <ul className="mt-6 space-y-4 text-sm">
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    Contact
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    FAQs
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    Live Chat
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <p className="font-medium text-gray-900 dark:text-white">Legal</p>
-
-                        <ul className="mt-6 space-y-4 text-sm">
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    Accessibility
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    Returns Policy
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    Refund Policy
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" className="text-muted-foreground">
-                                    Hiring Statistics
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    </div>)}
                 </div>
             </div>
 

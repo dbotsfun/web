@@ -30,7 +30,7 @@ export default function Auth({ username, id, avatarId }: AuthProps) {
                     <AvatarImage src={avatar(avatarId, id)} />
                     <AvatarFallback>{username.substring(0, 2).toUpperCase()}</AvatarFallback>
                 </Avatar>
-                <h3 className="text-xs font-bold">{username}</h3>
+                <h3 className="text-xs font-bold hidden md:flex">{username}</h3>
             </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-64" align="end">
@@ -43,9 +43,11 @@ export default function Auth({ username, id, avatarId }: AuthProps) {
             <Policy policy={id === "1076700780175831100"}>
                 <DropdownMenuSeparator />
                 <DropdownMenuLabel>Admin</DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => router.push("/secret")}>
-                    <Cog6ToothIcon className="w-4 mr-2" /> Secret panel
-                </DropdownMenuItem>
+                <Link href={"/secret"}>
+                    <DropdownMenuItem>
+                        <Cog6ToothIcon className="w-4 mr-2" /> Secret panel
+                    </DropdownMenuItem>
+                </Link>
             </Policy>
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Danger</DropdownMenuLabel>

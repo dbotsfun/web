@@ -77,7 +77,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), nextui()],
+  plugins: [require("tailwindcss-animate"), require("tailwind-gradient-mask-image"), nextui()],
 }
 
 export default config

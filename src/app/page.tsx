@@ -35,8 +35,8 @@ export default function Page() {
       <div className="w-full relative">
         <div className="relative grid items-center gap-0 no-animation md:grid-cols-2 z-30 py-10">
           <div className="overflow-x-hidden text-center md:text-left md:overflow-x-visible">
-            <h1 className="text-7xl font-black">Discord bot list</h1>
-            <p className="text-muted-foreground">A wide range of Discord bots listed for every community needs.</p>
+            <h1 className="lg:text-7xl text-3xl font-black">discord<span className="text-primary">bots</span></h1>
+            <p className="text-muted-foreground lg:text-base text-sm">Zero-profit website featuring new Discord bots every week.</p>
             <div className="flex flex-col gap-5 mt-5">
               <div className="relative" ref={searchRef}>
                 <div className="relative w-full flex gap-2 items-center">
@@ -47,7 +47,7 @@ export default function Page() {
                     <MagnifyingGlassIcon className="w-6 h-6" />
                   </Button>
                 </div>
-                {focus && <div className="absolute top-full left-0 w-full bg-card rounded-md shadow-lg z-[9999] animate-in fade-out fade-in slide-in-from-bottom-2 slide-out-from-top">
+                {focus && <div className="absolute lg:flex hidden mt-2 left-0 w-full bg-card rounded-md shadow-lg z-[9999] animate-in fade-out fade-in slide-in-from-bottom-2 slide-out-from-top">
                   <div className="text-left break-all w-full flex flex-col space-y-2 py-4">
                     <div>
                       <div className="flex justify-between items-center">
@@ -75,9 +75,9 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <Listing loading={botsLoading} more="/bots/popular" title="Most voted bots" subtext="This month's most voted bots" Icon={FireIcon} list={bots?.voted.nodes?.length ? <Bots bots={bots?.voted.nodes} /> : undefined} />
-      <Listing loading={botsLoading} more="/bots/trending" title="Most rated bots" subtext="This month's most rated bots" Icon={ArrowTrendingUpIcon} list={bots?.rated.nodes?.length ? <Bots bots={bots.rated.nodes} /> : undefined} />
-      <Listing loading={botsLoading} more="/bots/recent" title="Most recent bots" subtext="Most recent bots" Icon={ClockIcon} list={bots?.recent.nodes?.length ? <Bots bots={bots?.recent.nodes} /> : undefined} />
+      <Listing loading={botsLoading} title="Most voted bots" subtext="This month's most voted bots" Icon={FireIcon} list={bots?.voted.nodes?.length ? <Bots bots={bots?.voted.nodes} /> : undefined} />
+      <Listing loading={botsLoading} title="Most rated bots" subtext="This month's most rated bots" Icon={ArrowTrendingUpIcon} list={bots?.rated.nodes?.length ? <Bots bots={bots.rated.nodes} /> : undefined} />
+      <Listing loading={botsLoading} title="Most recent bots" subtext="Most recent bots" Icon={ClockIcon} list={bots?.recent.nodes?.length ? <Bots bots={bots?.recent.nodes} /> : undefined} />
     </>
   );
 }

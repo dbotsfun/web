@@ -280,6 +280,8 @@ export type Mutation = {
   /** Edit a reply */
   editReply: ReplyObject;
   editReview: ReviewObject;
+  /** Edit your user. */
+  editUser: UserObject;
   /** Import a bot */
   importBot: BotObject;
   /** Refresh the access token. */
@@ -344,6 +346,11 @@ export type MutationEditReplyArgs = {
 
 export type MutationEditReviewArgs = {
   input: UpdateReviewInput;
+};
+
+
+export type MutationEditUserArgs = {
+  input: UpdateUserInput;
 };
 
 
@@ -665,6 +672,14 @@ export type UpdateReviewInput = {
   rating: Scalars['Int']['input'];
 };
 
+/** The input to update a user. */
+export type UpdateUserInput = {
+  /** The banner of the user. */
+  banner?: InputMaybe<Scalars['String']['input']>;
+  /** User's biography. */
+  bio?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** The input to get a bot. */
 export type UserGetBotInput = {
   /** Decide how to order the bots */
@@ -857,6 +872,7 @@ export type ResolversTypes = {
   UpdateBotInformationInput: UpdateBotInformationInput;
   UpdateBotInput: UpdateBotInput;
   UpdateReviewInput: UpdateReviewInput;
+  UpdateUserInput: UpdateUserInput;
   UserGetBotInput: UserGetBotInput;
   UserObject: ResolverTypeWrapper<UserObject>;
   VoteCheckObject: ResolverTypeWrapper<VoteCheckObject>;
@@ -909,6 +925,7 @@ export type ResolversParentTypes = {
   UpdateBotInformationInput: UpdateBotInformationInput;
   UpdateBotInput: UpdateBotInput;
   UpdateReviewInput: UpdateReviewInput;
+  UpdateUserInput: UpdateUserInput;
   UserGetBotInput: UserGetBotInput;
   UserObject: UserObject;
   VoteCheckObject: VoteCheckObject;
@@ -1043,6 +1060,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createTag?: Resolver<ResolversTypes['TagObject'], ParentType, ContextType, RequireFields<MutationCreateTagArgs, 'name'>>;
   editReply?: Resolver<ResolversTypes['ReplyObject'], ParentType, ContextType, RequireFields<MutationEditReplyArgs, 'input'>>;
   editReview?: Resolver<ResolversTypes['ReviewObject'], ParentType, ContextType, RequireFields<MutationEditReviewArgs, 'input'>>;
+  editUser?: Resolver<ResolversTypes['UserObject'], ParentType, ContextType, RequireFields<MutationEditUserArgs, 'input'>>;
   importBot?: Resolver<ResolversTypes['BotObject'], ParentType, ContextType, RequireFields<MutationImportBotArgs, 'input'>>;
   refreshToken?: Resolver<ResolversTypes['AuthTokensObject'], ParentType, ContextType>;
   rejectBot?: Resolver<ResolversTypes['BotObject'], ParentType, ContextType, RequireFields<MutationRejectBotArgs, 'input'>>;
@@ -1263,6 +1281,13 @@ export type RevokeTokenMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type RevokeTokenMutation = { __typename?: 'Mutation', revokeToken: boolean };
 
+export type EditUserMutationVariables = Exact<{
+  input: UpdateUserInput;
+}>;
+
+
+export type EditUserMutation = { __typename?: 'Mutation', editUser: { __typename?: 'UserObject', bio?: string | null, banner?: string | null, id: string } };
+
 export type SessionQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1278,7 +1303,14 @@ export type UserQueryVariables = Exact<{
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserObject', avatar?: string | null, bio?: string | null, id: string, username: string, badges: Array<{ __typename?: 'BadgeObject', description: string, id: string }> } };
+export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserObject', avatar?: string | null, bio?: string | null, id: string, username: string, banner?: string | null, badges: Array<{ __typename?: 'BadgeObject', description: string, id: string }> } };
+
+export type UserBotsQueryVariables = Exact<{
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type UserBotsQuery = { __typename?: 'Query', user: { __typename?: 'UserObject', bots: { __typename?: 'BotsConnection', totalCount: number, nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null } } };
 
 export type BotsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1287,6 +1319,7 @@ export type BotsQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnec
 
 export type ExploreBotsQueryVariables = Exact<{
   filters?: InputMaybe<GetBotFormInput>;
+  first?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
@@ -1594,6 +1627,41 @@ export function useRevokeTokenMutation(baseOptions?: Apollo.MutationHookOptions<
 export type RevokeTokenMutationHookResult = ReturnType<typeof useRevokeTokenMutation>;
 export type RevokeTokenMutationResult = Apollo.MutationResult<RevokeTokenMutation>;
 export type RevokeTokenMutationOptions = Apollo.BaseMutationOptions<RevokeTokenMutation, RevokeTokenMutationVariables>;
+export const EditUserDocument = gql`
+    mutation EditUser($input: UpdateUserInput!) {
+  editUser(input: $input) {
+    bio
+    banner
+    id
+  }
+}
+    `;
+export type EditUserMutationFn = Apollo.MutationFunction<EditUserMutation, EditUserMutationVariables>;
+
+/**
+ * __useEditUserMutation__
+ *
+ * To run a mutation, you first call `useEditUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editUserMutation, { data, loading, error }] = useEditUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useEditUserMutation(baseOptions?: Apollo.MutationHookOptions<EditUserMutation, EditUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditUserMutation, EditUserMutationVariables>(EditUserDocument, options);
+      }
+export type EditUserMutationHookResult = ReturnType<typeof useEditUserMutation>;
+export type EditUserMutationResult = Apollo.MutationResult<EditUserMutation>;
+export type EditUserMutationOptions = Apollo.BaseMutationOptions<EditUserMutation, EditUserMutationVariables>;
 export const SessionDocument = gql`
     query Session {
   me {
@@ -1692,6 +1760,7 @@ export const UserDocument = gql`
     bio
     id
     username
+    banner
   }
 }
     `;
@@ -1728,6 +1797,58 @@ export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserSuspenseQueryHookResult = ReturnType<typeof useUserSuspenseQuery>;
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
+export const UserBotsDocument = gql`
+    query UserBots($userId: ID!) {
+  user(id: $userId) {
+    bots {
+      totalCount
+      nodes {
+        id
+        name
+        avatar
+        certified
+        shortDescription
+        tags
+        votes
+        guildCount
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserBotsQuery__
+ *
+ * To run a query within a React component, call `useUserBotsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserBotsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserBotsQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUserBotsQuery(baseOptions: Apollo.QueryHookOptions<UserBotsQuery, UserBotsQueryVariables> & ({ variables: UserBotsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserBotsQuery, UserBotsQueryVariables>(UserBotsDocument, options);
+      }
+export function useUserBotsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserBotsQuery, UserBotsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserBotsQuery, UserBotsQueryVariables>(UserBotsDocument, options);
+        }
+export function useUserBotsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<UserBotsQuery, UserBotsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<UserBotsQuery, UserBotsQueryVariables>(UserBotsDocument, options);
+        }
+export type UserBotsQueryHookResult = ReturnType<typeof useUserBotsQuery>;
+export type UserBotsLazyQueryHookResult = ReturnType<typeof useUserBotsLazyQuery>;
+export type UserBotsSuspenseQueryHookResult = ReturnType<typeof useUserBotsSuspenseQuery>;
+export type UserBotsQueryResult = Apollo.QueryResult<UserBotsQuery, UserBotsQueryVariables>;
 export const BotsDocument = gql`
     query Bots {
   bots {
@@ -1777,8 +1898,8 @@ export type BotsLazyQueryHookResult = ReturnType<typeof useBotsLazyQuery>;
 export type BotsSuspenseQueryHookResult = ReturnType<typeof useBotsSuspenseQuery>;
 export type BotsQueryResult = Apollo.QueryResult<BotsQuery, BotsQueryVariables>;
 export const ExploreBotsDocument = gql`
-    query ExploreBots($filters: GetBotFormInput) {
-  bots(filters: $filters) {
+    query ExploreBots($filters: GetBotFormInput, $first: Int) {
+  bots(filters: $filters, first: $first) {
     nodes {
       id
       name
@@ -1807,6 +1928,7 @@ export const ExploreBotsDocument = gql`
  * const { data, loading, error } = useExploreBotsQuery({
  *   variables: {
  *      filters: // value for 'filters'
+ *      first: // value for 'first'
  *   },
  * });
  */

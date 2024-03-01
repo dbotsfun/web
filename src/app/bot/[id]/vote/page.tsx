@@ -1,17 +1,18 @@
 "use client";
 
+import CertifiedIcon from "@/components/shared/bots/certified-icon";
 // this page is bad af, please dont blame at me I WILL refactor it (someday)
 
 import Loader from "@/components/shared/common/loader";
 import LoadingScreen from "@/components/shared/common/loading-screen";
-import LoginDialog from "@/components/shared/common/login-dialog";
+import LoginScreen from "@/components/shared/common/login-screen";
 import AnimatedNumber from "@/components/ui/animated-number";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { APIErrorMessages } from "@/lib/api/messages";
 import { useBotQuery, useVoteBotMutation, useVoteCheckQuery } from "@/lib/apollo/types";
-import { useSession } from "@/lib/hooks/useSession";
+import { useSession } from "@/lib/hooks/use-session";
 import { avatar, formatMilliseconds } from "@/lib/utils";
-import { ArrowLeftIcon, CheckCircleIcon, ChevronUpIcon, ServerIcon } from "@heroicons/react/20/solid";
+import { ArrowLeftIcon, ChevronUpIcon, ServerIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -54,7 +55,7 @@ export default function Page({ params }: { params: { id: string } }) {
     }, [result.loading, result.called]);
 
     if (loading) return <LoadingScreen />;
-    if (!user) return <LoginDialog />
+    if (!user) return <LoginScreen />
     if (!canAccess || error?.message === APIErrorMessages.BOT_NOT_FOUND) return notFound();
 
     bot = bot!
@@ -69,7 +70,7 @@ export default function Page({ params }: { params: { id: string } }) {
                             </div>
                             <div className="flex-col flex">
                                 <h1 className="mt-3 mb-1 md:mt-0 md:mb-0 text-2xl flex gap-1 items-center font-semibold truncate">
-                                    {bot.name} {bot.certified && <CheckCircleIcon className="w-6 text-primary hidden lg:flex" />}
+                                    {bot.name} {bot.certified && <CertifiedIcon />}
                                 </h1>
                                 <div className="flex text-sm text-muted-foreground">
                                     <div className="flex items-center mt-2 gap-4">

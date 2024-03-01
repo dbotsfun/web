@@ -24,7 +24,7 @@ export function AutoFormSubmit({
   className?: string;
 }) {
   return (
-    <Button type="submit" className={className}>
+    <Button type="submit" formNoValidate className={className}>
       {children ?? "Submit"}
     </Button>
   );

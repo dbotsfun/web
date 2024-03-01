@@ -4,14 +4,15 @@ import SkeletonCard from "@/components/shared/bots/cards/skeleton";
 import Bots from "@/components/shared/bots/list/bots";
 import BotsGrid from "@/components/shared/grids/bots";
 import AnimatedNumber from "@/components/ui/animated-number";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BotOrderField, OrderDirection, useBotCountQuery, useExploreBotsQuery, useTagsQuery } from "@/lib/apollo/types";
-import { BarsArrowDownIcon, BarsArrowUpIcon, ChatBubbleLeftRightIcon, ChevronUpIcon, ClockIcon, FaceFrownIcon, ServerStackIcon } from "@heroicons/react/20/solid";
+import { NetworkStatus } from "@apollo/client";
+import { BarsArrowDownIcon, BarsArrowUpIcon, ChatBubbleLeftRightIcon, ChevronUpIcon, ClockIcon, FaceFrownIcon, ServerStackIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 
 export default function Page() {
     const [tag, setTag] = useState<string | undefined>(undefined)
@@ -21,7 +22,7 @@ export default function Page() {
 
     const { data: tags } = useTagsQuery()
     const { data: botCount } = useBotCountQuery()
-    const { data: bots, loading: botsLoading, refetch: refetchBots } = useExploreBotsQuery({
+    const { data: bots, loading: botsLoading, refetch: refetchBots, networkStatus } = useExploreBotsQuery({
         variables: {
             filters: {
                 tags: undefined,
@@ -34,11 +35,13 @@ export default function Page() {
         }
     })
 
+    const loading = networkStatus === NetworkStatus.refetch || networkStatus === NetworkStatus.loading || botsLoading
+
     function changeFilters() {
         refetchBots({
             filters: {
                 tags: tag === "all" || !tag ? undefined : [tag],
-                query: q && q.length >= 3 ? q : undefined,
+                query: q ?? undefined,
                 orderBy: {
                     direction: dir ?? OrderDirection.Desc,
                     field: field ?? BotOrderField.Votes
@@ -49,11 +52,10 @@ export default function Page() {
 
     useEffect(() => {
         changeFilters()
-        toast.success("Updated filters")
-    }, [tag, dir, field])
+    }, [tag, dir, field, q])
 
     useEffect(() => {
-        if (q && q.length >= 3) changeFilters()
+        if (q === "" || q?.length! === 0) setQ(undefined)
     }, [q])
     return (
         <div className="flex flex-col gap-1">
@@ -77,7 +79,7 @@ export default function Page() {
                                     <SelectContent>
                                         <SelectGroup>
                                             <SelectItem value={"all"}>All</SelectItem>
-                                            {tags?.tags.nodes?.map(t => <SelectItem disabled={t.bots.totalCount === 0} className="flex items-center" value={t.name}>
+                                            {tags?.tags.nodes?.map(t => <SelectItem key={t.name} disabled={t.bots.totalCount === 0} className="flex items-center" value={t.name}>
                                                 {t.name} <span className="text-muted-foreground ml-auto">{t.bots.totalCount}</span>
                                             </SelectItem>)}
                                         </SelectGroup>
@@ -114,8 +116,11 @@ export default function Page() {
                     </CardContent>
                 </Card>
                 <div className="w-full">
-                    <Input defaultValue={q} onChange={(e) => setQ(e.currentTarget.value)} placeholder="Search for bots" className="h-12 px-4 mb-4 focus-visible:!ring-background focus-visible:!ring-offset-primary" />
-                    {botsLoading ? <BotsGrid columns={{ lg: 3 }} gap={2}>{[...Array(6)].map((_, key) => <SkeletonCard key={key} />)}</BotsGrid> : bots?.bots.nodes?.length ? <BotsGrid columns={{ lg: 3 }} gap={2}><Bots bots={bots?.bots.nodes} /></BotsGrid> : <div className="flex items-center justify-center h-32 font-bold text-red-500">
+                    <div className="flex flex-row gap-1">
+                        <Input defaultValue={q} onInput={(e) => setQ(e.currentTarget.value)} placeholder="Search for bots" className="h-12 px-4 mb-4 focus-visible:!ring-background focus-visible:!ring-offset-primary" />
+                        {q && <Button onClick={() => setQ(undefined)} className="h-12 w-12 animate-in fade-in slide-in-from-bottom" size={"icon"}><XMarkIcon className="w-5 h-5" /></Button>}
+                    </div>
+                    {loading ? <BotsGrid columns={{ lg: 3 }} gap={2}>{[...Array(20)].map((_, key) => <SkeletonCard key={key} />)}</BotsGrid> : bots?.bots.nodes?.length ? <BotsGrid columns={{ lg: 3 }} gap={2}><Bots bots={bots?.bots.nodes} /></BotsGrid> : <div className="flex items-center justify-center h-32 font-bold text-red-500">
                         <FaceFrownIcon className="w-5 mr-2" /> No bots found
                     </div>}
                 </div>
