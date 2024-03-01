@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
             },
             context: {
                 headers: {
-                    "X-Build": process.env.NODE_ENV
+                    "X-Build": "production"
                 }
             }
         })

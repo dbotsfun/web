@@ -28,11 +28,6 @@ const navLinks = [
         label: "Explore",
         icon: <MagnifyingGlassIcon className="w-4 h-4" />,
         href: "/explore"
-    },
-    {
-        label: "Submit",
-        icon: <PlusCircleIcon className="w-4 h-4" />,
-        href: "/bot/add"
     }
 ]
 
@@ -42,6 +37,12 @@ export default function Header() {
     const { setTheme, resolvedTheme } = useTheme();
     const [color, setColor] = useLocalStorage<string>("main", "main")
 
+    if (auth) navLinks.push({
+        label: "Submit",
+        icon: <PlusCircleIcon className="w-4 h-4" />,
+        href: "/bot/add"
+    })
+
     useEffect(() => {
         document.getElementById("html_element")?.setAttribute("data-theme", color ?? "main")
     }, [color])
@@ -50,9 +51,9 @@ export default function Header() {
     return <header className={cn("bg-card/90 top-0 z-50 fixed border-accent backdrop-blur flex items-center gap-8 w-full px-8 transition-all lg:px-28 py-4 border-b")}>
         <div className="flex flex-1 items-center justify-between">
             <div className="flex items-center gap-10">
-                <Link href="/" className="text-xl font-semibold cursor-pointer hover:opacity-70 duration-100">discord<span className="font-black text-primary">bots</span></Link>
+                <Link href="/" className="text-xl font-semibold cursor-pointer hover:opacity-70 duration-100 animate-in fade-in slide-in-from-left-2">discord<span className="font-black text-primary">bots</span></Link>
                 <div className="items-center gap-6 text-sm hidden md:flex">
-                    {navLinks.map((n, key) => <Link key={key} className="text-muted-foreground hover:text-primary text-xs flex items-center gap-1" href={n.href}>
+                    {navLinks.map((n, key) => <Link key={key} className="text-muted-foreground animate-in fade-in slide-in-from-bottom hover:text-primary text-xs flex items-center gap-1" href={n.href}>
                         {n.icon}
                         {n.label}
                     </Link>)}
