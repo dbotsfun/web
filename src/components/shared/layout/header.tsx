@@ -28,6 +28,11 @@ const navLinks = [
         label: "Explore",
         icon: <MagnifyingGlassIcon className="w-4 h-4" />,
         href: "/explore"
+    },
+    {
+        label: "Submit",
+        icon: <PlusCircleIcon className="w-4 h-4" />,
+        href: "/bot/add"
     }
 ]
 
@@ -36,18 +41,6 @@ export default function Header() {
     const pathname = usePathname();
     const { setTheme, resolvedTheme } = useTheme();
     const [color, setColor] = useLocalStorage<string>("main", "main")
-
-    useEffect(() => {
-        if (auth && !navLinks.includes({
-            label: "Submit",
-            icon: <PlusCircleIcon className="w-4 h-4" />,
-            href: "/bot/add"
-        })) navLinks.push({
-            label: "Submit",
-            icon: <PlusCircleIcon className="w-4 h-4" />,
-            href: "/bot/add"
-        })
-    }, [auth])
 
     useEffect(() => {
         document.getElementById("html_element")?.setAttribute("data-theme", color ?? "main")
