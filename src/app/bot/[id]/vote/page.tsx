@@ -70,7 +70,7 @@ export default function Page({ params }: { params: { id: string } }) {
                             </div>
                             <div className="flex-col flex">
                                 <h1 className="mt-3 mb-1 md:mt-0 md:mb-0 text-2xl flex gap-1 items-center font-semibold truncate">
-                                    {bot.name} {bot.certified && <CertifiedIcon />}
+                                    {bot.name} {bot.certified && <CertifiedIcon className="w-6 h-6" />}
                                 </h1>
                                 <div className="flex text-sm text-muted-foreground">
                                     <div className="flex items-center mt-2 gap-4">

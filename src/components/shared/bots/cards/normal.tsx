@@ -70,7 +70,7 @@ export default function BotCard({ id, avatar, name, votes, tags, shortDescriptio
                         <h4 className="text-muted-foreground text-xs">{tags.join(", ")}</h4>
                     </div>
                 </div>
-                <p className="text-secondary-foreground text-sm mt-1 line-clamp-4 text-wrap break-words h-20">
+                <p className="text-secondary-foreground gradient-mask-b-30 text-sm mt-1 line-clamp-4 text-wrap break-words h-20">
                     {shortDescription}
                 </p>
                 <div className="flex justify-between mt-4">
