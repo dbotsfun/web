@@ -72,6 +72,7 @@ function AutoForm<SchemaType extends ZodObjectOrWrapped>({
     <div className="w-full">
       <Form {...form}>
         <form
+          noValidate
           onSubmit={(e) => {
             form.handleSubmit(onSubmit)(e);
           }}

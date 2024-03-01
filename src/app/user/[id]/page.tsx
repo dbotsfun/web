@@ -10,7 +10,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useUserBotsLazyQuery, useUserQuery } from "@/lib/apollo/types";
 import { useSession } from "@/lib/hooks/use-session";
 import { avatar } from "@/lib/utils";
-import { BeakerIcon, EllipsisHorizontalIcon, FaceFrownIcon, FlagIcon, HeartIcon, PencilIcon, WrenchScrewdriverIcon } from "@heroicons/react/20/solid";
+import { BeakerIcon, BugAntIcon, CodeBracketIcon, EllipsisHorizontalIcon, FaceFrownIcon, FingerPrintIcon, HeartIcon, PencilIcon, StarIcon, WrenchScrewdriverIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -25,9 +25,12 @@ export default function Page({ params }: { params: { id: string } }) {
     const [getBots, botsResult] = useUserBotsLazyQuery()
 
     const badges: Record<string, JSX.Element> = {
-        dev: <WrenchScrewdriverIcon className="w-6 h-6 text-rose-500" />,
-        contributor: <HeartIcon className="w-6 h-6 text-amber-500" />,
-        tester: <BeakerIcon className="w-6 h-6 text-green-500" />
+        dev: <CodeBracketIcon className="w-6 h-6 fill-rose-500" />,
+        admin: <WrenchScrewdriverIcon className="w-6 h-6 fill-pink-500" />,
+        tester: <BeakerIcon className="w-6 h-6 fill-green-500" />,
+        bug_hunter: <BugAntIcon className="w-6 h-6 fill-purple-500" />,
+        donor: <StarIcon className="w-6 h-6 fill-teal-500" />,
+        contributor: <HeartIcon className="w-6 h-6 fill-amber-500" />,
     }
 
     if (gettingUser || gettingAuth) return <LoadingScreen />
@@ -62,7 +65,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                 <DropdownMenuItem
                                     className="flex justify-between"
                                 >
-                                    Report <FlagIcon className="h-4 w-4" />
+                                    Copy ID <FingerPrintIcon className="h-4 w-4" />
                                 </DropdownMenuItem>
                                 <Policy policy={user.user.id === auth?.me.user.id}>
                                     <Link href="/user/edit">
@@ -77,9 +80,10 @@ export default function Page({ params }: { params: { id: string } }) {
                     <div className="mt-0 h-24">
                         <div className="flex flex-col">
                             <div>
+                                <p className="text-sm text-muted-foreground">/u/front</p>
                                 <div className="mb-1 flex items-center gap-3">
                                     <h2 className="text-3xl font-bold">{user.user.username}</h2>
-                                    <div className="flex flex-row items-center gap-2">
+                                    <div className="flex flex-row items-center gap-2 bg-background px-2 py-1 rounded">
                                         <TooltipProvider>
                                             {user.user.badges.map(b =>
                                                 <Tooltip key={b.id}>

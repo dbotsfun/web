@@ -42,11 +42,6 @@ export async function GET(req: NextRequest) {
             variables: {
                 token: code,
             },
-            context: {
-                headers: {
-                    "x-build": "production"
-                }
-            }
         })
 
         if (!token?.token.access_token) {
