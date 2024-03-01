@@ -59,8 +59,8 @@ export async function GET(req: NextRequest) {
 
         const cookie = serialize("session", token.token.access_token, {
             expires: new Date(Date.now() + token.token.expires_in),
-            httpOnly: process.env.NODE_ENV !== "development",
-            secure: process.env.NODE_ENV !== "development",
+            httpOnly: false,
+            secure: false,
             path: "/",
         });
 
