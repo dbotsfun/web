@@ -5,25 +5,25 @@ import AutoFormTooltip from "../common/tooltip";
 import { AutoFormInputComponentProps } from "../types";
 
 export default function AutoFormDate({
-  label,
-  isRequired,
-  field,
-  fieldConfigItem,
-  fieldProps,
+	label,
+	isRequired,
+	field,
+	fieldConfigItem,
+	fieldProps,
 }: AutoFormInputComponentProps) {
-  return (
-    <FormItem>
-      <AutoFormLabel label={label} isRequired={isRequired} />
-      <FormControl>
-        <DatePicker
-          date={field.value}
-          setDate={field.onChange}
-          {...fieldProps}
-        />
-      </FormControl>
-      <AutoFormTooltip fieldConfigItem={fieldConfigItem} />
+	return (
+		<FormItem>
+			<AutoFormLabel label={label} isRequired={isRequired} />
+			<FormControl>
+				<DatePicker
+					date={field.value}
+					setDate={field.onChange}
+					{...fieldProps}
+				/>
+			</FormControl>
+			<AutoFormTooltip fieldConfigItem={fieldConfigItem} />
 
-      <FormMessage className="animate-in fade-in slide-in-from-bottom" />
-    </FormItem>
-  );
+			<FormMessage className="animate-in fade-in slide-in-from-bottom" />
+		</FormItem>
+	);
 }

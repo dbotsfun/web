@@ -20,38 +20,34 @@ import { MouseEvent, ReactNode } from "react";
  */
 
 export default function Spotlight({ children }: { children: ReactNode }) {
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
+	const mouseX = useMotionValue(0);
+	const mouseY = useMotionValue(0);
 
-    function handleMouseMove({
-        currentTarget,
-        clientX,
-        clientY,
-    }: MouseEvent) {
-        const { left, top } = currentTarget.getBoundingClientRect();
+	function handleMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
+		const { left, top } = currentTarget.getBoundingClientRect();
 
-        mouseX.set(clientX - left);
-        mouseY.set(clientY - top);
-    }
+		mouseX.set(clientX - left);
+		mouseY.set(clientY - top);
+	}
 
-    return (
-        <div
-            className="group relative max-w-md rounded-xl bg-card shadow-2xl overflow-hidden"
-            onMouseMove={handleMouseMove}
-        >
-            <motion.div
-                className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
-                style={{
-                    background: useMotionTemplate`
+	return (
+		<div
+			className="group relative max-w-md rounded-xl bg-card shadow-2xl overflow-hidden"
+			onMouseMove={handleMouseMove}
+		>
+			<motion.div
+				className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
+				style={{
+					background: useMotionTemplate`
             radial-gradient(
               450px circle at ${mouseX}px ${mouseY}px,
               rgba(255, 255, 255, 0.06),
               transparent 80%
             )
           `,
-                }}
-            />
-            {children}
-        </div>
-    );
+				}}
+			/>
+			{children}
+		</div>
+	);
 }

@@ -14,82 +14,108 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
-    vanity: z.string().min(2, "Vanity must be at least 2 characters long").max(15, "Vanity must be less than 15 characters long").toLowerCase().optional(),
-    bio: z.string().min(1, "Bio must be at least 1 character long").max(200, "Bio must be less than 200 characters long"),
-    banner: z.string().url().optional()
-})
+	vanity: z
+		.string()
+		.min(2, "Vanity must be at least 2 characters long")
+		.max(15, "Vanity must be less than 15 characters long")
+		.toLowerCase()
+		.optional(),
+	bio: z
+		.string()
+		.min(1, "Bio must be at least 1 character long")
+		.max(200, "Bio must be less than 200 characters long"),
+	banner: z.string().url().optional(),
+});
 
 export default function Page() {
-    const { data: auth, loading: gettingAuth } = useSession()
-    const [values, setValues] = useState<Partial<z.infer<typeof formSchema>>>({});
-    const [getUser, user] = useUserLazyQuery();
-    const [edit, editResult] = useEditUserMutation()
+	const { data: auth, loading: gettingAuth } = useSession();
+	const [values, setValues] = useState<Partial<z.infer<typeof formSchema>>>({});
+	const [getUser, user] = useUserLazyQuery();
+	const [edit, editResult] = useEditUserMutation();
 
-    useEffect(() => {
-        if (auth) getUser({
-            variables: {
-                userId: auth.me.user.id
-            }
-        })
-    }, [auth])
+	useEffect(() => {
+		if (auth)
+			getUser({
+				variables: {
+					userId: auth.me.user.id,
+				},
+			});
+	}, [auth]);
 
-    useEffect(() => {
-        if (editResult.called && !editResult.loading && !editResult.error) {
-            toast.success("Updated user information")
-            user.refetch({
-                userId: auth!.me.user.id
-            })
-            editResult.reset()
-        }
+	useEffect(() => {
+		if (editResult.called && !editResult.loading && !editResult.error) {
+			toast.success("Updated user information");
+			user.refetch({
+				userId: auth!.me.user.id,
+			});
+			editResult.reset();
+		}
 
-        if (editResult.error) toast.error(editResult.error.message)
-    }, [editResult.called, editResult.loading])
+		if (editResult.error) toast.error(editResult.error.message);
+	}, [editResult.called, editResult.loading]);
 
-    function onSubmit(values: Partial<z.infer<typeof formSchema>>) {
-        edit({
-            variables: {
-                input: {
-                    banner: values.banner,
-                    bio: values.bio
-                }
-            }
-        })
-    }
+	function onSubmit(values: Partial<z.infer<typeof formSchema>>) {
+		edit({
+			variables: {
+				input: {
+					banner: values.banner,
+					bio: values.bio,
+				},
+			},
+		});
+	}
 
-    if (user.loading || gettingAuth) return <LoadingScreen />
-    if (user.called && !user.loading && !user.data) return notFound()
-    return <div className="mx-auto max-w-4xl py-24">
-        <ReturnButton />
-        <Card>
-            <CardHeader className="border-b">
-                <CardTitle>User settings</CardTitle>
-            </CardHeader>
-            <CardContent className="mt-5">
-                <AutoForm values={values} onParsedValuesChange={setValues} onSubmit={() => onSubmit(values)} formSchema={formSchema} fieldConfig={{
-                    bio: {
-                        inputProps: {
-                            placeholder: "A nice bio to describe yourself",
-                            defaultValue: user.data?.user.bio ?? undefined
-                        }
-                    },
-                    vanity: {
-                        description: "Vanities make your dbots account more unique.",
-                        inputProps: {
-                            placeholder: "E.g: simxnet",
-                            defaultValue: undefined
-                        }
-                    },
-                    banner: {
-                        description: "The optimal dimensions for a banner are 1100x360",
-                        inputProps: {
-                            placeholder: "https://imgur...",
-                            defaultValue: user.data?.user.banner ?? undefined
-                        }
-                    }
-                }}>
-                    <Button className="mt-4 gap-2" disabled={editResult.loading} aria-disabled={editResult.loading}>{editResult.loading && <Loader2Icon className="w-5 h-5 animate-spin" />}Save</Button>
-                </AutoForm>
-            </CardContent>
-        </Card>
-    </div>
+	if (user.loading || gettingAuth) return <LoadingScreen />;
+	if (user.called && !user.loading && !user.data) return notFound();
+	return (
+		<div className="mx-auto max-w-4xl py-24">
+			<ReturnButton />
+			<Card>
+				<CardHeader className="border-b">
+					<CardTitle>User settings</CardTitle>
+				</CardHeader>
+				<CardContent className="mt-5">
+					<AutoForm
+						values={values}
+						onParsedValuesChange={setValues}
+						onSubmit={() => onSubmit(values)}
+						formSchema={formSchema}
+						fieldConfig={{
+							bio: {
+								inputProps: {
+									placeholder: "A nice bio to describe yourself",
+									defaultValue: user.data?.user.bio ?? undefined,
+								},
+							},
+							vanity: {
+								description: "Vanities make your dbots account more unique.",
+								inputProps: {
+									placeholder: "E.g: simxnet",
+									defaultValue: undefined,
+								},
+							},
+							banner: {
+								description: "The optimal dimensions for a banner are 1100x360",
+								inputProps: {
+									placeholder: "https://imgur...",
+									defaultValue: user.data?.user.banner ?? undefined,
+								},
+							},
+						}}
+					>
+						<Button
+							className="mt-4 gap-2"
+							disabled={editResult.loading}
+							aria-disabled={editResult.loading}
+						>
+							{editResult.loading && (
+								<Loader2Icon className="w-5 h-5 animate-spin" />
+							)}
+							Save
+						</Button>
+					</AutoForm>
+				</CardContent>
+			</Card>
+		</div>
+	);
 }

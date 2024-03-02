@@ -6,8 +6,9 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"start:production": "pnpm codegen && next build && next start",
-		"codegen": "graphql-codegen --config codegen.yml"
+		"codegen": "graphql-codegen --config codegen.yml",
+		"format": "pnpm dlx @biomejs/biome format src --write",
+		"check": "pnpm dlx @biomejs/biome check --apply src"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.9.4",
