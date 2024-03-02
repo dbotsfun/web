@@ -1,5 +1,8 @@
 "use client";
 
+import ApprovedBotsActions from '@/components/shared/bots/panel-actions/approved-bots';
+import DeniedBotsActions from '@/components/shared/bots/panel-actions/denied-bots';
+import PendingBotsActions from '@/components/shared/bots/panel-actions/pending-bots';
 import LoadingScreen from '@/components/shared/common/loading-screen';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,7 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { BotStatus, usePanelBotsQuery } from '@/lib/apollo/types'
 import { avatar } from '@/lib/utils';
-import { CheckIcon, ClockIcon, EllipsisHorizontalIcon, FaceFrownIcon, FunnelIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { CheckIcon, ClockIcon, FaceFrownIcon, FunnelIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { useEffect, useState } from 'react';
 
 interface Filters {
@@ -80,9 +83,7 @@ export default function Page() {
                     </TableCell>
                     <TableCell className='lowercase'>{bot.status}</TableCell>
                     <TableCell className="justify-end flex">
-                        <Button variant={"secondary"} size={"icon"}>
-                            <EllipsisHorizontalIcon className='w-4 h-4' />
-                        </Button>
+                        {bot.status === "APPROVED" ? <ApprovedBotsActions id={bot.id} /> : bot.status === "DENIED" ? <DeniedBotsActions id={bot.id} /> : <PendingBotsActions id={bot.id} />}
                     </TableCell>
                 </TableRow>)}
             </TableBody>

@@ -1,6 +1,7 @@
 "use client";
 
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/20/solid";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "../../ui/button";
 
@@ -9,12 +10,12 @@ const footerLinks = [
         label: "Socials",
         sublinks: [
             {
-                label: "Instagram",
-                href: "/api/redirect?s=ig"
-            },
-            {
                 label: "Discord",
                 href: "/api/redirect?s=dc"
+            },
+            {
+                label: "X",
+                href: "/api/redirect?s=x"
             }
         ]
     }
@@ -28,11 +29,15 @@ export default function Footer() {
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
                 <div>
                     <h1 className="text-2xl font-semibold">discord<strong>bots</strong></h1>
-                    <p className="mt-4 max-w-xs text-gray-500 dark:text-gray-400">
+                    <p className="mt-4 max-w-xs text-muted-foreground">
                         Browse hundreds of bots made for your community.
                     </p>
                     <div className="mt-8 flex gap-6">
-                        <Button><ChatBubbleOvalLeftEllipsisIcon className="w-5 mr-2" />Join our Discord</Button>
+                        <Button asChild>
+                            <Link href="/api/redirect?s=dc">
+                                <ChatBubbleOvalLeftEllipsisIcon className="w-5 mr-2" />Join our Discord
+                            </Link>
+                        </Button>
                     </div>
                 </div>
 
@@ -41,7 +46,7 @@ export default function Footer() {
                         <p className="font-medium">{f.label}</p>
                         <ul className="mt-6 space-y-4 text-sm">
                             {f.sublinks.map((l, lkey) => <li key={lkey}>
-                                <a href={l.href} className="text-muted-foreground">
+                                <a target="_blank" href={l.href} className="text-muted-foreground hover:underline" rel="noreferrer">
                                     {l.label}
                                 </a>
                             </li>)}

@@ -14,13 +14,13 @@ export default function PendingBotsActions({ id }: PendingBotsActionsProps) {
     const [deny, denied] = useDenyBotMutation()
 
     useEffect(() => {
-        if (approved.called && !approved.error) toast.success(`Approved ${approved.data?.approveBot.name}`)
         if (approved.error) toast.error(approved.error.message)
+        if (approved.called && approved.data) toast.success(`Approved ${approved.data?.approveBot.name}`)
     }, [approved])
 
     useEffect(() => {
-        if (denied.called && !denied.error) toast.success(`Denied ${denied.data?.rejectBot.name}`)
         if (denied.error) toast.error(denied.error.message)
+        if (denied.called && denied.data) toast.success(`Denied ${denied.data?.rejectBot.name}`)
     }, [denied])
     return <DropdownMenu>
         <DropdownMenuTrigger asChild>

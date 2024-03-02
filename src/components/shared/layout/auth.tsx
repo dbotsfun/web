@@ -21,7 +21,10 @@ export default function Auth({ username, id, avatarId }: AuthProps) {
     const [logout, logoutResult] = useRevokeTokenMutation()
 
     useEffect(() => {
-        if (logoutResult.called) router.push("/")
+        if (logoutResult.called) {
+            router.push("/")
+            location.reload()
+        }
     })
     return <DropdownMenu>
         <DropdownMenuTrigger asChild>

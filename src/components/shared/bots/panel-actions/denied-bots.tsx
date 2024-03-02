@@ -13,8 +13,8 @@ export default function DeniedBotsActions({ id }: DeniedBotsActionsProps) {
     const [approve, approved] = useApproveBotMutation();
 
     useEffect(() => {
-        if (approved.called && !approved.error) toast.success(`Denied ${approved.data?.approveBot.name}`)
         if (approved.error) toast.error(approved.error.message)
+        if (approved.called && approved.data) toast.success(`Approved ${approved.data?.approveBot.name}`)
     }, [approved])
     return <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -25,7 +25,7 @@ export default function DeniedBotsActions({ id }: DeniedBotsActionsProps) {
         <DropdownMenuContent>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => approve({ variables: { approveBotId: id } })}>Deny</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => approve({ variables: { approveBotId: id } })}>Approve</DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>
 }
