@@ -14,7 +14,7 @@ export default function PanelLayout({
 }) {
     const { data: auth, loading } = useSession()
 
-    if (!loading && !auth) return notFound()
+    if (!loading && !auth || auth && auth.me.user.id !== "1076700780175831100") return notFound()
     return loading ? <LoadingScreen /> : <div className="flex lg:flex-row flex-col gap-5 h-full">
         <div className={"pb-12 w-1/4 bg-card h-full rounded-lg sticky top-24"}>
             <div className="space-y-4 py-4">

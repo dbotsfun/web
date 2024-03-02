@@ -39,10 +39,9 @@ export default function Page({ params }: { params: { id: string } }) {
         <div className="bg-gradient-to-b from-pink-500 rounded-3xl via-red-500 to-yellow-500 p-0">
             <div className="overflow-hidden rounded-2xl bg-card min-h-full">
                 <div className="relative">
-                    <div
-                        className="inset-0 w-full bg-opacity-50 rounded-t-lg bg-primary"
-                    />
-                    {user.user.banner && <img src={user.user.banner} draggable={false} alt="banner" className="object-cover w-full h-72 rounded-t-lg z-10" />}
+                    {user.user.banner ? <img src={user.user.banner} draggable={false} alt="banner" className="object-cover w-full h-72 rounded-t-lg z-10" /> : <div
+                        className="inset-0 w-full h-72 bg-opacity-50 rounded-t-lg bg-primary"
+                    />}
                 </div>
                 <div className="p-6">
                     <div className="relative flex justify-between">
