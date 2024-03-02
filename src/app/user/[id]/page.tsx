@@ -81,7 +81,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         <div className="flex flex-col">
                             <div>
                                 <p className="text-sm text-muted-foreground">/u/front</p>
-                                <div className="mb-1 flex items-center gap-3">
+                                <div className="mb-1 flex lg:flex-row flex-col items-center gap-3">
                                     <h2 className="text-3xl font-bold">{user.user.username}</h2>
                                     <div className="flex flex-row items-center gap-2 bg-background px-2 py-1 rounded">
                                         <TooltipProvider>
