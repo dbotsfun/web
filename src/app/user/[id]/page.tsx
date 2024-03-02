@@ -37,6 +37,7 @@ import {
 	StarIcon,
 	WrenchScrewdriverIcon,
 } from "@heroicons/react/20/solid";
+import { BananaIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -57,6 +58,7 @@ export default function Page({ params }: { params: { id: string } }) {
 		bug_hunter: <BugAntIcon className="w-6 h-6 fill-purple-500" />,
 		donor: <StarIcon className="w-6 h-6 fill-teal-500" />,
 		contributor: <HeartIcon className="w-6 h-6 fill-amber-500" />,
+		custom_g4: <BananaIcon className="w-6 h-6 fill-yellow-500 text-yellow-500" />,
 	};
 
 	if (gettingUser || gettingAuth) return <LoadingScreen />;

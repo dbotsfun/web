@@ -1,6 +1,7 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
 	Drawer,
@@ -75,9 +76,9 @@ export default function Header() {
 				<div className="flex items-center gap-10">
 					<Link
 						href="/"
-						className="text-xl font-semibold cursor-pointer hover:opacity-70 duration-100 animate-in fade-in slide-in-from-left-2"
+						className="text-xl font-semibold cursor-pointer hover:opacity-70 duration-100 flex items-center animate-in fade-in slide-in-from-left-2"
 					>
-						discord<span className="font-black text-primary">bots</span>
+						discord<span className="font-black text-primary">bots</span> <Badge className="ml-2 cursor-help">BETA</Badge>
 					</Link>
 					<div className="items-center gap-6 text-sm hidden md:flex">
 						{navLinks.map((n, key) => (
