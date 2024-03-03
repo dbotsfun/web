@@ -1,7 +1,7 @@
 "use client";
 
 import CertifiedIcon from "@/components/shared/bots/certified-icon";
-import DlistIcon from "@/components/shared/bots/dlist-icon";
+// import DlistIcon from "@/components/shared/bots/dlist-icon";
 import BotDangerZone from "@/components/shared/bots/sections/panel/danger";
 import BotDeveloper from "@/components/shared/bots/sections/panel/developer";
 import BotSync from "@/components/shared/bots/sections/panel/sync";
@@ -33,6 +33,8 @@ import { Tab, Tabs } from "@nextui-org/tabs";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+// {bot.importedFrom === "DISCORD_LIST" && <DlistIcon />} Is chiko really dumb?
+
 export default function Page({ params }: { params: { id: string } }) {
 	const { data: user } = useSession();
 	const { data, loading, error } = useBotQuery({
@@ -59,7 +61,7 @@ export default function Page({ params }: { params: { id: string } }) {
 					/>
 					<div className="flex flex-col md:items-start items-center gap-1">
 						<h1 className="mr-3 md:text-3xl lg:text-4xl text-2xl flex gap-2 items-center font-bold">
-							{bot.name} {bot.certified && <CertifiedIcon className="w-7" />} {bot.importedFrom === "DISCORD_LIST" && <DlistIcon />}
+							{bot.name} {bot.certified && <CertifiedIcon className="w-7" />}
 						</h1>
 						<p className="text-muted-foreground md:text-start text-center">
 							{bot.shortDescription}

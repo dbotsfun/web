@@ -118,7 +118,7 @@ query Bot($id: ID!) {
             github
             guildCount
             tags
-            importedFrom
+            # importedFrom
             votes
             owners {
               id
