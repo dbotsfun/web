@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 
 export default function BotWebhooks() {
 	return (
-		<Card aria-disabled className="opacity-50">
+		<Card>
 			<CardHeader>
 				<CardTitle>Webhooks</CardTitle>
 			</CardHeader>
@@ -13,11 +13,11 @@ export default function BotWebhooks() {
 				<div className="flex flex-col gap-5">
 					<div>
 						<Label>URL</Label>
-						<Input disabled aria-disabled placeholder="Webhook URL" />
+						<Input placeholder="Webhook URL" />
 					</div>
 					<div>
 						<Label>Secret</Label>
-						<Input disabled aria-disabled placeholder="Client secret" />
+						<Input placeholder="Client secret" />
 					</div>
 				</div>
 				<Button className="mt-5">Save</Button>

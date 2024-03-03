@@ -29,6 +29,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
     Tooltip,
     TooltipContent,
@@ -52,9 +53,10 @@ import { useSession } from "@/lib/hooks/use-session";
 import {
     ArrowDownTrayIcon,
     ArrowUpRightIcon,
+    Bars3CenterLeftIcon,
     CommandLineIcon,
     DocumentTextIcon,
-    TagIcon,
+    InformationCircleIcon,
 } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -94,7 +96,7 @@ const formSchema = z.object({
             message: "Prefix must be less than 12 characters long.",
         })
         .optional(),
-    tags: z.string().describe("Tags"),
+    tags: z.enum(["Fun", "Moderation"]).describe("Tags"),
     description: z
         .string({
             required_error: "Long description is required.",
@@ -134,7 +136,7 @@ export default function Page() {
                     github: values.github,
                     inviteLink: values.inviteLink,
                     supportServer: values.supportServer,
-                    tags: values.tags!.split(", "),
+                    tags: [values.tags!],
                     website: values.website,
                 },
             },
@@ -308,8 +310,12 @@ export default function Page() {
                             tags: {
                                 description: (
                                     <div className="flex items-center text-muted-foreground">
-                                        <TagIcon className="mr-1 w-4 h-4" />
-                                        Select up to 4 tags
+                                        <span className="text-amber-500 font-bold mr-1">WARNING:</span> You can only select 1 tag at the moment while we finish this area. <Popover>
+                                            <PopoverTrigger asChild>
+                                                <InformationCircleIcon className="w-4 cursor-pointer h-4 ml-2" />
+                                            </PopoverTrigger>
+                                            <PopoverContent>You <strong>will</strong> be able to change this once we finish it.</PopoverContent>
+                                        </Popover>
                                     </div>
                                 ),
                                 inputProps: {
@@ -318,10 +324,15 @@ export default function Page() {
                                 },
                             },
                             description: {
+                                description: (
+                                    <div className="flex items-center text-muted-foreground">
+                                        <Bars3CenterLeftIcon className="w-4 h-4 mr-2" /> Only Markdown allowed
+                                    </div>
+                                ),
                                 fieldType: "textarea",
                                 inputProps: {
                                     maxLength: 2000,
-                                    className: "font-mono",
+                                    className: "font-mono h-64",
                                 },
                             },
                         }}

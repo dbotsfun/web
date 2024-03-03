@@ -1,6 +1,6 @@
 "use client";
 
-import LoadingScreen from "@/components/shared/common/loading-screen";
+import Loader from "@/components/shared/common/loader";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -35,7 +35,7 @@ export default function BotSync({ id }: BotSyncProps) {
                 If you recently updated bot's Discord client you should use this, it syncs the bot's Discord client with the bot's database record.
             </CardHeader>
             <CardContent>
-                {syncStatus.loading ? <LoadingScreen /> : <Button onClick={() => sync({ variables: { syncBotInformationId: id } })}><CubeTransparentIcon className="w-5 h-5 mr-2" />Sync information</Button>}
+                {syncStatus.loading ? <Loader /> : <Button onClick={() => sync({ variables: { syncBotInformationId: id } })}><CubeTransparentIcon className="w-5 h-5 mr-2" />Sync information</Button>}
             </CardContent>
             <CardFooter>
                 <p className="text-muted-foreground text-xs">

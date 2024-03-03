@@ -1343,7 +1343,7 @@ export type BotQueryVariables = Exact<{
 }>;
 
 
-export type BotQuery = { __typename?: 'Query', getBot: { __typename?: 'BotObject', id: string, avatar?: string | null, certified: boolean, name: string, status: string, description?: string | null, shortDescription?: string | null, prefix?: string | null, inviteLink?: string | null, supportServer?: string | null, website?: string | null, github?: string | null, guildCount: number, tags: Array<string>, votes: number, owners: Array<{ __typename?: 'UserObject', id: string, avatar?: string | null, username: string }> } };
+export type BotQuery = { __typename?: 'Query', getBot: { __typename?: 'BotObject', id: string, avatar?: string | null, certified: boolean, name: string, status: string, description?: string | null, shortDescription?: string | null, prefix?: string | null, inviteLink?: string | null, supportServer?: string | null, website?: string | null, github?: string | null, guildCount: number, tags: Array<string>, importedFrom: BotListSource, votes: number, owners: Array<{ __typename?: 'UserObject', id: string, avatar?: string | null, username: string }> } };
 
 export type VoteCheckQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2128,6 +2128,7 @@ export const BotDocument = gql`
     github
     guildCount
     tags
+    importedFrom
     votes
     owners {
       id
