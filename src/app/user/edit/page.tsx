@@ -90,6 +90,8 @@ export default function Page() {
 							vanity: {
 								description: "Vanities make your dbots account more unique.",
 								inputProps: {
+									disabled: true,
+									"aria-disabled": true,
 									placeholder: "E.g: simxnet",
 									defaultValue: undefined,
 								},
