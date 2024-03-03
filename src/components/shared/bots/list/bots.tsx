@@ -1,5 +1,5 @@
 import { BotCardProps } from "@/lib/types/bots";
-import Card from "../cards/normal";
+import Card from "../../cards/bot";
 
 interface BotsProps {
 	bots: BotCardProps[];

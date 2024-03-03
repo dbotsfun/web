@@ -33,4 +33,6 @@ export function capitalize(text: string) {
 	return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+export const DEFAULT_AVATAR = "https://cdn.discordapp.com/embed/avatars/0.png"
+
 export type AvatarSizes = 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096;

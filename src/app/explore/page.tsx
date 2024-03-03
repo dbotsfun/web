@@ -1,7 +1,7 @@
 "use client";
 
-import SkeletonCard from "@/components/shared/bots/cards/skeleton";
 import Bots from "@/components/shared/bots/list/bots";
+import SkeletonCard from "@/components/shared/cards/skeleton";
 import BotsGrid from "@/components/shared/grids/bots";
 import AnimatedNumber from "@/components/ui/animated-number";
 import { Button } from "@/components/ui/button";

@@ -121,6 +121,7 @@ query Bot($id: ID!) {
             votes
             owners {
               id
+              avatar
               username
             }
         }

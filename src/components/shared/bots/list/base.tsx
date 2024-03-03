@@ -1,8 +1,8 @@
 import { HeroIcon } from "@/lib/types/props";
 import { ChevronRightIcon, FaceFrownIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
+import SkeletonCard from "../../cards/skeleton";
 import BotsGrid from "../../grids/bots";
-import SkeletonCard from "../cards/skeleton";
 
 interface ListingProps {
 	title: string;

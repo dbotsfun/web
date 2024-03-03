@@ -1,6 +1,7 @@
 "use client";
 
 import Bots from "@/components/shared/bots/list/bots";
+import ImageWithFallback from "@/components/shared/common/image-with-fallback";
 import LoadingScreen from "@/components/shared/common/loading-screen";
 import Policy from "@/components/shared/policy";
 import {
@@ -37,8 +38,7 @@ import {
 	StarIcon,
 	WrenchScrewdriverIcon,
 } from "@heroicons/react/20/solid";
-import { BananaIcon } from "lucide-react";
-import Image from "next/image";
+import { BananaIcon, TurtleIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -59,6 +59,7 @@ export default function Page({ params }: { params: { id: string } }) {
 		donor: <StarIcon className="w-6 h-6 fill-teal-500" />,
 		contributor: <HeartIcon className="w-6 h-6 fill-amber-500" />,
 		custom_g4: <BananaIcon className="w-6 h-6 fill-yellow-500 text-yellow-500" />,
+		fastestemployee: <TurtleIcon className="w-6 h-6 fill-green-500 text-green-700" />,
 	};
 
 	if (gettingUser || gettingAuth) return <LoadingScreen />;
@@ -82,7 +83,7 @@ export default function Page({ params }: { params: { id: string } }) {
 					<div className="p-6">
 						<div className="relative flex justify-between">
 							<div className="-mt-20 h-24 w-24 rounded-full bg-card ring-card ring-8">
-								<Image
+								<ImageWithFallback
 									alt="user avatar"
 									width={96}
 									height={96}
@@ -120,7 +121,7 @@ export default function Page({ params }: { params: { id: string } }) {
 											<TooltipProvider>
 												{user.user.badges.map((b) => (
 													<Tooltip key={b.id}>
-														<TooltipTrigger asChild>
+														<TooltipTrigger className="cursor-pointer" asChild>
 															{badges[b.id]}
 														</TooltipTrigger>
 														<TooltipContent>{b.description}</TooltipContent>

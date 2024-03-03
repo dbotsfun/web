@@ -3,7 +3,9 @@
 import CertifiedIcon from "@/components/shared/bots/certified-icon";
 import BotDangerZone from "@/components/shared/bots/sections/panel/danger";
 import BotDeveloper from "@/components/shared/bots/sections/panel/developer";
+import BotSync from "@/components/shared/bots/sections/panel/sync";
 import BotWebhooks from "@/components/shared/bots/sections/panel/webhooks";
+import ImageWithFallback from "@/components/shared/common/image-with-fallback";
 import LoadingScreen from "@/components/shared/common/loading-screen";
 import MD from "@/components/shared/common/md";
 import TagButton from "@/components/shared/common/tag-button";
@@ -32,8 +34,8 @@ import { notFound } from "next/navigation";
 
 /**
  * <Badge className="bg-gradient-to-r text-white group from-purple-500 h-6 to-indigo-500"><img alt="dlist.gg" src="/ext/dlistgg.svg" className="h-4 w-4 group-hover:mr-2 duration-150" />
-                                <p className="group-hover:flex hidden">Imported from dlist.gg</p>
-                            </Badge>
+								<p className="group-hover:flex hidden">Imported from dlist.gg</p>
+							</Badge>
  */
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -53,7 +55,9 @@ export default function Page({ params }: { params: { id: string } }) {
 		<div className="flex flex-col gap-5">
 			<div className="flex flex-col gap-3 md:flex-row w-full justify-between items-center py-5">
 				<div className="flex flex-col md:flex-row gap-5 items-center">
-					<img
+					<ImageWithFallback
+						width={96}
+						height={96}
 						src={avatar(bot.avatar, bot.id)}
 						alt="avatar"
 						className="w-24 rounded-xl ring-secondary ring-4 drop-shadow-2xl"
@@ -218,6 +222,7 @@ export default function Page({ params }: { params: { id: string } }) {
 								className="flex flex-col gap-4"
 							>
 								<BotDeveloper id={bot.id} />
+								<BotSync id={bot.id} />
 								<BotWebhooks />
 								<BotDangerZone name={bot.name} id={bot.id} />
 							</Tab>
@@ -255,9 +260,22 @@ export default function Page({ params }: { params: { id: string } }) {
 						</div>
 						<div className="flex flex-col gap-2">
 							<h1 className="text-3xl font-black">Tags</h1>
-							<div className="flex flex-row gap-1">
+							<div className="flex flex-wrap gap-2">
 								{bot.tags.map((t) => (
 									<TagButton key={t} tag={t} />
+								))}
+							</div>
+						</div>
+						<div className="flex flex-col gap-2">
+							<h1 className="text-3xl font-black">Owners</h1>
+							<div className="flex flex-col gap-1">
+								{bot.owners.map((o) => (
+									<Link href={`/user/${o.id}`}>
+										<Button className="w-full justify-start" variant={"secondary"}>
+											<ImageWithFallback className="rounded-full mr-2" width={23} height={23} alt="owner avatar" src={avatar(o.avatar, o.id)} />
+											{o.username}
+										</Button>
+									</Link>
 								))}
 							</div>
 						</div>

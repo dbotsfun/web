@@ -64,3 +64,14 @@ mutation EditUser($input: UpdateUserInput!) {
 mutation ResetApiKey($input: CreateKeyInput!) {
   resetAPIKey(input: $input)
 }
+
+mutation SyncBotInformation($syncBotInformationId: ID!) {
+  syncBotInformation(id: $syncBotInformationId) {
+    name
+    apiInformation {
+      bot {
+        approximate_guild_count
+      }
+    }
+  }
+}
