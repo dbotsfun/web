@@ -154,7 +154,7 @@ export default function Page({ params }: { params: { id: string } }) {
 										<LoadingScreen />
 									) : botsResult.data?.user.bots.nodes?.length ? (
 										<div className="grid grid-cols-2 gap-2">
-											<Bots bots={botsResult.data.user.bots.nodes!} />
+											<Bots reduced bots={botsResult.data.user.bots.nodes!} />
 										</div>
 									) : (
 										<div className="flex items-center justify-center h-32 font-bold text-red-500">
