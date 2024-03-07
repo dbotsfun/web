@@ -175,8 +175,8 @@ query FrontBots {
     }
 }
 
-query PanelBots($status: BotStatus!) {
-    bots(filters: { status: $status }) {
+query PanelBots($filters: GetBotFormInput) {
+    bots(filters: $filters) {
       nodes {
         id
         name

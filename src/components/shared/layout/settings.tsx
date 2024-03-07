@@ -50,6 +50,7 @@ export function Settings() {
 					<DropdownMenuRadioItem value="pine">Pine</DropdownMenuRadioItem>
 					<DropdownMenuRadioItem value="coral">Coral</DropdownMenuRadioItem>
 					<DropdownMenuRadioItem value="chill">Chill</DropdownMenuRadioItem>
+					<DropdownMenuRadioItem value="persimon">Persimon</DropdownMenuRadioItem>
 				</DropdownMenuRadioGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>

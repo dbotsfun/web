@@ -183,6 +183,51 @@
     --ring: 46 91% 49%;
   }
 
+  [data-theme="persimon"] {
+    --background: 0 0% 98.04%;
+    --foreground: 46 66% 4%;
+    --muted: 0 0% 94.9%;
+    --muted-foreground: 46 15% 31%;
+    --popover: 0 0% 99%;
+    --popover-foreground: 46 66% 3%;
+    --card: 0 0% 100%;
+    --card-foreground: 46 66% 3%;
+    --border: 0 0% 94.9%;
+    --input: 46 11% 95%;
+    --primary: 32.85 93.25% 53.53%;
+    --primary-foreground: 45.71 0% 100%;
+    --secondary: 46 17% 90%;
+    --secondary-foreground: 46 17% 30%;
+    --accent: 46 0% 92.31%;
+    --accent-foreground: 46 27% 23%;
+    --destructive: 4.53 78.82% 49.47%;
+    --destructive-foreground: 19 0% 100%;
+    --ring: 32.85 93.25% 53.53%;
+    --radius: 0.5rem;
+  }
+
+  [data-theme="persimon"].dark {
+    --background: 46 42% 1%;
+    --foreground: 46 30% 98%;
+    --muted: 46 10% 7%;
+    --muted-foreground: 46 15% 69%;
+    --popover: 46 42% 2%;
+    --popover-foreground: 46 30% 99%;
+    --card: 46 42% 2%;
+    --card-foreground: 46 30% 99%;
+    --border: 46 11% 12%;
+    --input: 46 11% 12%;
+    --primary: 32.85 93.25% 53.53%;
+    --primary-foreground: 46 0% 100%;
+    --secondary: 46 6% 12%;
+    --secondary-foreground: 46 6% 72%;
+    --accent: 0 0% 21.57%;
+    --accent-foreground: 44 15.46% 80.98%;
+    --destructive: 19 98% 49%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 32.85 93.25% 53.53%;
+  }
+
   /* LIMITED THEMES START */
   [data-theme="valentine"] {
     --card: 294 43% 99%;

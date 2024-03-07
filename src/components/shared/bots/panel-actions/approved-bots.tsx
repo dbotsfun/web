@@ -20,9 +20,9 @@ export default function ApprovedBotsActions({ id }: ApprovedBotsActionsProps) {
 	const [deny, denied] = useDenyBotMutation();
 
 	useEffect(() => {
-		if (denied.called && !denied.error)
-			toast.success(`Denied ${denied.data?.rejectBot.name}`);
 		if (denied.error) toast.error(denied.error.message);
+		if (denied.called && denied.data)
+			toast.success(`Denied ${denied.data?.rejectBot.name}`);
 	}, [denied]);
 	return (
 		<DropdownMenu>
