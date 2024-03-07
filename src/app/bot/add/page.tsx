@@ -336,7 +336,7 @@ export default function Page() {
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </FormControl>
-                                    <FormDescription className="flex items-center justify-between">
+                                    <FormDescription className="flex items-center justify-between w-full">
                                         <p>Beta selector</p>
                                         {formTags.length >= 1 && <CheckIcon className="w-4 h-4 text-green-500" />}
                                     </FormDescription>
