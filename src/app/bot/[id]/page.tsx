@@ -11,7 +11,7 @@ import LoadingScreen from "@/components/shared/common/loading-screen";
 import MD from "@/components/shared/common/md";
 import TagButton from "@/components/shared/common/tag-button";
 import Policy from "@/components/shared/policy";
-import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import AnimatedNumber from "@/components/ui/animated-number";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -53,8 +53,12 @@ export default function Page({ params }: { params: { id: string } }) {
 	const isOwner = !!bot.owners.find((u) => u.id === user?.me.user.id);
 	return (
 		<>
-			{bot.status !== "APPROVED" && <Alert className="bg-orange-500/10 border-orange-500 text-orange-500">
-				<AlertTitle className="flex items-center gap-1"><InformationCircleIcon className="mr-1 w-6 h-6" /> This bot is actually <strong>{bot.status}</strong> and only you can view it.</AlertTitle>
+			{bot.status !== "APPROVED" && <Alert className="bg-destructive/10 border-destructive text-destructive">
+				<InformationCircleIcon className="w-5 h-5 !text-destructive" />
+				<AlertTitle>
+					This bot is actually <strong>{bot.status}</strong> and only you can view it.
+				</AlertTitle>
+				<AlertDescription>Only Administrators and bot owners can see this page while bot is <strong>{bot.status}</strong></AlertDescription>
 			</Alert>}
 			<div className="flex flex-col gap-5 mb-5">
 				<div className="flex flex-col gap-3 md:flex-row w-full justify-between items-center py-5">
@@ -206,7 +210,7 @@ export default function Page({ params }: { params: { id: string } }) {
 														<p className="font-bold">{i + 1}</p>
 														<StarIcon
 															fill="currentColor"
-															className="w-5 h-5 text-amber-500"
+															className="w-5 h-5 text-destructive"
 														/>
 													</div>
 													<Progress

@@ -1351,10 +1351,12 @@ export type SessionQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type SessionQuery = { __typename?: 'Query', me: { __typename?: 'AuthUserObject', user: { __typename?: 'UserObject', username: string, avatar?: string | null, id: string } } };
 
-export type TagsQueryVariables = Exact<{ [key: string]: never; }>;
+export type TagsQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']['input']>;
+}>;
 
 
-export type TagsQuery = { __typename?: 'Query', tags: { __typename?: 'TagsConnection', nodes?: Array<{ __typename?: 'TagObject', name: string, bots: { __typename?: 'BotsConnection', totalCount: number } }> | null } };
+export type TagsQuery = { __typename?: 'Query', tags: { __typename?: 'TagsConnection', totalCount: number, nodes?: Array<{ __typename?: 'TagObject', name: string, bots: { __typename?: 'BotsConnection', totalCount: number } }> | null } };
 
 export type UserQueryVariables = Exact<{
   userId: Scalars['ID']['input'];
@@ -1845,14 +1847,15 @@ export type SessionLazyQueryHookResult = ReturnType<typeof useSessionLazyQuery>;
 export type SessionSuspenseQueryHookResult = ReturnType<typeof useSessionSuspenseQuery>;
 export type SessionQueryResult = Apollo.QueryResult<SessionQuery, SessionQueryVariables>;
 export const TagsDocument = gql`
-    query Tags {
-  tags {
+    query Tags($first: Int) {
+  tags(first: $first) {
     nodes {
       name
       bots {
         totalCount
       }
     }
+    totalCount
   }
 }
     `;
@@ -1869,6 +1872,7 @@ export const TagsDocument = gql`
  * @example
  * const { data, loading, error } = useTagsQuery({
  *   variables: {
+ *      first: // value for 'first'
  *   },
  * });
  */

@@ -8,14 +8,15 @@ query Session {
     }
 }
 
-query Tags {
-  tags {
+query Tags($first: Int) {
+  tags(first: $first) {
     nodes {
       name
       bots {
         totalCount
       }
     }
+    totalCount
   }
 }
 

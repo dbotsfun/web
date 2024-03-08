@@ -24,7 +24,11 @@ import { useClickAway, useLocalStorage } from "react-use";
 export default function Page() {
 	const err = useSearchParams().get("err");
 	const { data: bots, loading: botsLoading } = useFrontBotsQuery();
-	const { data: tags } = useTagsQuery();
+	const { data: tags } = useTagsQuery({
+		variables: {
+			first: 9
+		}
+	});
 
 	const searchRef = useRef(null);
 	const [history, setHistory] = useLocalStorage<string[]>("history", []);
@@ -86,18 +90,18 @@ export default function Page() {
 												<div className="px-4 py-2">
 													{history?.length
 														? history?.map((h, key) => (
-																<Link
-																	key={key}
-																	href={`/explore?q=${h.toLowerCase()}`}
-																>
-																	<div className="w-full flex items-center justify-start hover:bg-dark-1/20 transition-all duration-200 cursor-pointer">
-																		<ArrowPathRoundedSquareIcon className="w-5 h-5 flex items-center justify-center text-muted-foreground" />
-																		<span className="line-clamp-1 ml-2">
-																			{h}
-																		</span>
-																	</div>
-																</Link>
-														  ))
+															<Link
+																key={key}
+																href={`/explore?q=${h.toLowerCase()}`}
+															>
+																<div className="w-full flex items-center justify-start hover:bg-dark-1/20 transition-all duration-200 cursor-pointer">
+																	<ArrowPathRoundedSquareIcon className="w-5 h-5 flex items-center justify-center text-muted-foreground" />
+																	<span className="line-clamp-1 ml-2">
+																		{h}
+																	</span>
+																</div>
+															</Link>
+														))
 														: "No search history"}
 												</div>
 											</div>

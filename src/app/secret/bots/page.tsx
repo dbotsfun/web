@@ -36,7 +36,7 @@ interface Filters {
 
 const statusIcons: Record<string, ReactNode> = {
 	APPROVED: <CheckCircleIcon className="w-5 h-5 text-green-500" />,
-	PENDING: <ClockIcon className="w-5 h-5 text-orange-500" />,
+	PENDING: <ClockIcon className="w-5 h-5 text-destructive" />,
 	DENIED: <XCircleIcon className="w-5 h-5 text-red-500" />
 }
 

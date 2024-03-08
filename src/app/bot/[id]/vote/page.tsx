@@ -98,7 +98,7 @@ export default function Page({ params }: { params: { id: string } }) {
 						</div>{" "}
 						<div className="flex flex-col items-center w-full mt-2 rounded-md md:w-auto md:mt-0">
 							<div className="w-full text-center md:w-full">
-								{checking ?? gettingAuth ? (
+								{checking || gettingAuth ? (
 									<Loader />
 								) : !user ? <LoginButton>Login to vote</LoginButton> : hasVoted ? (
 									<p>
