@@ -84,7 +84,7 @@ export default function Header() {
 						{navLinks.map((n, key) => (
 							<Link
 								key={key}
-								className="text-muted-foreground animate-in fade-in slide-in-from-bottom hover:text-primary text-xs flex items-center gap-1"
+								className="text-muted-foreground text-center animate-in fade-in slide-in-from-bottom hover:text-primary text-xs flex items-center gap-1"
 								href={n.href}
 							>
 								{n.icon}

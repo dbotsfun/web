@@ -31,6 +31,7 @@ export default function BotCard({
 		mouseX.set(clientX - left);
 		mouseY.set(clientY - top);
 	}
+	console.log(data)
 	return (
 		<Link href={`/bot/${id}`}>
 			<div
@@ -43,7 +44,7 @@ export default function BotCard({
 						background: useMotionTemplate`
             radial-gradient(
               450px circle at ${mouseX}px ${mouseY}px,
-              rgba(255, 255, 255, 0.02),
+              ${data.vibrant ? `${data.vibrant}0D` : "rgba(255, 255, 255, 0.05)"},
               transparent 100%
             )
           `,
@@ -51,7 +52,7 @@ export default function BotCard({
 				/>
 				<div
 					draggable={false}
-					className="animate-in bg-no-repeat bg-cover fade-in absolute w-full h-28 gradient-mask-b-0 opacity-10"
+					className="animate-in bg-no-repeat bg-cover fade-in absolute w-full h-32 gradient-mask-b-0 opacity-10"
 					style={{
 						backgroundColor: loading ? "hsl(var(--primary))" : data.vibrant,
 					}}

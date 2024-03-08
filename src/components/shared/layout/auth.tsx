@@ -1,6 +1,5 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -19,6 +18,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import ImageWithFallback from "../common/image-with-fallback";
 import Policy from "../policy";
 
 interface AuthProps {
@@ -41,13 +41,14 @@ export default function Auth({ username, id, avatarId }: AuthProps) {
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<div className="flex flex-row gap-2 items-center cursor-pointer hover:opacity-60 duration-150 ml-3">
-					<Avatar>
-						<AvatarImage src={avatar(avatarId, id)} />
-						<AvatarFallback>
-							{username.substring(0, 2).toUpperCase()}
-						</AvatarFallback>
-					</Avatar>
-					<h3 className="text-xs font-bold hidden md:flex">{username}</h3>
+					<ImageWithFallback
+						src={avatar(avatarId, id)}
+						width={96}
+						height={96}
+						alt="avatar"
+						className="w-7 rounded-full"
+					/>
+					<h3 className="text-xs font-bold hidden md:flex tracking-normal">{username}</h3>
 				</div>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-64" align="end">

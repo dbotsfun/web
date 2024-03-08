@@ -1,14 +1,12 @@
 "use client";
 
 import CertifiedIcon from "@/components/shared/bots/certified-icon";
-// this page is bad af, please dont blame at me I WILL refactor it (someday)
-
+import ImageWithFallback from "@/components/shared/common/image-with-fallback";
 import Loader from "@/components/shared/common/loader";
 import LoadingScreen from "@/components/shared/common/loading-screen";
-import LoginDialog from "@/components/shared/common/login-dialog";
+import LoginButton from "@/components/shared/common/login-button";
 import AnimatedNumber from "@/components/ui/animated-number";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { APIErrorMessages } from "@/lib/api/messages";
+import { Button } from "@/components/ui/button";
 import {
 	useBotQuery,
 	useVoteBotMutation,
@@ -21,18 +19,18 @@ import {
 	ChevronUpIcon,
 	ServerIcon,
 } from "@heroicons/react/20/solid";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
 export default function Page({ params }: { params: { id: string } }) {
-	const { data: user, loading } = useSession();
+	const { data: user, loading: gettingAuth } = useSession();
 	const {
 		data,
 		error,
 		refetch: botRefetch,
+		loading
 	} = useBotQuery({
 		variables: { id: params.id },
 	});
@@ -43,16 +41,14 @@ export default function Page({ params }: { params: { id: string } }) {
 		loading: checking,
 	} = useVoteCheckQuery({
 		variables: { id: params.id },
-		pollInterval: 60_000,
+		pollInterval: 60_000, // stoopid but i wanted to do such stuff.
 	});
 	const [vote, result] = useVoteBotMutation({
 		variables: { id: params.id },
 	});
 
-	let bot = data?.getBot;
+	const bot = data?.getBot!;
 	const hasVoted = check?.voteCheck.voted;
-	const isOwner = !!bot?.owners.find((u) => u.id === user?.me.user.id);
-	const canAccess = (bot && bot.status === "APPROVED") || isOwner;
 
 	const refresh = () => {
 		checkRefetch();
@@ -60,33 +56,25 @@ export default function Page({ params }: { params: { id: string } }) {
 	};
 
 	useEffect(() => {
-		if (result.called && !result.loading && !result.error) {
-			refresh();
-			toast.success(`You voted for ${bot!.name}`);
-		}
-
+		if (result.called && !result.loading && !result.error) refresh();
 		if (result.error) toast.error(result.error.message);
 	}, [result.loading, result.called]);
 
 	if (loading) return <LoadingScreen />;
-	if (!user) return <LoginDialog />;
-	if (!canAccess || error?.message === APIErrorMessages.BOT_NOT_FOUND)
-		return notFound();
-
-	bot = bot!;
+	if (error) return notFound();
 	return (
 		<div className="flex items-center justify-center h-[60vh]">
-			<div className="max-w-xl flex flex-col items-center w-full">
+			<div className="max-w-2xl flex flex-col items-center w-full">
 				<div className="flex flex-col items-center w-full mt-5 md:mx-auto py-7 px-10 rounded-xl bg-card">
 					<div className="flex-col sm:flex-row items-center flex justify-between w-full">
 						<div className="flex flex-col w-full md:w-auto md:items-center md:flex-row">
 							<div className="flex-shrink-0 md:mr-6">
-								<Image
+								<ImageWithFallback
 									src={avatar(bot.avatar, bot.id)}
 									width={96}
 									height={96}
 									alt="avatar"
-									className="w-24 rounded-xl ring-secondary ring-4"
+									className="w-24 rounded-full ring-2 ring-primary ring-offset-2 ring-offset-background"
 								/>
 							</div>
 							<div className="flex-col flex">
@@ -110,9 +98,9 @@ export default function Page({ params }: { params: { id: string } }) {
 						</div>{" "}
 						<div className="flex flex-col items-center w-full mt-2 rounded-md md:w-auto md:mt-0">
 							<div className="w-full text-center md:w-full">
-								{checking ? (
+								{checking ?? gettingAuth ? (
 									<Loader />
-								) : hasVoted ? (
+								) : !user ? <LoginButton>Login to vote</LoginButton> : hasVoted ? (
 									<p>
 										Wait{" "}
 										{formatMilliseconds(check.voteCheck.expires - Date.now())}
@@ -136,16 +124,14 @@ export default function Page({ params }: { params: { id: string } }) {
 						</p>
 					</div>
 				)}
-				<Link
-					href={`/bot/${bot!.id}`}
-					className={buttonVariants({
-						variant: "link",
-						className: "w-min mx-auto my-5",
-					})}
-				>
-					<ArrowLeftIcon className="w-5 h-5 mr-2" />
-					Return to {bot.name}
-				</Link>
+				<Button variant={"secondary"} className="my-5" asChild>
+					<Link
+						href={`/bot/${bot.id}`}
+					>
+						<ArrowLeftIcon className="w-5 h-5 mr-2" />
+						Return to {bot.name}
+					</Link>
+				</Button>
 			</div>
 		</div>
 	);
