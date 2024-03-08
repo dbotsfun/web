@@ -8,7 +8,7 @@ export default function MD({ content }: MDProps) {
 	return (
 		<Markdown
 			options={{
-				wrapper: "article",
+				wrapper: "div",
 				forceWrapper: true,
 				forceBlock: true,
 				overrides: {

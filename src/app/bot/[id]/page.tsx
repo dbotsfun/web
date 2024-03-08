@@ -122,9 +122,11 @@ export default function Page({ params }: { params: { id: string } }) {
 								</div>
 							}
 						>
-							<div className="w-full flex flex-col md:flex-row justify-between gap-24">
-								<MD content={bot.description!} />
-								<div className="md:w-2/3 w-full flex flex-col justify-between py-5">
+							<div className="w-full flex flex-col md:flex-row gap-24">
+								<div className="w-full">
+									<MD content={bot.description!} />
+								</div>
+								<div className="lg:w-1/3 w-full flex flex-col justify-between py-5">
 									<div className="flex flex-col gap-5 h-80 sticky">
 										<div className="flex flex-col gap-2">
 											<h1 className="text-3xl font-black flex items-center gap-2"><InformationCircleIcon className="w-7 h-7 text-primary" /> Information</h1>
@@ -155,7 +157,7 @@ export default function Page({ params }: { params: { id: string } }) {
 										</div>
 										<div className="flex flex-col gap-2">
 											<h1 className="text-3xl font-black flex items-center gap-2"><TagIcon className="w-7 h-7 text-primary" />Tags</h1>
-											<div className="flex flex-wrap gap-2">
+											<div className="flex flex-wrap gap-1">
 												{bot.tags.map((t) => (
 													<TagButton key={t} tag={t} />
 												))}

@@ -65,11 +65,11 @@ export default function BotCard({
 									alt="bot avatar"
 									draggable="false"
 									src={av(avatar, id, 4096)}
-									width={"64"}
-									height={"64"}
+									width={80}
+									height={80}
 									placeholder="blur"
 									blurDataURL={Logo.blurDataURL}
-									className="w-full h-full object-cove animate-in fade-in"
+									className="w-full h-full object-cover"
 								/>
 							</div>
 						</div>
