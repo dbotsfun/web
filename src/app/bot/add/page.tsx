@@ -377,6 +377,22 @@ export default function Page() {
                                 </FormItem>
                             )}
                         />
+                        <FormField
+                            control={form.control}
+                            name="prefix"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Prefix</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+                                        <p>Minimum {BOT_PREFIX_MIN_LENGTH}, maximum {BOT_PREFIX_MAX_LENGTH} (if provided)</p>
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                         <Button className="w-full" type="submit">Submit</Button>
                     </form>
                 </Form>

@@ -70,7 +70,7 @@ export default function Page({ params }: { params: { id: string } }) {
 							<h1 className="mr-3 md:text-3xl lg:text-4xl text-2xl flex gap-2 items-center font-bold">
 								{bot.name} {bot.certified && <CertifiedIcon className="w-7" />}
 							</h1>
-							<p className="text-muted-foreground md:text-start text-center">
+							<p className="text-muted-foreground text-sm md:text-start text-center break-all">
 								{bot.shortDescription}
 							</p>
 						</div>
@@ -123,7 +123,7 @@ export default function Page({ params }: { params: { id: string } }) {
 							}
 						>
 							<div className="w-full flex flex-col md:flex-row gap-24">
-								<div className="w-full">
+								<div className="w-full break-all">
 									<MD content={bot.description!} />
 								</div>
 								<div className="lg:w-1/3 w-full flex flex-col justify-between py-5">
