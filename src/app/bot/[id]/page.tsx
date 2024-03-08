@@ -29,6 +29,8 @@ import {
 	PaperAirplaneIcon,
 	PlusIcon,
 	StarIcon,
+	TagIcon,
+	UsersIcon,
 } from "@heroicons/react/20/solid";
 import { Tab, Tabs } from "@nextui-org/tabs";
 import Link from "next/link";
@@ -122,16 +124,16 @@ export default function Page({ params }: { params: { id: string } }) {
 						>
 							<div className="w-full flex flex-col md:flex-row justify-between gap-24">
 								<MD content={bot.description!} />
-								<div className="md:w-1/3 w-full flex flex-col justify-between py-5">
+								<div className="md:w-2/3 w-full flex flex-col justify-between py-5">
 									<div className="flex flex-col gap-5 h-80 sticky">
 										<div className="flex flex-col gap-2">
-											<h1 className="text-3xl font-black">Information</h1>
+											<h1 className="text-3xl font-black flex items-center gap-2"><InformationCircleIcon className="w-7 h-7 text-primary" /> Information</h1>
 											<div className="flex flex-row justify-between">
 												<h1 className="text-base font-bold text-secondary-foreground">
 													Prefix
 												</h1>
 												<h1 className="text-base font-normal text-muted-foreground">
-													{bot.prefix ?? <Badge>Only slashes</Badge>}
+													{bot.prefix ?? <Badge>Slash commands</Badge>}
 												</h1>
 											</div>
 											<div className="flex flex-row justify-between">
@@ -152,7 +154,7 @@ export default function Page({ params }: { params: { id: string } }) {
 											</div>
 										</div>
 										<div className="flex flex-col gap-2">
-											<h1 className="text-3xl font-black">Tags</h1>
+											<h1 className="text-3xl font-black flex items-center gap-2"><TagIcon className="w-7 h-7 text-primary" />Tags</h1>
 											<div className="flex flex-wrap gap-2">
 												{bot.tags.map((t) => (
 													<TagButton key={t} tag={t} />
@@ -160,12 +162,12 @@ export default function Page({ params }: { params: { id: string } }) {
 											</div>
 										</div>
 										<div className="flex flex-col gap-2">
-											<h1 className="text-3xl font-black">Owners</h1>
+											<h1 className="text-3xl font-black flex items-center gap-2"><UsersIcon className="w-7 h-7 text-primary" />Owners</h1>
 											<div className="flex flex-col gap-1">
 												{bot.owners.map((o) => (
 													<Link href={`/user/${o.id}`}>
-														<Button className="w-full justify-start" variant={"secondary"}>
-															<ImageWithFallback className="rounded-full mr-2" width={23} height={23} alt="owner avatar" src={avatar(o.avatar, o.id)} />
+														<Button className="w-full justify-start h-10" variant={"ghost"}>
+															<ImageWithFallback className="rounded-full mr-2 w-6 h-6" width={10} height={10} alt="owner avatar" src={avatar(o.avatar, o.id)} />
 															{o.username}
 														</Button>
 													</Link>

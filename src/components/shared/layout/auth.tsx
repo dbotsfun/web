@@ -8,11 +8,12 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useRevokeTokenMutation } from "@/lib/apollo/types";
+import { useCheckPermissionQuery, useRevokeTokenMutation } from "@/lib/apollo/types";
 import { avatar } from "@/lib/utils";
 import {
 	ArrowLeftStartOnRectangleIcon,
 	Cog6ToothIcon,
+	PlusCircleIcon,
 	UserIcon,
 } from "@heroicons/react/20/solid";
 import Link from "next/link";
@@ -30,13 +31,20 @@ interface AuthProps {
 export default function Auth({ username, id, avatarId }: AuthProps) {
 	const router = useRouter();
 	const [logout, logoutResult] = useRevokeTokenMutation();
+	const { data: isAdmin } = useCheckPermissionQuery({
+		variables: {
+			input: {
+				permissions: 4096 // Admin
+			}
+		}
+	})
 
 	useEffect(() => {
 		if (logoutResult.called) {
 			router.push("/");
 			location.reload();
 		}
-	});
+	}, [logoutResult.called, logoutResult.loading]);
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -58,7 +66,12 @@ export default function Auth({ username, id, avatarId }: AuthProps) {
 						<UserIcon className="w-4 mr-2" /> {username}
 					</DropdownMenuItem>
 				</Link>
-				<Policy policy={id === "1076700780175831100"}>
+				<Link href={"/bot/add"}>
+					<DropdownMenuItem>
+						<PlusCircleIcon className="w-4 mr-2" /> Add bot
+					</DropdownMenuItem>
+				</Link>
+				<Policy policy={isAdmin?.checkPermission ?? false}>
 					<DropdownMenuSeparator />
 					<DropdownMenuLabel>Admin</DropdownMenuLabel>
 					<Link href={"/secret"}>

@@ -190,3 +190,7 @@ query PanelBots($filters: GetBotFormInput) {
       }
     }
 }
+
+query CheckPermission($input: CheckPermissionsInput!) {
+  checkPermission(input: $input)
+}

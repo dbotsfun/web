@@ -42,11 +42,11 @@ export default function BotCard({
 					className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
 					style={{
 						background: useMotionTemplate`
-            radial-gradient(
-              450px circle at ${mouseX}px ${mouseY}px,
-              ${data.vibrant ? `${data.vibrant}0D` : "rgba(255, 255, 255, 0.05)"},
-              transparent 100%
-            )
+							radial-gradient(
+							450px circle at ${mouseX}px ${mouseY}px,
+							${data.vibrant ? `${data.vibrant}0D` : "rgba(255, 255, 255, 0.05)"},
+							transparent 100%
+						)
           `,
 					}}
 				/>

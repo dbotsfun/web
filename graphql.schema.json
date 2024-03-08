@@ -1485,6 +1485,33 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "CheckPermissionsInput",
+        "description": "Input for checking user permissions.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "permissions",
+            "description": "User permissions to check.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "CreateBotInput",
         "description": "The input to create a bot.",
         "fields": null,
@@ -1656,7 +1683,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "ID",
                 "ofType": null
               }
             },
@@ -1890,7 +1917,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "ImpotBotInput",
+        "name": "ImportBotInput",
         "description": "Input for importing a bot from a bot list.",
         "fields": null,
         "inputFields": [
@@ -2222,7 +2249,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "ImpotBotInput",
+                    "name": "ImportBotInput",
                     "ofType": null
                   }
                 },
@@ -2871,6 +2898,39 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "BotsConnection",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "checkPermission",
+            "description": "Check if the user has the required permissions.",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CheckPermissionsInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               }
             },

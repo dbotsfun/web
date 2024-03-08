@@ -33,7 +33,7 @@ mutation ApproveBot($approveBotId: ID!) {
   }
 }
 
-mutation ImportBot($input: ImpotBotInput!) {
+mutation ImportBot($input: ImportBotInput!) {
   importBot(input: $input) {
     id
     name

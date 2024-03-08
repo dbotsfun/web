@@ -47,7 +47,7 @@ const navLinks = [
 		href: "/explore",
 	},
 	{
-		label: "Submit",
+		label: "Add bot",
 		icon: <PlusCircleIcon className="w-4 h-4" />,
 		href: "/bot/add",
 	},

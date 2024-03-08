@@ -2,6 +2,7 @@
 
 import LoadingScreen from "@/components/shared/common/loading-screen";
 import { Button } from "@/components/ui/button";
+import { useCheckPermissionQuery } from "@/lib/apollo/types";
 import { useSession } from "@/lib/hooks/use-session";
 import { GlobeAltIcon, HomeModernIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
@@ -13,10 +14,17 @@ export default function PanelLayout({
 	children: React.ReactNode;
 }) {
 	const { data: auth, loading } = useSession();
+	const { data: isAdmin } = useCheckPermissionQuery({
+		variables: {
+			input: {
+				permissions: 4096 // Admin
+			}
+		}
+	})
 
 	if (
 		(!loading && !auth) ||
-		(auth && auth.me.user.id !== "1076700780175831100")
+		(auth && !isAdmin?.checkPermission)
 	)
 		return notFound();
 	return loading ? (

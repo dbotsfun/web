@@ -212,6 +212,12 @@ export type BotsConnection = {
   totalCount: Scalars['Int']['output'];
 };
 
+/** Input for checking user permissions. */
+export type CheckPermissionsInput = {
+  /** User permissions to check. */
+  permissions: Scalars['Int']['input'];
+};
+
 /** The input to create a bot. */
 export type CreateBotInput = {
   /** A description of the bot */
@@ -239,7 +245,7 @@ export type CreateBotInput = {
 /** Input to create a key */
 export type CreateKeyInput = {
   /** Bot id */
-  id: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
 };
 
 /** The input to create a reply */
@@ -271,7 +277,7 @@ export type GetBotFormInput = {
 };
 
 /** Input for importing a bot from a bot list. */
-export type ImpotBotInput = {
+export type ImportBotInput = {
   /** ID must be a valid snowflake. */
   id: Scalars['ID']['input'];
   /** The source where the bot was imported from. */
@@ -369,7 +375,7 @@ export type MutationEditUserArgs = {
 
 
 export type MutationImportBotArgs = {
-  input: ImpotBotInput;
+  input: ImportBotInput;
 };
 
 
@@ -450,6 +456,8 @@ export type Query = {
   __typename?: 'Query';
   /** Get all bots in the database */
   bots: BotsConnection;
+  /** Check if the user has the required permissions. */
+  checkPermission: Scalars['Boolean']['output'];
   /** Get the API information of a bot */
   getApplicationInfo: BotStatsObject;
   /** Get a bot by its ID */
@@ -477,6 +485,11 @@ export type QueryBotsArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryCheckPermissionArgs = {
+  input: CheckPermissionsInput;
 };
 
 
@@ -863,13 +876,14 @@ export type ResolversTypes = {
   BotStatsObject: ResolverTypeWrapper<BotStatsObject>;
   BotStatus: BotStatus;
   BotsConnection: ResolverTypeWrapper<BotsConnection>;
+  CheckPermissionsInput: CheckPermissionsInput;
   CreateBotInput: CreateBotInput;
   CreateKeyInput: CreateKeyInput;
   CreateReplyInput: CreateReplyInput;
   CreateReviewInput: CreateReviewInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   GetBotFormInput: GetBotFormInput;
-  ImpotBotInput: ImpotBotInput;
+  ImportBotInput: ImportBotInput;
   Mutation: ResolverTypeWrapper<{}>;
   OrderDirection: OrderDirection;
   PageInfo: ResolverTypeWrapper<PageInfo>;
@@ -918,13 +932,14 @@ export type ResolversParentTypes = {
   BotStatsInstallParams: BotStatsInstallParams;
   BotStatsObject: BotStatsObject;
   BotsConnection: BotsConnection;
+  CheckPermissionsInput: CheckPermissionsInput;
   CreateBotInput: CreateBotInput;
   CreateKeyInput: CreateKeyInput;
   CreateReplyInput: CreateReplyInput;
   CreateReviewInput: CreateReviewInput;
   DateTime: Scalars['DateTime']['output'];
   GetBotFormInput: GetBotFormInput;
-  ImpotBotInput: ImpotBotInput;
+  ImportBotInput: ImportBotInput;
   Mutation: {};
   PageInfo: PageInfo;
   Query: {};
@@ -1109,6 +1124,7 @@ export type PageInfoResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   bots?: Resolver<ResolversTypes['BotsConnection'], ParentType, ContextType, Partial<QueryBotsArgs>>;
+  checkPermission?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryCheckPermissionArgs, 'input'>>;
   getApplicationInfo?: Resolver<ResolversTypes['BotStatsObject'], ParentType, ContextType, RequireFields<QueryGetApplicationInfoArgs, 'id'>>;
   getBot?: Resolver<ResolversTypes['BotObject'], ParentType, ContextType, RequireFields<QueryGetBotArgs, 'id'>>;
   getReply?: Resolver<ResolversTypes['ReplyObject'], ParentType, ContextType, RequireFields<QueryGetReplyArgs, 'id'>>;
@@ -1291,7 +1307,7 @@ export type ApproveBotMutationVariables = Exact<{
 export type ApproveBotMutation = { __typename?: 'Mutation', approveBot: { __typename?: 'BotObject', id: string, name: string } };
 
 export type ImportBotMutationVariables = Exact<{
-  input: ImpotBotInput;
+  input: ImportBotInput;
 }>;
 
 
@@ -1402,6 +1418,13 @@ export type PanelBotsQueryVariables = Exact<{
 
 
 export type PanelBotsQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, status: string, owners: Array<{ __typename?: 'UserObject', id: string, username: string, avatar?: string | null }> }> | null } };
+
+export type CheckPermissionQueryVariables = Exact<{
+  input: CheckPermissionsInput;
+}>;
+
+
+export type CheckPermissionQuery = { __typename?: 'Query', checkPermission: boolean };
 
 
 export const VoteBotDocument = gql`
@@ -1575,7 +1598,7 @@ export type ApproveBotMutationHookResult = ReturnType<typeof useApproveBotMutati
 export type ApproveBotMutationResult = Apollo.MutationResult<ApproveBotMutation>;
 export type ApproveBotMutationOptions = Apollo.BaseMutationOptions<ApproveBotMutation, ApproveBotMutationVariables>;
 export const ImportBotDocument = gql`
-    mutation ImportBot($input: ImpotBotInput!) {
+    mutation ImportBot($input: ImportBotInput!) {
   importBot(input: $input) {
     id
     name
@@ -2372,3 +2395,41 @@ export type PanelBotsQueryHookResult = ReturnType<typeof usePanelBotsQuery>;
 export type PanelBotsLazyQueryHookResult = ReturnType<typeof usePanelBotsLazyQuery>;
 export type PanelBotsSuspenseQueryHookResult = ReturnType<typeof usePanelBotsSuspenseQuery>;
 export type PanelBotsQueryResult = Apollo.QueryResult<PanelBotsQuery, PanelBotsQueryVariables>;
+export const CheckPermissionDocument = gql`
+    query CheckPermission($input: CheckPermissionsInput!) {
+  checkPermission(input: $input)
+}
+    `;
+
+/**
+ * __useCheckPermissionQuery__
+ *
+ * To run a query within a React component, call `useCheckPermissionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckPermissionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckPermissionQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCheckPermissionQuery(baseOptions: Apollo.QueryHookOptions<CheckPermissionQuery, CheckPermissionQueryVariables> & ({ variables: CheckPermissionQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CheckPermissionQuery, CheckPermissionQueryVariables>(CheckPermissionDocument, options);
+      }
+export function useCheckPermissionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckPermissionQuery, CheckPermissionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CheckPermissionQuery, CheckPermissionQueryVariables>(CheckPermissionDocument, options);
+        }
+export function useCheckPermissionSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<CheckPermissionQuery, CheckPermissionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<CheckPermissionQuery, CheckPermissionQueryVariables>(CheckPermissionDocument, options);
+        }
+export type CheckPermissionQueryHookResult = ReturnType<typeof useCheckPermissionQuery>;
+export type CheckPermissionLazyQueryHookResult = ReturnType<typeof useCheckPermissionLazyQuery>;
+export type CheckPermissionSuspenseQueryHookResult = ReturnType<typeof useCheckPermissionSuspenseQuery>;
+export type CheckPermissionQueryResult = Apollo.QueryResult<CheckPermissionQuery, CheckPermissionQueryVariables>;
