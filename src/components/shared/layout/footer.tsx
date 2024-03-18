@@ -31,7 +31,7 @@ export default function Footer() {
 				<div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
 					<div>
 						<h1 className="text-2xl font-semibold">
-							discord<strong>bots</strong>
+							discord<strong className="font-black text-primary">bots</strong>
 						</h1>
 						<p className="mt-4 max-w-xs text-muted-foreground">
 							Browse hundreds of bots made for your community.
