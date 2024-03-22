@@ -8,7 +8,6 @@ interface ListingProps {
 	title: string;
 	subtext?: string;
 	Icon: HeroIcon;
-	more?: string;
 	loading?: boolean;
 	list?: React.ReactNode;
 }
@@ -19,7 +18,6 @@ export default function Listing({
 	title,
 	subtext,
 	Icon,
-	more,
 	loading,
 	list,
 }: ListingProps) {
@@ -39,14 +37,12 @@ export default function Listing({
 						)}
 					</div>
 				</div>
-				{more && (
-					<Link
-						href={more}
-						className="text-muted-foreground text-xs lg:text-sm hover:opacity-85 underline flex items-center"
-					>
-						See more <ChevronRightIcon className="ml-1 w-4" />
-					</Link>
-				)}
+				<Link
+					href={"/explore"}
+					className="text-muted-foreground text-xs lg:text-sm hover:opacity-85 underline flex items-center"
+				>
+					See more <ChevronRightIcon className="ml-1 w-4" />
+				</Link>
 			</div>
 			{loading ? (
 				<BotsGrid>

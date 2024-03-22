@@ -16,8 +16,8 @@ import { useSession } from "@/lib/hooks/use-session";
 import { avatar, formatMilliseconds } from "@/lib/utils";
 import {
 	ArrowLeftIcon,
-	ChevronUpIcon,
-	ServerIcon,
+	ArrowUpIcon,
+	ChartBarIcon,
 } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -65,6 +65,16 @@ export default function Page({ params }: { params: { id: string } }) {
 	return (
 		<div className="flex items-center justify-center h-[60vh]">
 			<div className="max-w-2xl flex flex-col items-center w-full">
+				{hasVoted && (
+					<div className="flex animate-in fade-in slide-in-from-top flex-col w-full mt-5 py-7 px-10 md:mx-auto rounded-xl bg-card">
+						<h3 className="text-xl font-semibold text-card-foreground">
+							Thanks for voting {bot.name}
+						</h3>
+						<p className="mt-2 text-sm text-muted-foreground">
+							Come back tomorrow to vote again!
+						</p>
+					</div>
+				)}
 				<div className="flex flex-col items-center w-full mt-5 md:mx-auto py-7 px-10 rounded-xl bg-card">
 					<div className="flex-col sm:flex-row items-center flex justify-between w-full">
 						<div className="flex flex-col w-full md:w-auto md:items-center md:flex-row">
@@ -85,11 +95,11 @@ export default function Page({ params }: { params: { id: string } }) {
 								<div className="flex text-sm text-muted-foreground">
 									<div className="flex items-center mt-2 gap-4">
 										<div className="flex items-center font-medium">
-											<ServerIcon className="mr-1 w-4 h-4" />
+											<ChartBarIcon className="mr-1 w-4 h-4" />
 											<AnimatedNumber value={bot.guildCount ?? 0} />
 										</div>
 										<div className="flex items-center font-medium">
-											<ChevronUpIcon className="mr-1 w-4 h-4" />
+											<ArrowUpIcon className="mr-1 w-4 h-4" />
 											<AnimatedNumber value={bot.votes} />
 										</div>
 									</div>
@@ -114,16 +124,6 @@ export default function Page({ params }: { params: { id: string } }) {
 						</div>
 					</div>
 				</div>
-				{hasVoted && (
-					<div className="flex animate-in fade-in slide-in-from-bottom flex-col w-full mt-5 py-7 px-10 md:mx-auto rounded-xl bg-card">
-						<h3 className="text-xl font-semibold text-card-foreground">
-							Thanks for voting {bot.name}
-						</h3>
-						<p className="mt-2 text-sm text-muted-foreground">
-							Come back tomorrow to vote again!
-						</p>
-					</div>
-				)}
 				<Button variant={"secondary"} className="my-5" asChild>
 					<Link
 						href={`/bot/${bot.id}`}

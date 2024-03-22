@@ -7,8 +7,8 @@ export function promptLoginWindow() {
 
 	const w = window.open(
 		`${process.env.NEXT_PUBLIC_URL}/api/auth/login`,
-		"_blank",
-		`width=${newWindowWidth},height=${newWindowHeight},left=${left},top=${top}`,
+		"Login with Discord",
+		`width=${newWindowWidth},height=${newWindowHeight},left=${left},top=${top},popup=1`,
 	);
 
 	const handleWindowClose = () => {

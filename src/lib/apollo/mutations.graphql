@@ -65,6 +65,13 @@ mutation ResetApiKey($input: CreateKeyInput!) {
   resetAPIKey(input: $input)
 }
 
+mutation UpdateBot($input: UpdateBotInput!) {
+  updateBot(input: $input) {
+    id
+    name
+  }
+}
+
 mutation SyncBotInformation($syncBotInformationId: ID!) {
   syncBotInformation(id: $syncBotInformationId) {
     name

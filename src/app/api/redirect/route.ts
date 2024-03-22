@@ -2,6 +2,8 @@ import { NextRequest } from "next/server";
 
 const sources: Record<string, string> = {
 	dc: "https://discord.gg/qhuQkGWmsE",
+	x: "https://twitter.com/dbotslist",
+	gh: "https://github.com/dbotslist"
 };
 
 export async function GET(req: NextRequest) {
@@ -10,6 +12,6 @@ export async function GET(req: NextRequest) {
 
 	if (!isValidSource)
 		return Response.json({ message: "invalid source", redirect: false });
-	// biome-ignore lint/style/noUselessElse: tf?
-	else return Response.redirect(sources[source]);
+
+	return Response.redirect(sources[source]);
 }

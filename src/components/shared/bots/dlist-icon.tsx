@@ -9,7 +9,7 @@ import {
 export default function DlistIcon() {
     return (
         <TooltipProvider>
-            <Tooltip>
+            <Tooltip delayDuration={100}>
                 <TooltipTrigger>
                     <Badge className="bg-gradient-to-br from-indigo-500 to-purple-500 text-white">
                         <img draggable={false} alt="dlist.gg" src="/ext/dlistgg.svg" className="h-[17px] w-[17px] mr-2" /> From dlist

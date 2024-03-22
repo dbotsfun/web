@@ -17,6 +17,10 @@ const footerLinks = [
 				label: "X",
 				href: "/api/redirect?s=x",
 			},
+			{
+				label: "GitHub",
+				href: "/api/redirect?s=gh",
+			}
 		],
 	},
 ];
@@ -69,7 +73,7 @@ export default function Footer() {
 					</div>
 				</div>
 
-				<p className="text-xs text-gray-500 dark:text-gray-400">
+				<p className="text-xs text-muted-foreground">
 					&copy; {new Date().getFullYear()}. discordbots. All rights reserved.
 				</p>
 			</div>

@@ -31,7 +31,10 @@ export default function Page() {
 	const { data: auth, loading: gettingAuth } = useSession();
 	const [values, setValues] = useState<Partial<z.infer<typeof formSchema>>>({});
 	const [getUser, user] = useUserLazyQuery();
-	const [edit, editResult] = useEditUserMutation();
+	const [edit, editResult] = useEditUserMutation({
+		onCompleted: () => toast.success("Updated profile information"),
+		onError: (error) => toast.error(error.message)
+	});
 
 	useEffect(() => {
 		if (auth)
@@ -41,18 +44,6 @@ export default function Page() {
 				},
 			});
 	}, [auth]);
-
-	useEffect(() => {
-		if (editResult.called && !editResult.loading && !editResult.error) {
-			toast.success("Updated user information");
-			user.refetch({
-				userId: auth!.me.user.id,
-			});
-			editResult.reset();
-		}
-
-		if (editResult.error) toast.error(editResult.error.message);
-	}, [editResult.called, editResult.loading]);
 
 	function onSubmit(values: Partial<z.infer<typeof formSchema>>) {
 		edit({
@@ -68,7 +59,7 @@ export default function Page() {
 	if (user.loading || gettingAuth) return <LoadingScreen />;
 	if (user.called && !user.loading && !user.data) return notFound();
 	return (
-		<div className="mx-auto max-w-4xl py-24">
+		<div className="mx-auto max-w-4xl py-12">
 			<ReturnButton />
 			<Card>
 				<CardHeader className="border-b">

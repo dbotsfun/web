@@ -3,6 +3,7 @@
 import Loader from "@/components/shared/common/loader";
 import LoadingScreen from "@/components/shared/common/loading-screen";
 import LoginDialog from "@/components/shared/common/login-dialog";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +33,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import {
     Tooltip,
@@ -54,8 +56,9 @@ import {
     BOT_SHORT_DESCRIPTION_MIN_LENGTH,
 } from "@/lib/constants";
 import { useSession } from "@/lib/hooks/use-session";
-import { ArrowDownTrayIcon, CheckIcon } from "@heroicons/react/20/solid";
+import { ArrowDownTrayIcon, CheckIcon, ExclamationCircleIcon } from "@heroicons/react/20/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -98,8 +101,8 @@ const formSchema = z.object({
         id: z.string(),
     })).describe("Tags").min(1, {
         message: "Must enter at least 1 tag"
-    }).max(4, {
-        message: "Must enter less or equal to 4 tags"
+    }).max(5, {
+        message: "Must enter less or equal to 5 tags"
     }),
     description: z
         .string({
@@ -124,12 +127,19 @@ const formSchema = z.object({
 
 export default function Page() {
     const router = useRouter();
+
     const [importId, setImportId] = useState<string | null>();
     const [formTags, setFormTags] = useState<string[]>([]);
 
     const { data: auth, loading: gettingUser } = useSession();
     const { data: tags } = useTagsQuery();
-    const [submit, result] = useCreateBotMutation();
+    const [createBot] = useCreateBotMutation({
+        onCompleted: (data) => {
+            toast.success(`${data.createBot.name} has been submitted`)
+            router.replace("/")
+        },
+        onError: (error) => toast.error(error.message)
+    });
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -137,7 +147,7 @@ export default function Page() {
     const { setValue } = form;
 
     function onSubmit(values: Partial<z.infer<typeof formSchema>>) {
-        submit({
+        createBot({
             variables: {
                 input: {
                     id: values.id!,
@@ -162,37 +172,13 @@ export default function Page() {
                 source: BotListSource.DiscordList, // the only option lool
             },
         },
+        onCompleted: (data) => toast.success(`${data.importBot.name} has been submitted from dlist.gg`),
+        onError: (error) => toast.error(error.message)
     });
 
     useEffect(() => {
         setValue("tags", formTags.map(x => ({ id: x })));
     }, [formTags])
-
-    useEffect(() => {
-        if (result.called && !result.loading && !result.error) {
-            router.push("/");
-            toast.success(`${result.data?.createBot.name} has been submitted`);
-        }
-
-        if (result.error) {
-            toast.error(result.error.message);
-            result.reset();
-        }
-    }, [result]);
-
-    useEffect(() => {
-        if (importResult.called && !importResult.loading && !importResult.error) {
-            router.push("/");
-            toast.success(
-                `${importResult.data?.importBot.name} has been submitted from dlist.gg`,
-            );
-        }
-
-        if (importResult.error) {
-            toast.error(importResult.error.message);
-            importResult.reset();
-        }
-    }, [importResult]);
 
     if (gettingUser) return <LoadingScreen />;
     if (!gettingUser && !auth) return <LoginDialog />;
@@ -230,14 +216,6 @@ export default function Page() {
                                     dlist.gg
                                 </DropdownMenuItem>
                             </DialogTrigger>
-                            <DropdownMenuItem disabled aria-disabled>
-                                <img
-                                    alt="top.gg"
-                                    src="/ext/topgg.png"
-                                    className="h-5 w-5 mr-2"
-                                />
-                                top.gg
-                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                     <DialogContent>
@@ -273,6 +251,10 @@ export default function Page() {
                 </Dialog>
             </CardHeader>
             <CardContent>
+                <Alert className="my-5 bg-destructive/10 animate-in fade-in slide-in-from-bottom-3 border-destructive text-destructive-foreground">
+                    <ExclamationCircleIcon className="w-5 h-5" />
+                    <AlertTitle>It is highly recommendable to join <Link target="_blank" className="underline text-primary" href="/api/redirect?s=dc">our Discord server</Link> so you can recieve a notification once your bot is reviewed</AlertTitle>
+                </Alert>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                         <FormField
@@ -316,28 +298,30 @@ export default function Page() {
                                 <FormItem className="flex flex-col items-start">
                                     <FormLabel className="text-left">Tags <RequiredMark /></FormLabel>
                                     <FormControl>
-                                        <DropdownMenu>
+                                        <DropdownMenu modal={false}>
                                             <DropdownMenuTrigger asChild>
-                                                <Input value={formTags.length >= 1 ? formTags.join(", ") : "Select up to 4 tags"} readOnly aria-readonly />
+                                                <Input value={formTags.length >= 1 ? formTags.join(", ") : "Select up to 5 tags"} readOnly aria-readonly />
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="start" side="bottom" className="w-80">
                                                 <DropdownMenuLabel>Tags</DropdownMenuLabel>
-                                                <DropdownMenuSeparator />
-                                                {tags?.tags.nodes?.map(tag => <DropdownMenuCheckboxItem
-                                                    disabled={!formTags.includes(tag.name) && formTags.length >= 4}
-                                                    checked={formTags.includes(tag.name)}
-                                                    onCheckedChange={(checked) => {
-                                                        if (checked) setFormTags([...formTags, tag.name])
-                                                        else setFormTags([...formTags.filter(t => t !== tag.name)]);
-                                                    }}
-                                                >
-                                                    {tag.name}
-                                                </DropdownMenuCheckboxItem>)}
+                                                <ScrollArea className="h-72">
+                                                    <DropdownMenuSeparator />
+                                                    {tags?.tags.nodes?.map(tag => <DropdownMenuCheckboxItem
+                                                        disabled={!formTags.includes(tag.name) && formTags.length >= 5}
+                                                        checked={formTags.includes(tag.name)}
+                                                        onCheckedChange={(checked) => {
+                                                            if (checked) setFormTags([...formTags, tag.name])
+                                                            else setFormTags([...formTags.filter(t => t !== tag.name)]);
+                                                        }}
+                                                    >
+                                                        {tag.name}
+                                                    </DropdownMenuCheckboxItem>)}
+                                                </ScrollArea>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </FormControl>
                                     <FormDescription className="flex items-center justify-between w-full">
-                                        <p>Beta selector</p>
+                                        <p className="cursor-pointer" onClick={() => setFormTags([])}>Clear tags</p>
                                         {formTags.length >= 1 && <CheckIcon className="w-4 h-4 text-green-500" />}
                                     </FormDescription>
                                     <FormMessage />

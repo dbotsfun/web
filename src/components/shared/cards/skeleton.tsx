@@ -18,7 +18,7 @@ export default function SkeletonCard() {
 							</div>
 							<Badge
 								variant={"secondary"}
-								className="text-opacity-0 animate-pulse w-12 h-5"
+								className="bg-background animate-pulse w-12 h-5"
 							/>
 						</div>
 					</div>
@@ -28,8 +28,8 @@ export default function SkeletonCard() {
 					<Skeleton className="h-4 w-[220px]" />
 				</div>
 				<div className="flex items-center justify-between gap-2 mt-4">
-					<Skeleton className="h-3 w-5 rounded-lg" />
-					<Skeleton className="h-3 w-5 rounded-lg" />
+					<Skeleton className="h-3 w-8 rounded-lg" />
+					<Skeleton className="h-3 w-8 rounded-lg" />
 				</div>
 			</div>
 		</div>

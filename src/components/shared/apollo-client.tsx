@@ -12,9 +12,6 @@ const httpLink = createHttpLink({
 const authLink = setContext((_, { headers }) => {
 	const { session } = parseCookies();
 
-	console.log("document.cookie", document.cookie);
-	console.log("session cookie", session);
-
 	return {
 		headers: {
 			...headers,

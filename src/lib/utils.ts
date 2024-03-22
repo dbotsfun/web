@@ -1,8 +1,13 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { UserBotPermissionsObject } from "./apollo/types";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
+}
+
+export function hasPermissions(permissions: UserBotPermissionsObject[], userId: string, permissionLevel: number) {
+	return permissions.find(p => p.id === userId)?.permissions! >= permissionLevel
 }
 
 export function avatar(
@@ -31,6 +36,12 @@ export function defaultInviteLink(id: string) {
 
 export function capitalize(text: string) {
 	return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+export function convertRange(originalValue: number): number {
+	const maxValue = 0.7;
+	const newValue = Number((0.1 + 0.9 * ((originalValue - 1) / 99)).toString().substring(0, 3));
+	return newValue >= maxValue ? maxValue : newValue;
 }
 
 export const DEFAULT_AVATAR = "https://cdn.discordapp.com/embed/avatars/0.png"

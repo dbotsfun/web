@@ -24,6 +24,7 @@ export default function BotReducedCard({
                         <div>
                             <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-input">
                                 <ImageWithFallback
+                                    key={id}
                                     alt="bot avatar"
                                     draggable="false"
                                     src={av(avatar, id, 4096)}

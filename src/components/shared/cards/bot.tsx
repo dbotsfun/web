@@ -2,10 +2,7 @@ import Logo from "@/../public/ico.png";
 import { BotCardProps } from "@/lib/types/bots";
 import { avatar as av } from "@/lib/utils";
 import { ArrowUpIcon, ChartBarIcon } from "@heroicons/react/16/solid";
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import Link from "next/link";
-import { MouseEvent } from "react";
-import { usePalette } from "react-palette";
 import CertifiedIcon from "../bots/certified-icon";
 import PendingIcon from "../bots/pending-icon";
 import ImageWithFallback from "../common/image-with-fallback";
@@ -21,47 +18,24 @@ export default function BotCard({
 	guildCount,
 	status,
 }: BotCardProps) {
-	const { data, loading } = usePalette(av(avatar, id, 4096));
-	const mouseX = useMotionValue(0);
-	const mouseY = useMotionValue(0);
-
-	function handleMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
-		const { left, top } = currentTarget.getBoundingClientRect();
-
-		mouseX.set(clientX - left);
-		mouseY.set(clientY - top);
-	}
-	console.log(data)
 	return (
 		<Link href={`/bot/${id}`}>
 			<div
-				className="relative animate-in fade-in slide-in-from-bottom-3 overflow-hidden group bg-card w-full h-full rounded-xl cursor-pointer"
-				onMouseMove={handleMouseMove}
+				className="relative animate-in fade-in slide-in-from-bottom-3 overflow-hidden group bg-card w-full h-full rounded-xl cursor-pointer group duration-150"
 			>
-				<motion.div
-					className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
-					style={{
-						background: useMotionTemplate`
-							radial-gradient(
-							450px circle at ${mouseX}px ${mouseY}px,
-							${data.vibrant ? `${data.vibrant}0D` : "rgba(255, 255, 255, 0.05)"},
-							transparent 100%
-						)
-          `,
-					}}
-				/>
 				<div
 					draggable={false}
-					className="animate-in bg-no-repeat bg-cover fade-in absolute w-full h-32 gradient-mask-b-0 opacity-10"
+					className="animate-in bg-no-repeat group-hover:scale-110 duration-150 bg-cover fade-in absolute w-full h-32 gradient-mask-b-0 opacity-[0.15]"
 					style={{
-						backgroundColor: loading ? "hsl(var(--primary))" : data.vibrant,
+						backgroundImage: `url('${av(avatar, id, 4096)}')`
 					}}
 				/>
 				<div className="relative z-[2] p-6">
 					<div className="flex items-center mb-4 gap-4">
 						<div>
-							<div className="relative w-16 h-16 rounded-lg overflow-hidden bg-input">
+							<div className="relative w-16 h-16 rounded-lg overflow-hidden">
 								<ImageWithFallback
+									key={id}
 									alt="bot avatar"
 									draggable="false"
 									src={av(avatar, id, 4096)}

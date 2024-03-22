@@ -102,7 +102,7 @@ export type BotObject = {
   github?: Maybe<Scalars['String']['output']>;
   guildCount: Scalars['Int']['output'];
   id: Scalars['ID']['output'];
-  importedFrom: BotListSource;
+  importedFrom?: Maybe<Scalars['String']['output']>;
   inviteLink?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   /** Get the owners of the bot */
@@ -116,7 +116,7 @@ export type BotObject = {
   /** Get the tags of the bot */
   tags: Array<Scalars['String']['output']>;
   updatedAt: Scalars['DateTime']['output'];
-  userPermissions: UserBotPermissionsObject;
+  userPermissions: Array<UserBotPermissionsObject>;
   /** Get the amount of votes the bot has */
   votes: Scalars['Int']['output'];
   website?: Maybe<Scalars['String']['output']>;
@@ -1009,7 +1009,7 @@ export type BotObjectResolvers<ContextType = any, ParentType extends ResolversPa
   github?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   guildCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  importedFrom?: Resolver<ResolversTypes['BotListSource'], ParentType, ContextType>;
+  importedFrom?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   inviteLink?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   owners?: Resolver<Array<ResolversTypes['UserObject']>, ParentType, ContextType>;
@@ -1020,7 +1020,7 @@ export type BotObjectResolvers<ContextType = any, ParentType extends ResolversPa
   supportServer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   tags?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  userPermissions?: Resolver<ResolversTypes['UserBotPermissionsObject'], ParentType, ContextType>;
+  userPermissions?: Resolver<Array<ResolversTypes['UserBotPermissionsObject']>, ParentType, ContextType>;
   votes?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -1339,6 +1339,13 @@ export type ResetApiKeyMutationVariables = Exact<{
 
 export type ResetApiKeyMutation = { __typename?: 'Mutation', resetAPIKey: string };
 
+export type UpdateBotMutationVariables = Exact<{
+  input: UpdateBotInput;
+}>;
+
+
+export type UpdateBotMutation = { __typename?: 'Mutation', updateBot: { __typename?: 'BotObject', id: string, name: string } };
+
 export type SyncBotInformationMutationVariables = Exact<{
   syncBotInformationId: Scalars['ID']['input'];
 }>;
@@ -1370,7 +1377,7 @@ export type UserBotsQueryVariables = Exact<{
 }>;
 
 
-export type UserBotsQuery = { __typename?: 'Query', user: { __typename?: 'UserObject', bots: { __typename?: 'BotsConnection', totalCount: number, nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number, status: string }> | null } } };
+export type UserBotsQuery = { __typename?: 'Query', user: { __typename?: 'UserObject', bots: { __typename?: 'BotsConnection', totalCount: number, nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number, status: string, owners: Array<{ __typename?: 'UserObject', id: string }> }> | null } } };
 
 export type BotsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1380,10 +1387,11 @@ export type BotsQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnec
 export type ExploreBotsQueryVariables = Exact<{
   filters?: InputMaybe<GetBotFormInput>;
   first?: InputMaybe<Scalars['Int']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type ExploreBotsQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnection', totalCount: number, nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null } };
+export type ExploreBotsQuery = { __typename?: 'Query', bots: { __typename?: 'BotsConnection', totalCount: number, nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
 
 export type BotCountQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1400,7 +1408,7 @@ export type BotQueryVariables = Exact<{
 }>;
 
 
-export type BotQuery = { __typename?: 'Query', getBot: { __typename?: 'BotObject', id: string, avatar?: string | null, certified: boolean, name: string, status: string, description?: string | null, shortDescription?: string | null, prefix?: string | null, inviteLink?: string | null, supportServer?: string | null, website?: string | null, github?: string | null, guildCount: number, tags: Array<string>, votes: number, owners: Array<{ __typename?: 'UserObject', id: string, avatar?: string | null, username: string }> } };
+export type BotQuery = { __typename?: 'Query', getBot: { __typename?: 'BotObject', id: string, avatar?: string | null, certified: boolean, name: string, status: string, description?: string | null, shortDescription?: string | null, prefix?: string | null, inviteLink?: string | null, supportServer?: string | null, website?: string | null, github?: string | null, guildCount: number, tags: Array<string>, votes: number, importedFrom?: string | null, owners: Array<{ __typename?: 'UserObject', id: string, avatar?: string | null, username: string }>, reviews: { __typename?: 'ReviewsConnection', totalCount: number, nodes?: Array<{ __typename?: 'ReviewObject', content: string, createdAt: any, id: string, rating: number, user: { __typename?: 'UserObject', avatar?: string | null, id: string, username: string } }> | null }, userPermissions: Array<{ __typename?: 'UserBotPermissionsObject', id: string, permissions: number }> } };
 
 export type VoteCheckQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1412,7 +1420,7 @@ export type VoteCheckQuery = { __typename?: 'Query', voteCheck: { __typename?: '
 export type FrontBotsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FrontBotsQuery = { __typename?: 'Query', voted: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null }, rated: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null }, recent: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null } };
+export type FrontBotsQuery = { __typename?: 'Query', voted: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null }, popular: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null }, recent: { __typename?: 'BotsConnection', nodes?: Array<{ __typename?: 'BotObject', id: string, name: string, avatar?: string | null, certified: boolean, shortDescription?: string | null, tags: Array<string>, votes: number, guildCount: number }> | null } };
 
 export type PanelBotsQueryVariables = Exact<{
   filters?: InputMaybe<GetBotFormInput>;
@@ -1765,6 +1773,40 @@ export function useResetApiKeyMutation(baseOptions?: Apollo.MutationHookOptions<
 export type ResetApiKeyMutationHookResult = ReturnType<typeof useResetApiKeyMutation>;
 export type ResetApiKeyMutationResult = Apollo.MutationResult<ResetApiKeyMutation>;
 export type ResetApiKeyMutationOptions = Apollo.BaseMutationOptions<ResetApiKeyMutation, ResetApiKeyMutationVariables>;
+export const UpdateBotDocument = gql`
+    mutation UpdateBot($input: UpdateBotInput!) {
+  updateBot(input: $input) {
+    id
+    name
+  }
+}
+    `;
+export type UpdateBotMutationFn = Apollo.MutationFunction<UpdateBotMutation, UpdateBotMutationVariables>;
+
+/**
+ * __useUpdateBotMutation__
+ *
+ * To run a mutation, you first call `useUpdateBotMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateBotMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateBotMutation, { data, loading, error }] = useUpdateBotMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateBotMutation(baseOptions?: Apollo.MutationHookOptions<UpdateBotMutation, UpdateBotMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateBotMutation, UpdateBotMutationVariables>(UpdateBotDocument, options);
+      }
+export type UpdateBotMutationHookResult = ReturnType<typeof useUpdateBotMutation>;
+export type UpdateBotMutationResult = Apollo.MutationResult<UpdateBotMutation>;
+export type UpdateBotMutationOptions = Apollo.BaseMutationOptions<UpdateBotMutation, UpdateBotMutationVariables>;
 export const SyncBotInformationDocument = gql`
     mutation SyncBotInformation($syncBotInformationId: ID!) {
   syncBotInformation(id: $syncBotInformationId) {
@@ -1955,6 +1997,9 @@ export const UserBotsDocument = gql`
         votes
         guildCount
         status
+        owners {
+          id
+        }
       }
     }
   }
@@ -2043,8 +2088,8 @@ export type BotsLazyQueryHookResult = ReturnType<typeof useBotsLazyQuery>;
 export type BotsSuspenseQueryHookResult = ReturnType<typeof useBotsSuspenseQuery>;
 export type BotsQueryResult = Apollo.QueryResult<BotsQuery, BotsQueryVariables>;
 export const ExploreBotsDocument = gql`
-    query ExploreBots($filters: GetBotFormInput, $first: Int) {
-  bots(filters: $filters, first: $first) {
+    query ExploreBots($filters: GetBotFormInput, $first: Int, $after: String) {
+  bots(filters: $filters, first: $first, after: $after) {
     nodes {
       id
       name
@@ -2056,6 +2101,10 @@ export const ExploreBotsDocument = gql`
       guildCount
     }
     totalCount
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
   }
 }
     `;
@@ -2074,6 +2123,7 @@ export const ExploreBotsDocument = gql`
  *   variables: {
  *      filters: // value for 'filters'
  *      first: // value for 'first'
+ *      after: // value for 'after'
  *   },
  * });
  */
@@ -2200,6 +2250,25 @@ export const BotDocument = gql`
       avatar
       username
     }
+    reviews {
+      totalCount
+      nodes {
+        content
+        createdAt
+        id
+        rating
+        user {
+          avatar
+          id
+          username
+        }
+      }
+    }
+    importedFrom
+    userPermissions {
+      id
+      permissions
+    }
   }
 }
     `;
@@ -2291,7 +2360,10 @@ export const FrontBotsDocument = gql`
       guildCount
     }
   }
-  rated: bots(first: 4, filters: {orderBy: {direction: desc, field: reviews}}) {
+  popular: bots(
+    first: 4
+    filters: {orderBy: {direction: desc, field: guildCount}}
+  ) {
     nodes {
       id
       name

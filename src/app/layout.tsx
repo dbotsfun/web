@@ -39,7 +39,6 @@ export default function RootLayout({
 				)}
 			>
 				<Providers>
-					<BetaBanner />
 					<Header />
 					<main className="py-3 px-8 lg:px-28 mt-24">{children}</main>
 					<Toaster
@@ -48,6 +47,7 @@ export default function RootLayout({
 						richColors
 					/>
 					<Footer />
+					<BetaBanner />
 				</Providers>
 				<Analytics />
 			</body>

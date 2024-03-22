@@ -14,7 +14,8 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoonIcon, PaintBrushIcon, SunIcon } from "@heroicons/react/20/solid";
+import { colorThemes } from "@/lib/constants";
+import { Cog6ToothIcon, MoonIcon, SunIcon } from "@heroicons/react/20/solid";
 import { useLocalStorage } from "react-use";
 
 export function Settings() {
@@ -29,8 +30,8 @@ export function Settings() {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="outline" size="icon">
-					<PaintBrushIcon className="w-4" />
+				<Button variant="ghost" size="icon">
+					<Cog6ToothIcon className="w-4" />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-64" align="end">
@@ -46,11 +47,8 @@ export function Settings() {
 				<DropdownMenuLabel>Color theme</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuRadioGroup value={color} onValueChange={setColor}>
-					<DropdownMenuRadioItem value="df">Default</DropdownMenuRadioItem>
-					<DropdownMenuRadioItem value="pine">Pine</DropdownMenuRadioItem>
-					<DropdownMenuRadioItem value="coral">Coral</DropdownMenuRadioItem>
-					<DropdownMenuRadioItem value="chill">Chill</DropdownMenuRadioItem>
-					<DropdownMenuRadioItem value="persimon">Persimon</DropdownMenuRadioItem>
+					{colorThemes.map((t, key) =>
+						<DropdownMenuRadioItem key={key} className="capitalize" value={t}>{t}</DropdownMenuRadioItem>)}
 				</DropdownMenuRadioGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>

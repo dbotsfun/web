@@ -8,13 +8,13 @@ export default function MD({ content }: MDProps) {
 	return (
 		<Markdown
 			options={{
-				wrapper: "div",
+				wrapper: "article",
 				forceWrapper: true,
 				forceBlock: true,
 				overrides: {
 					article: {
 						props: {
-							className: "max-w-xl text-wrap",
+							className: "max-w-xl text-wrap h-full",
 						},
 					},
 					h1: {

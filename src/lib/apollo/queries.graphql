@@ -48,6 +48,9 @@ query UserBots($userId: ID!) {
         votes
         guildCount
         status
+        owners {
+          id
+        }
       }
     }
   }
@@ -69,8 +72,8 @@ query Bots {
     }
 }
 
-query ExploreBots($filters: GetBotFormInput, $first: Int) {
-  bots(filters: $filters, first: $first) {
+query ExploreBots($filters: GetBotFormInput, $first: Int, $after: String) {
+  bots(filters: $filters, first: $first, after: $after) {
     nodes {
       id
       name
@@ -82,6 +85,10 @@ query ExploreBots($filters: GetBotFormInput, $first: Int) {
       guildCount
     }
     totalCount
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
   }
 }
 
@@ -119,13 +126,31 @@ query Bot($id: ID!) {
             github
             guildCount
             tags
-            # importedFrom
             votes
             owners {
               id
               avatar
               username
             }
+          reviews {
+            totalCount
+            nodes {
+              content
+              createdAt
+              id
+              rating
+              user {
+                avatar
+                id
+                username
+              }
+            }
+          }
+          importedFrom
+          userPermissions {
+            id
+            permissions
+          }
         }
 }
 
@@ -150,7 +175,7 @@ query FrontBots {
         guildCount
       }
     }
-    rated: bots(first: 4, filters: { orderBy: { direction: desc, field: reviews } }) {
+    popular: bots(first: 4, filters: { orderBy: { direction: desc, field: guildCount } }) {
       nodes {
         id
         name

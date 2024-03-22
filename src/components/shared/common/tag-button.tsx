@@ -10,7 +10,7 @@ export default function TagButton({ tag, count }: TagButtonProps) {
 	return (
 		<Link
 			href={`/explore?tag=${tag}`}
-			className={buttonVariants({ size: "xs", variant: "secondary" })}
+			className={buttonVariants({ size: "xs", variant: "outline" })}
 		>
 			{tag}{" "}
 			{count && <span className="text-muted-foreground/40 ml-3">{count}</span>}

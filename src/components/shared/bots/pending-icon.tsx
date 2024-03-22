@@ -17,7 +17,7 @@ export default function PendingIcon({
 				<TooltipTrigger>
 					<ClockIcon
 						{...props}
-						className={cn("text-destructive hidden md:flex", className)}
+						className={cn("text-orange-500 hidden md:flex", className)}
 					/>
 				</TooltipTrigger>
 				<TooltipContent>Pending</TooltipContent>

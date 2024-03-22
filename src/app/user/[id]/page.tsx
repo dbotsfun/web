@@ -12,12 +12,6 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
@@ -28,17 +22,16 @@ import { useSession } from "@/lib/hooks/use-session";
 import { avatar } from "@/lib/utils";
 import {
 	BeakerIcon,
+	BoltIcon,
 	BugAntIcon,
 	CodeBracketIcon,
-	EllipsisHorizontalIcon,
 	FaceFrownIcon,
-	FingerPrintIcon,
 	HeartIcon,
 	PencilIcon,
 	StarIcon,
-	WrenchScrewdriverIcon,
+	WrenchIcon,
 } from "@heroicons/react/20/solid";
-import { BananaIcon, TurtleIcon } from "lucide-react";
+import { BananaIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -53,13 +46,13 @@ export default function Page({ params }: { params: { id: string } }) {
 
 	const badges: Record<string, JSX.Element> = {
 		dev: <CodeBracketIcon className="w-6 h-6 fill-rose-500" />,
-		admin: <WrenchScrewdriverIcon className="w-6 h-6 fill-pink-500" />,
+		admin: <WrenchIcon className="w-6 h-6 fill-pink-500" />,
 		tester: <BeakerIcon className="w-6 h-6 fill-green-500" />,
 		bug_hunter: <BugAntIcon className="w-6 h-6 fill-purple-500" />,
 		donor: <StarIcon className="w-6 h-6 fill-teal-500" />,
-		contributor: <HeartIcon className="w-6 h-6 fill-destructive" />,
+		contributor: <HeartIcon className="w-6 h-6 fill-orange-500" />,
 		custom_g4: <BananaIcon className="w-6 h-6 fill-yellow-500 text-yellow-500" />,
-		fastestemployee: <TurtleIcon className="w-6 h-6 fill-green-500 text-green-700" />,
+		fastestemployee: <BoltIcon className="w-6 h-6 fill-yellow-500" />,
 	};
 
 	if (gettingUser || gettingAuth) return <LoadingScreen />;
@@ -85,39 +78,27 @@ export default function Page({ params }: { params: { id: string } }) {
 							<div className="-mt-20 h-24 w-24 rounded-full bg-card ring-card ring-8">
 								<ImageWithFallback
 									alt="user avatar"
-									width={96}
-									height={96}
+									width={500}
+									height={500}
 									src={avatar(user.user.avatar, user.user.id)}
 									className="rounded-full"
 								/>
 							</div>
-							<DropdownMenu>
-								<DropdownMenuTrigger asChild>
-									<Button variant={"outline"} size={"icon"}>
-										<EllipsisHorizontalIcon className="h-6 w-6" />
-									</Button>
-								</DropdownMenuTrigger>
-								<DropdownMenuContent align="end">
-									<DropdownMenuItem className="flex justify-between">
-										Copy ID <FingerPrintIcon className="h-4 w-4" />
-									</DropdownMenuItem>
-									<Policy policy={user.user.id === auth?.me.user.id}>
-										<Link href="/user/edit">
-											<DropdownMenuItem className="flex justify-between">
-												Edit <PencilIcon className="h-4 w-4" />
-											</DropdownMenuItem>
-										</Link>
-									</Policy>
-								</DropdownMenuContent>
-							</DropdownMenu>
+							<Policy policy={user.user.id === auth?.me.user.id}>
+								<Button size={"xs"} asChild>
+									<Link href="/user/edit">
+										<PencilIcon className="w-4 h-4 mr-2" /> Edit profile
+									</Link>
+								</Button>
+							</Policy>
 						</div>
 						<div className="mt-0 h-24">
 							<div className="flex flex-col">
 								<div>
-									<p className="text-sm text-muted-foreground">/u/front</p>
+									{/** <p className="text-sm text-muted-foreground">/u/front</p> SOON VANITIES */}
 									<div className="mb-1 flex lg:flex-row flex-col items-center gap-3">
 										<h2 className="text-3xl font-bold">{user.user.username}</h2>
-										<div className="flex flex-row items-center gap-2 bg-background px-2 py-1 rounded">
+										{user.user.badges.length > 0 && <div className="flex flex-row items-center gap-2 bg-background px-2 py-1 rounded">
 											<TooltipProvider>
 												{user.user.badges.map((b) => (
 													<Tooltip key={b.id}>
@@ -128,7 +109,7 @@ export default function Page({ params }: { params: { id: string } }) {
 													</Tooltip>
 												))}
 											</TooltipProvider>
-										</div>
+										</div>}
 									</div>
 									<p className="text-secondary-foreground">
 										{user.user.bio ?? "This user has no biography yet."}

@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 
 import TagButton from "@/components/shared/common/tag-button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useFrontBotsQuery, useTagsQuery } from "@/lib/apollo/types";
 import {
@@ -14,7 +13,6 @@ import {
 	ArrowTrendingUpIcon,
 	ClockIcon,
 	FireIcon,
-	MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -66,11 +64,8 @@ export default function Page() {
 										}}
 										onChange={(e) => setQuery(e.currentTarget.value)}
 										placeholder="Start typing to see popover"
-										className="h-12 duration-150 px-4 focus-visible:!ring-background focus-visible:!ring-offset-primary"
+										className="duration-150 px-4 h-11 focus-visible:!ring-background focus-visible:!ring-offset-primary"
 									/>
-									<Button size={"icon"} className="h-12 w-12 rounded-lg">
-										<MagnifyingGlassIcon className="w-6 h-6" />
-									</Button>
 								</div>
 								{focus && (
 									<div className="absolute lg:flex hidden mt-2 left-0 w-full bg-card rounded-md shadow-lg z-[9999] animate-in fade-out fade-in slide-in-from-bottom-2 slide-out-from-top">
@@ -132,7 +127,7 @@ export default function Page() {
 			</div>
 			<Listing
 				loading={botsLoading}
-				title="Most voted bots"
+				title="Trending"
 				subtext="This month's most voted bots"
 				Icon={FireIcon}
 				list={
@@ -143,18 +138,18 @@ export default function Page() {
 			/>
 			<Listing
 				loading={botsLoading}
-				title="Most rated bots"
-				subtext="This month's most rated bots"
+				title="Popular"
+				subtext="Most popular bots"
 				Icon={ArrowTrendingUpIcon}
 				list={
-					bots?.rated.nodes?.length ? (
-						<Bots bots={bots.rated.nodes} />
+					bots?.popular.nodes?.length ? (
+						<Bots bots={bots.popular.nodes} />
 					) : undefined
 				}
 			/>
 			<Listing
 				loading={botsLoading}
-				title="Most recent bots"
+				title="Recent"
 				subtext="Most recent bots"
 				Icon={ClockIcon}
 				list={

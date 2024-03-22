@@ -9,3 +9,5 @@ export const BOT_PREFIX_MAX_LENGTH = 10;
 
 export const BOT_TAGS_MIN_SIZE = 1;
 export const BOT_TAGS_MAX_SIZE = 5;
+
+export const colorThemes = ["main", "pine", "coral", "chill", "persimon", "silver", "valentine"]

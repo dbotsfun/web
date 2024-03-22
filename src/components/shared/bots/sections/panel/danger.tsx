@@ -29,25 +29,21 @@ interface BotDangerZoneProps {
 export default function BotDangerZone({ id, name }: BotDangerZoneProps) {
 	const router = useRouter();
 	const [confirmName, setConfirmName] = useState<string | null>();
-	const [remove, removeResult] = useRemoveBotMutation({
+	const [remove, { loading }] = useRemoveBotMutation({
 		variables: {
 			id,
 		},
-		update(cache) {
+		onCompleted: (data) => {
+			toast.success(`Successfully removed ${data.removeBot.name}`)
+			router.push("/");
+		},
+		onError: (error) => toast.error(error.message),
+		update: (cache) => { // remove cache lollll
 			const normalizedId = cache.identify({ id, __typename: "BotObject" });
 			cache.evict({ id: normalizedId });
 			cache.gc();
 		},
 	});
-
-	function removeBot() {
-		toast.promise(remove(), {
-			loading: `Removing ${name}`,
-			error: `We couldn't remove ${name}`,
-			success: `Removed ${name}`,
-		});
-		router.push("/");
-	}
 	return (
 		<Card className="border-destructive bg-destructive/10 text-destructive">
 			<CardHeader>
@@ -65,8 +61,7 @@ export default function BotDangerZone({ id, name }: BotDangerZoneProps) {
 						<CredenzaHeader>
 							<CredenzaTitle>Are you absolutely sure?</CredenzaTitle>
 							<CredenzaDescription>
-								This action cannot be undone. This will permanently remove{" "}
-								{name}
+								This will remove {name} and all it's information (votes, guild count, etc...)
 							</CredenzaDescription>
 						</CredenzaHeader>
 						<CredenzaBody>
@@ -83,11 +78,9 @@ export default function BotDangerZone({ id, name }: BotDangerZoneProps) {
 							</CredenzaClose>
 							<Button
 								disabled={
-									removeResult.loading ||
-									removeResult.called ||
-									confirmName !== name
+									loading || confirmName !== name
 								}
-								onClick={removeBot}
+								onClick={() => remove()}
 							>
 								Continue
 							</Button>

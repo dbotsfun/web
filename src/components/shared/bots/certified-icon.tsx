@@ -13,14 +13,18 @@ export default function CertifiedIcon({
 }: React.PropsWithoutRef<React.SVGProps<SVGSVGElement>>) {
 	return (
 		<TooltipProvider>
-			<Tooltip>
+			<Tooltip delayDuration={100}>
 				<TooltipTrigger>
 					<CheckCircleIcon
 						{...props}
 						className={cn("text-primary hidden md:flex", className)}
 					/>
 				</TooltipTrigger>
-				<TooltipContent>Certified bot</TooltipContent>
+				<TooltipContent>
+					<p className="font-normal">
+						This bot is certified by us
+					</p>
+				</TooltipContent>
 			</Tooltip>
 		</TooltipProvider>
 	);
