@@ -6,7 +6,7 @@ import { ImageResponse } from "next/og";
 
 const BOT_QUERY = gql`
     query Bot($id: ID!) {
-            getBot(id: $id) {
+            bot(id: $id) {
                 id
                 avatar
                 certified
