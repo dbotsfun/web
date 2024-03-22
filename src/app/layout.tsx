@@ -10,7 +10,7 @@ import { Sora as FontSans } from "next/font/google";
 import "../style/globals.css";
 
 export const metadata: Metadata = {
-	title: "discordbots | Public botlist",
+	title: "Public botlist | discordbots",
 	description: "Browse hundreds of bots made for your community.",
 	icons: ["/favicon.ico"],
 	keywords: ["botlist", "dbots", "discordbots", "discord", "bots"],

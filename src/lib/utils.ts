@@ -17,7 +17,7 @@ export function avatar(
 ) {
 	return avatar
 		? `https://cdn.discordapp.com/avatars/${id}/${avatar}?size=${size ?? 1024}`
-		: "https://cdn.discordapp.com/embed/avatars/2.png";
+		: DEFAULT_AVATAR;
 }
 
 export function formatMilliseconds(ms: number) {
@@ -44,6 +44,6 @@ export function convertRange(originalValue: number): number {
 	return newValue >= maxValue ? maxValue : newValue;
 }
 
-export const DEFAULT_AVATAR = "https://cdn.discordapp.com/embed/avatars/0.png"
+export const DEFAULT_AVATAR = "/default.png"
 
 export type AvatarSizes = 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096;

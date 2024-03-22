@@ -57,6 +57,9 @@ export default function Page({ params }: { params: { id: string } }) {
 	const isOwner = !!bot.owners.find((u) => u.id === user?.me.user.id);
 	return (
 		<>
+			<head>
+				<title>{bot.name} | discordbots</title>
+			</head>
 			<div className="w-full h-screen z-[0] absolute pointer-events-none inset-0">
 				<ImageWithFallback width={1000} height={1000} alt="bot banner background" className="object-cover object-[center_top] top-0 right-0 bottom-0 left-0 w-screen h-[90vh] max-h-[90vh] opacity-10 gradient-mask-b-0" src={avatar(bot.avatar, bot.id)} draggable={false} />
 			</div>
